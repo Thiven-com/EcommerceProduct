@@ -31,10 +31,37 @@ Route::get('track-order', [PageControllers::class, 'track_order'])->name('track-
 Route::get('orders', [PageControllers::class, 'orders'])->name('orders');
 Route::get('order-details', [PageControllers::class, 'order_details'])->name('order-details');
 Route::get('addresses', [PageControllers::class, 'addresses'])->name('addresses');
+
+Route::post('/addresses/store', [AccountController::class, 'storeAddress'])
+    ->name('addresses.store');
+
+Route::put('/addresses/{id}', [AccountController::class, 'updateAddress'])
+    ->name('addresses.update');
+
+Route::delete('/addresses/{id}', [AccountController::class, 'deleteAddress'])
+    ->name('addresses.delete');
+
+Route::post('/addresses/{id}/default', [AccountController::class, 'setDefaultAddress'])
+    ->name('addresses.default');
 Route::get('account-settings', [PageControllers::class, 'account_settings'])->name('account-settings');
 Route::get('account', [PageControllers::class, 'account'])->name('account');
 Route::get('offers', [PageControllers::class, 'offers'])->name('offers');
 Route::get('checkout', [PageControllers::class, 'checkout'])->name('checkout');
+
+Route::post('/cart/add', [AccountController::class, 'addToCart'])
+    ->name('cart.add');
+
+Route::get('/cart', [PageControllers::class, 'cart'])
+    ->middleware('auth:customer')
+    ->name('cart');
+
+Route::delete('/cart/remove/{id}', [AccountController::class, 'removeFromCart'])
+    ->middleware('auth:customer')
+    ->name('cart.remove');
+
+Route::put('/cart/update/{id}', [AccountController::class, 'updateCartQuantity'])
+    ->middleware('auth:customer')
+    ->name('cart.update');
 
 
 

@@ -4,8 +4,8 @@
 
     <style>
         /* =========================================================
-           SUDHEERA SAREES - ADDRESS PAGE
-        ========================================================= */
+                                           SUDHEERA SAREES - ADDRESS PAGE
+                                        ========================================================= */
 
         .sudheera-address-page {
             background: #fbf8f3;
@@ -514,15 +514,259 @@
                 font-size: 23px;
             }
         }
+
+
+        /* =========================================================
+       EDIT ADDRESS FORM
+    ========================================================= */
+
+        #editAddressForm {
+            width: 100%;
+        }
+
+        /* FORM ROW */
+        #editAddressForm .edit-form-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        /* FORM GROUP */
+        #editAddressForm .edit-form-group {
+            margin-bottom: 18px;
+        }
+
+        #editAddressForm .edit-form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* LABEL */
+        #editAddressForm .edit-form-label {
+            display: block;
+            margin-bottom: 7px;
+            color: #420916;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .2px;
+        }
+
+        /* INPUT */
+        #editAddressForm input[type="text"],
+        #editAddressForm input[type="email"],
+        #editAddressForm input[type="tel"],
+        #editAddressForm select,
+        #editAddressForm textarea {
+            width: 100%;
+            border: 1px solid #dfd3c3;
+            border-radius: 9px;
+            background: #fff;
+            color: #420916;
+            font-size: 13px;
+            padding: 10px 13px;
+            outline: none;
+            transition: all .25s ease;
+            box-sizing: border-box;
+        }
+
+        /* INPUT HEIGHT */
+        #editAddressForm input[type="text"],
+        #editAddressForm input[type="email"],
+        #editAddressForm input[type="tel"],
+        #editAddressForm select {
+            min-height: 44px;
+            margin-bottom: 10px
+        }
+
+        /* TEXTAREA */
+        #editAddressForm textarea {
+            min-height: 95px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        /* PLACEHOLDER */
+        #editAddressForm input::placeholder,
+        #editAddressForm textarea::placeholder {
+            color: #aaa098;
+            opacity: 1;
+        }
+
+        /* FOCUS */
+        #editAddressForm input:focus,
+        #editAddressForm select:focus,
+        #editAddressForm textarea:focus {
+            border-color: #c88618;
+            box-shadow: 0 0 0 3px rgba(200, 134, 24, .10);
+            background: #fff;
+        }
+
+        /* SELECT */
+        #editAddressForm select {
+            cursor: pointer;
+            appearance: auto;
+        }
+
+        /* REQUIRED STAR */
+        #editAddressForm .required-star {
+            color: #a52d2d;
+            margin-left: 2px;
+        }
+
+        /* INPUT ICON WRAPPER */
+        #editAddressForm .edit-input-wrapper {
+            position: relative;
+        }
+
+        #editAddressForm .edit-input-wrapper i {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #c88618;
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        #editAddressForm .edit-input-wrapper input {
+            padding-left: 38px;
+        }
+
+        /* TEXTAREA ICON */
+        #editAddressForm .edit-textarea-wrapper {
+            position: relative;
+        }
+
+        #editAddressForm .edit-textarea-wrapper i {
+            position: absolute;
+            left: 13px;
+            top: 14px;
+            color: #c88618;
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        #editAddressForm .edit-textarea-wrapper textarea {
+            padding-left: 38px;
+        }
+
+        /* HIDE THE INLINE BUTTON INSIDE FORM
+       We use the modal footer button instead */
+        #editAddressForm>.sudheera-save-btn {
+            display: none;
+        }
+
+        /* MODAL FOOTER */
+        #modalEditAddress .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* SAVE BUTTON */
+        #modalEditAddress .sudheera-save-btn {
+            min-width: 145px;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: #420916;
+            border: 1px solid #420916;
+            color: #fff;
+            border-radius: 9px;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all .3s ease;
+        }
+
+        #modalEditAddress .sudheera-save-btn:hover {
+            background: linear-gradient(135deg,
+                    #420916,
+                    #76001f,
+                    #a85c17);
+            border-color: #76001f;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(66, 9, 22, .15);
+        }
+
+        /* CANCEL BUTTON */
+        #modalEditAddress .sudheera-cancel-btn {
+            min-width: 100px;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* SECTION TITLE */
+        #editAddressForm .edit-section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 3px 0 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee6dc;
+            color: #420916;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        #editAddressForm .edit-section-title i {
+            color: #c88618;
+            font-size: 15px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 767px) {
+
+            #editAddressForm .edit-form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            #editAddressForm .edit-form-group.full-width {
+                grid-column: auto;
+            }
+
+            #editAddressForm .edit-form-group {
+                margin-bottom: 15px;
+            }
+
+            #editAddressForm input[type="text"],
+            #editAddressForm input[type="email"],
+            #editAddressForm input[type="tel"],
+            #editAddressForm select {
+                min-height: 46px;
+            }
+
+            #editAddressForm textarea {
+                min-height: 100px;
+            }
+
+            #modalEditAddress .modal-footer {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            #modalEditAddress .sudheera-save-btn,
+            #modalEditAddress .sudheera-cancel-btn {
+                width: 100%;
+            }
+        }
+
     </style>
 
     <!-- =========================================================
-         ADDRESS PAGE
-    ========================================================= -->
+                                         ADDRESS PAGE
+                                    ========================================================= -->
 
     <main class="sudheera-address-page">
 
-        ```
+
         <div class="container">
 
             <!-- PAGE HEADER -->
@@ -577,309 +821,212 @@
 
 
             <!-- =====================================================
-             ADDRESS CARDS
-        ====================================================== -->
+                                             ADDRESS CARDS
+                                        ====================================================== -->
+
 
             <div class="sudheera-address-grid">
 
+                @forelse($addresses as $address)
 
-                <!-- ADDRESS 1 -->
+                    <div class="sudheera-address-card">
 
-                <div class="sudheera-address-card">
+                        <div class="sudheera-address-card-header">
 
-                    <div class="sudheera-address-card-header">
+                            <div class="d-flex align-items-center gap-2">
 
-                        <div class="d-flex align-items-center gap-2">
+                                <h5 class="sudheera-address-type">
+                                    {{ $address->address_type ?? 'Address' }}
+                                </h5>
 
-                            <h5 class="sudheera-address-type">
-                                Home
-                            </h5>
+                                @if($address->is_default)
 
-                            <span class="sudheera-default-badge">
+                                    <span class="sudheera-default-badge">
 
-                                <i class="fa fa-check"></i>
+                                        <i class="fa fa-check"></i>
 
-                                Default
+                                        Default
 
-                            </span>
+                                    </span>
+
+                                @endif
+
+                            </div>
+
+
+                            <div class="sudheera-address-actions-small">
+
+                                <!-- EDIT -->
+
+                                <button type="button" class="sudheera-icon-btn" onclick="openEditAddress(this)"
+                                    data-id="{{ $address->id }}" data-type="{{ $address->address_type ?? 'Home' }}"
+                                    data-name="{{ $address->name }}" data-mobile="{{ $address->mobile }}"
+                                    data-email="{{ $address->email }}" data-address="{{ $address->address }}"
+                                    data-address2="{{ $address->address_2 }}" data-city="{{ $address->city }}"
+                                    data-state-id="{{ $address->state_id }}" data-pincode="{{ $address->pincode }}"
+                                    title="Edit">
+
+                                    <i class="fa fa-edit"></i>
+
+                                </button>
+
+
+                                <!-- DELETE -->
+
+                                <form action="{{ route('addresses.delete', $address->id) }}" method="POST"
+                                    style="display:inline;"
+                                    onsubmit="return confirm('Are you sure you want to delete this address?');">
+
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="submit" class="sudheera-icon-btn sudheera-delete-btn" title="Delete">
+
+                                        <i class="fa fa-trash"></i>
+
+                                    </button>
+
+                                </form>
+
+                            </div>
 
                         </div>
 
-                        <div class="sudheera-address-actions-small">
 
-                            <button type="button" class="sudheera-icon-btn" onclick="openEditAddress(
-                                'Home',
-                                'Vasanth Kumar',
-                                '9876543210',
-                                'vasanth@example.com',
-                                '12-45, Main Road',
-                                'Near Bus Stand',
-                                'Bengaluru',
-                                'Karnataka',
-                                '560001'
-                            )">
+                        <div class="sudheera-address-content">
 
-                                <i class="fa fa-edit"></i>
+                            <div class="sudheera-location-icon">
 
-                            </button>
+                                @if(strtolower($address->address_type ?? '') === 'office')
 
-                            <button type="button" class="sudheera-icon-btn sudheera-delete-btn"
-                                onclick="deleteAddress(this)">
+                                    <i class="fa fa-building"></i>
 
-                                <i class="fa fa-trash"></i>
+                                @elseif(strtolower($address->address_type ?? '') === 'other')
 
-                            </button>
+                                    <i class="fa fa-map-marker"></i>
+
+                                @else
+
+                                    <i class="fa fa-home"></i>
+
+                                @endif
+
+                            </div>
+
+
+                            <div class="sudheera-address-info">
+
+                                <div class="sudheera-address-name">
+
+                                    {{ $address->name }}
+
+                                </div>
+
+
+                                <p class="sudheera-address-text">
+
+                                    <span class="sudheera-address-phone">
+
+                                        {{ $address->mobile }}
+
+                                    </span>
+
+                                    <br>
+
+
+                                    {{ $address->address }}
+
+                                    @if($address->address_2)
+
+                                        , {{ $address->address_2 }}
+
+                                    @endif
+
+                                    @if($address->landmark)
+
+                                        , {{ $address->landmark }}
+
+                                    @endif
+
+                                    <br>
+
+
+                                    {{ $address->city }}
+
+                                    @if($address->state)
+
+                                        , {{ $address->state }}
+
+                                    @endif
+
+                                    - {{ $address->pincode }}
+
+                                    <br>
+
+                                    India
+
+                                </p>
+
+                            </div>
 
                         </div>
+
+
+                        @if(!$address->is_default)
+
+                            <form action="{{ route('addresses.default', $address->id) }}" method="POST">
+
+                                @csrf
+
+                                <button type="submit" class="sudheera-set-default">
+
+                                    Set as Default
+
+                                </button>
+
+                            </form>
+
+                        @endif
 
                     </div>
 
+                @empty
 
-                    <div class="sudheera-address-content">
+                    <div class="sudheera-address-card" style="grid-column: 1 / -1; text-align:center;">
 
-                        <div class="sudheera-location-icon">
+                        <div style="padding:40px 20px;">
 
-                            <i class="fa fa-map-marker"></i>
+                            <i class="fa fa-map-marker" style="font-size:40px;color:#c88618;margin-bottom:15px;">
+                            </i>
 
-                        </div>
+                            <h5 style="color:#420916;">
+                                No Addresses Found
+                            </h5>
 
-                        <div class="sudheera-address-info">
-
-                            <div class="sudheera-address-name">
-                                Vasanth Kumar
-                            </div>
-
-                            <p class="sudheera-address-text">
-
-                                <span class="sudheera-address-phone">
-                                    +91 98765 43210
-                                </span>
-
-                                <br>
-
-                                12-45, Main Road,
-                                Near Bus Stand
-
-                                <br>
-
-                                Bengaluru,
-                                Karnataka - 560001
-
-                                <br>
-
-                                India
-
+                            <p style="color:#756c64;">
+                                Add your first delivery address to continue shopping.
                             </p>
 
                         </div>
 
                     </div>
 
-                </div>
-
-
-                <!-- ADDRESS 2 -->
-
-                <div class="sudheera-address-card">
-
-                    <div class="sudheera-address-card-header">
-
-                        <div>
-
-                            <h5 class="sudheera-address-type">
-                                Office
-                            </h5>
-
-                        </div>
-
-                        <div class="sudheera-address-actions-small">
-
-                            <button type="button" class="sudheera-icon-btn" onclick="openEditAddress(
-                                'Office',
-                                'Vasanth Kumar',
-                                '9876543210',
-                                'vasanth@example.com',
-                                '45, MG Road',
-                                'Near Metro Station',
-                                'Bengaluru',
-                                'Karnataka',
-                                '560025'
-                            )">
-
-                                <i class="fa fa-edit"></i>
-
-                            </button>
-
-                            <button type="button" class="sudheera-icon-btn sudheera-delete-btn"
-                                onclick="deleteAddress(this)">
-
-                                <i class="fa fa-trash"></i>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="sudheera-address-content">
-
-                        <div class="sudheera-location-icon">
-
-                            <i class="fa fa-building"></i>
-
-                        </div>
-
-                        <div class="sudheera-address-info">
-
-                            <div class="sudheera-address-name">
-                                Vasanth Kumar
-                            </div>
-
-                            <p class="sudheera-address-text">
-
-                                <span class="sudheera-address-phone">
-                                    +91 98765 43210
-                                </span>
-
-                                <br>
-
-                                45, MG Road,
-                                Near Metro Station
-
-                                <br>
-
-                                Bengaluru,
-                                Karnataka - 560025
-
-                                <br>
-
-                                India
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <a href="#" class="sudheera-set-default" onclick="setDefaultAddress(event, this)">
-
-                        Set as Default
-
-                    </a>
-
-                </div>
-
-
-                <!-- ADDRESS 3 -->
-
-                <div class="sudheera-address-card">
-
-                    <div class="sudheera-address-card-header">
-
-                        <div>
-
-                            <h5 class="sudheera-address-type">
-                                Parents Home
-                            </h5>
-
-                        </div>
-
-                        <div class="sudheera-address-actions-small">
-
-                            <button type="button" class="sudheera-icon-btn" onclick="openEditAddress(
-                                'Parents Home',
-                                'Vasanth Kumar',
-                                '9876543210',
-                                'vasanth@example.com',
-                                '8-22, Gandhi Nagar',
-                                'Opposite Temple',
-                                'Anantapur',
-                                'Andhra Pradesh',
-                                '515001'
-                            )">
-
-                                <i class="fa fa-edit"></i>
-
-                            </button>
-
-                            <button type="button" class="sudheera-icon-btn sudheera-delete-btn"
-                                onclick="deleteAddress(this)">
-
-                                <i class="fa fa-trash"></i>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="sudheera-address-content">
-
-                        <div class="sudheera-location-icon">
-
-                            <i class="fa fa-home"></i>
-
-                        </div>
-
-                        <div class="sudheera-address-info">
-
-                            <div class="sudheera-address-name">
-                                Vasanth Kumar
-                            </div>
-
-                            <p class="sudheera-address-text">
-
-                                <span class="sudheera-address-phone">
-                                    +91 98765 43210
-                                </span>
-
-                                <br>
-
-                                8-22, Gandhi Nagar,
-                                Opposite Temple
-
-                                <br>
-
-                                Anantapur,
-                                Andhra Pradesh - 515001
-
-                                <br>
-
-                                India
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <a href="#" class="sudheera-set-default" onclick="setDefaultAddress(event, this)">
-
-                        Set as Default
-
-                    </a>
-
-                </div>
+                @endforelse
 
             </div>
 
         </div>
-        ```
 
     </main>
 
     <!-- =========================================================
-         ADD ADDRESS MODAL
-    ========================================================= -->
+                                         ADD ADDRESS MODAL
+                                    ========================================================= -->
 
     <div class="modal fade" id="modalAddAddress" tabindex="-1" aria-hidden="true">
 
-        ```
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+
+        <div class="modal-dialog modal-dialog-centered modal-lg" style="margin-top: 120px;">
 
             <div class="modal-content sudheera-address-modal">
 
@@ -901,12 +1048,11 @@
 
                 <div class="modal-body">
 
-                    <form id="addAddressForm">
+                    <form action="{{ route('addresses.store') }}" method="POST" id="addAddressForm">
+
+                        @csrf
 
                         <div class="row g-3">
-
-
-                            <!-- FULL NAME -->
 
                             <div class="col-md-6">
 
@@ -914,12 +1060,11 @@
                                     Full Name *
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Enter full name" required>
+                                <input type="text" name="name" class="form-control"
+                                    value="{{ old('name', $customer->name) }}" placeholder="Enter full name" required>
 
                             </div>
 
-
-                            <!-- MOBILE -->
 
                             <div class="col-md-6">
 
@@ -927,12 +1072,12 @@
                                     Phone Number *
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Enter phone number" required>
+                                <input type="text" name="mobile" class="form-control"
+                                    value="{{ old('mobile', $customer->mobile) }}" placeholder="Enter phone number"
+                                    required>
 
                             </div>
 
-
-                            <!-- ALTERNATE MOBILE -->
 
                             <div class="col-md-6">
 
@@ -940,25 +1085,23 @@
                                     Alternate Phone Number
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Enter alternate phone number">
+                                <input type="text" name="alternate_mobile" class="form-control"
+                                    placeholder="Enter alternate phone number">
 
                             </div>
 
-
-                            <!-- EMAIL -->
 
                             <div class="col-md-6">
 
                                 <label class="form-label">
-                                    Email *
+                                    Email
                                 </label>
 
-                                <input type="email" class="form-control" placeholder="Enter email" required>
+                                <input type="email" name="email" class="form-control"
+                                    value="{{ old('email', $customer->email) }}" placeholder="Enter email">
 
                             </div>
 
-
-                            <!-- PINCODE -->
 
                             <div class="col-md-6">
 
@@ -966,12 +1109,10 @@
                                     Pincode *
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Enter pincode" required>
+                                <input type="text" name="pincode" class="form-control" placeholder="Enter pincode" required>
 
                             </div>
 
-
-                            <!-- CITY -->
 
                             <div class="col-md-6">
 
@@ -979,12 +1120,10 @@
                                     City *
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Enter city" required>
+                                <input type="text" name="city" class="form-control" placeholder="Enter city" required>
 
                             </div>
 
-
-                            <!-- LANDMARK -->
 
                             <div class="col-md-6">
 
@@ -992,12 +1131,10 @@
                                     Landmark
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Enter landmark">
+                                <input type="text" name="landmark" class="form-control" placeholder="Enter landmark">
 
                             </div>
 
-
-                            <!-- STATE -->
 
                             <div class="col-md-6">
 
@@ -1005,47 +1142,47 @@
                                     State *
                                 </label>
 
-                                <select class="form-select" required>
+                                <select name="state_id" class="form-select" required>
 
                                     <option value="">
                                         Select State
                                     </option>
 
-                                    <option>Andhra Pradesh</option>
-                                    <option>Arunachal Pradesh</option>
-                                    <option>Assam</option>
-                                    <option>Bihar</option>
-                                    <option>Chhattisgarh</option>
-                                    <option>Goa</option>
-                                    <option>Gujarat</option>
-                                    <option>Haryana</option>
-                                    <option>Himachal Pradesh</option>
-                                    <option>Jharkhand</option>
-                                    <option>Karnataka</option>
-                                    <option>Kerala</option>
-                                    <option>Madhya Pradesh</option>
-                                    <option>Maharashtra</option>
-                                    <option>Manipur</option>
-                                    <option>Meghalaya</option>
-                                    <option>Mizoram</option>
-                                    <option>Nagaland</option>
-                                    <option>Odisha</option>
-                                    <option>Punjab</option>
-                                    <option>Rajasthan</option>
-                                    <option>Sikkim</option>
-                                    <option>Tamil Nadu</option>
-                                    <option>Telangana</option>
-                                    <option>Tripura</option>
-                                    <option>Uttar Pradesh</option>
-                                    <option>Uttarakhand</option>
-                                    <option>West Bengal</option>
+                                    {{-- Replace these IDs with your actual states table IDs --}}
+
+                                    <option value="1">Andhra Pradesh</option>
+                                    <option value="2">Arunachal Pradesh</option>
+                                    <option value="3">Assam</option>
+                                    <option value="4">Bihar</option>
+                                    <option value="5">Chhattisgarh</option>
+                                    <option value="6">Goa</option>
+                                    <option value="7">Gujarat</option>
+                                    <option value="8">Haryana</option>
+                                    <option value="9">Himachal Pradesh</option>
+                                    <option value="10">Jharkhand</option>
+                                    <option value="11">Karnataka</option>
+                                    <option value="12">Kerala</option>
+                                    <option value="13">Madhya Pradesh</option>
+                                    <option value="14">Maharashtra</option>
+                                    <option value="15">Manipur</option>
+                                    <option value="16">Meghalaya</option>
+                                    <option value="17">Mizoram</option>
+                                    <option value="18">Nagaland</option>
+                                    <option value="19">Odisha</option>
+                                    <option value="20">Punjab</option>
+                                    <option value="21">Rajasthan</option>
+                                    <option value="22">Sikkim</option>
+                                    <option value="23">Tamil Nadu</option>
+                                    <option value="24">Telangana</option>
+                                    <option value="25">Tripura</option>
+                                    <option value="26">Uttar Pradesh</option>
+                                    <option value="27">Uttarakhand</option>
+                                    <option value="28">West Bengal</option>
 
                                 </select>
 
                             </div>
 
-
-                            <!-- ADDRESS TYPE -->
 
                             <div class="col-md-6">
 
@@ -1053,18 +1190,24 @@
                                     Address Type
                                 </label>
 
-                                <select class="form-select">
+                                <select name="address_type" class="form-select">
 
-                                    <option>Home</option>
-                                    <option>Office</option>
-                                    <option>Other</option>
+                                    <option value="Home">
+                                        Home
+                                    </option>
+
+                                    <option value="Office">
+                                        Office
+                                    </option>
+
+                                    <option value="Other">
+                                        Other
+                                    </option>
 
                                 </select>
 
                             </div>
 
-
-                            <!-- GST -->
 
                             <div class="col-md-6">
 
@@ -1072,12 +1215,10 @@
                                     GST
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Enter GST Number">
+                                <input type="text" name="gst" class="form-control" placeholder="Enter GST Number">
 
                             </div>
 
-
-                            <!-- ADDRESS -->
 
                             <div class="col-12">
 
@@ -1085,21 +1226,19 @@
                                     House No, Street *
                                 </label>
 
-                                <textarea class="form-control" rows="3" placeholder="House No, Street, Area..."
-                                    required></textarea>
+                                <textarea name="address" class="form-control" rows="3"
+                                    placeholder="House No, Street, Area..." required></textarea>
 
                             </div>
 
 
-                            <!-- ADDRESS 2 -->
-
                             <div class="col-12">
 
                                 <label class="form-label">
-                                    Address
+                                    Address 2
                                 </label>
 
-                                <textarea class="form-control" rows="3"
+                                <textarea name="address_2" class="form-control" rows="3"
                                     placeholder="Apartment, Area, Additional Address"></textarea>
 
                             </div>
@@ -1121,7 +1260,7 @@
 
                     </button>
 
-                    <button type="button" class="sudheera-save-btn" onclick="saveAddress()">
+                    <button type="submit" form="addAddressForm" class="sudheera-save-btn">
 
                         <i class="fa fa-check me-1"></i>
 
@@ -1134,18 +1273,16 @@
             </div>
 
         </div>
-        ```
 
     </div>
 
     <!-- =========================================================
-         EDIT ADDRESS MODAL
-    ========================================================= -->
+                                         EDIT ADDRESS MODAL
+                                    ========================================================= -->
 
     <div class="modal fade" id="modalEditAddress" tabindex="-1" aria-hidden="true">
 
-        ```
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-lg" style="margin-top: 120px;">
 
             <div class="modal-content sudheera-address-modal">
 
@@ -1163,130 +1300,48 @@
 
                 <div class="modal-body">
 
-                    <form id="editAddressForm">
 
-                        <div class="row g-3">
+                    <form id="editAddressForm" method="POST">
 
+                        @csrf
+                        @method('PUT')
 
-                            <div class="col-md-6">
+                        <input type="text" id="editName" name="name" required>
 
-                                <label class="form-label">
-                                    Full Name *
-                                </label>
+                        <input type="text" id="editMobile" name="mobile" required>
 
-                                <input type="text" id="editName" class="form-control" required>
+                        <input type="email" id="editEmail" name="email">
 
-                            </div>
+                        <input type="text" id="editPincode" name="pincode" required>
 
+                        <input type="text" id="editCity" name="city" required>
 
-                            <div class="col-md-6">
+                        <select id="editState" name="state_id" required>
 
-                                <label class="form-label">
-                                    Phone Number *
-                                </label>
+                            {{-- Your actual states here --}}
 
-                                <input type="text" id="editMobile" class="form-control" required>
+                        </select>
 
-                            </div>
+                        <select id="editType" name="address_type">
 
+                            <option value="Home">Home</option>
+                            <option value="Office">Office</option>
+                            <option value="Other">Other</option>
 
-                            <div class="col-md-6">
+                        </select>
 
-                                <label class="form-label">
-                                    Email *
-                                </label>
+                        <textarea id="editAddress" name="address" required></textarea>
 
-                                <input type="email" id="editEmail" class="form-control" required>
+                        <textarea id="editAddress2" name="address_2"></textarea>
 
-                            </div>
+                        <button type="button" onclick="updateAddress()" class="sudheera-save-btn">
 
+                            <i class="fa fa-check me-1"></i>
+                            Update Address
 
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Address Type
-                                </label>
-
-                                <select id="editType" class="form-select">
-
-                                    <option>Home</option>
-                                    <option>Office</option>
-                                    <option>Other</option>
-
-                                </select>
-
-                            </div>
-
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Pincode *
-                                </label>
-
-                                <input type="text" id="editPincode" class="form-control" required>
-
-                            </div>
-
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    City *
-                                </label>
-
-                                <input type="text" id="editCity" class="form-control" required>
-
-                            </div>
-
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    State *
-                                </label>
-
-                                <input type="text" id="editState" class="form-control" required>
-
-                            </div>
-
-
-                            <div class="col-md-6">
-
-                                <label class="form-label">
-                                    Landmark
-                                </label>
-
-                                <input type="text" id="editLandmark" class="form-control">
-
-                            </div>
-
-
-                            <div class="col-12">
-
-                                <label class="form-label">
-                                    House No, Street *
-                                </label>
-
-                                <textarea id="editAddress" class="form-control" rows="3" required></textarea>
-
-                            </div>
-
-
-                            <div class="col-12">
-
-                                <label class="form-label">
-                                    Address 2
-                                </label>
-
-                                <textarea id="editAddress2" class="form-control" rows="3"></textarea>
-
-                            </div>
-
-                        </div>
+                        </button>
 
                     </form>
-
                 </div>
 
 
@@ -1298,7 +1353,7 @@
 
                     </button>
 
-                    <button type="button" class="sudheera-save-btn" onclick="updateAddress()">
+                    <button type="submit" form="editAddressForm" class="sudheera-save-btn">
 
                         <i class="fa fa-check me-1"></i>
 
@@ -1311,159 +1366,195 @@
             </div>
 
         </div>
-        ```
 
     </div>
 
     <!-- =========================================================
-         STATIC JAVASCRIPT
-    ========================================================= -->
+                                         STATIC JAVASCRIPT
+                                    ========================================================= -->
 
     <script>
 
-        function openEditAddress(
-            type,
-            name,
-            mobile,
-            email,
-            address,
-            address2,
-            city,
-            state,
-            pincode
-        ) {
+        /*
+        |--------------------------------------------------------------------------
+        | OPEN EDIT ADDRESS
+        |--------------------------------------------------------------------------
+        */
 
-            document.getElementById('editType').value = type;
-            document.getElementById('editName').value = name;
-            document.getElementById('editMobile').value = mobile;
-            document.getElementById('editEmail').value = email;
-            document.getElementById('editAddress').value = address;
-            document.getElementById('editAddress2').value = address2;
-            document.getElementById('editCity').value = city;
-            document.getElementById('editState').value = state;
-            document.getElementById('editPincode').value = pincode;
+        function openEditAddress(button) {
 
-            var modal = new bootstrap.Modal(
-                document.getElementById('modalEditAddress')
-            );
+            const id = button.dataset.id;
+
+            document.getElementById('editType').value =
+                button.dataset.type || 'Home';
+
+            document.getElementById('editName').value =
+                button.dataset.name || '';
+
+            document.getElementById('editMobile').value =
+                button.dataset.mobile || '';
+
+            document.getElementById('editEmail').value =
+                button.dataset.email || '';
+
+            document.getElementById('editAddress').value =
+                button.dataset.address || '';
+
+            document.getElementById('editAddress2').value =
+                button.dataset.address2 || '';
+
+            document.getElementById('editCity').value =
+                button.dataset.city || '';
+
+            document.getElementById('editState').value =
+                button.dataset.stateId || '';
+
+            document.getElementById('editPincode').value =
+                button.dataset.pincode || '';
+
+            /*
+             * Set Laravel update URL dynamically
+             *
+             * Example:
+             * /addresses/5
+             */
+            document.getElementById('editAddressForm').action =
+                "{{ url('/addresses') }}/" + id;
+
+            const modalElement =
+                document.getElementById('modalEditAddress');
+
+            const modal =
+                bootstrap.Modal.getOrCreateInstance(modalElement);
 
             modal.show();
         }
 
 
+        /*
+        |--------------------------------------------------------------------------
+        | DELETE ADDRESS
+        |--------------------------------------------------------------------------
+        */
+
         function deleteAddress(button) {
 
-            if (confirm('Are you sure you want to delete this address?')) {
-
-                var card = button.closest('.sudheera-address-card');
-
-                card.style.opacity = '0';
-                card.style.transform = 'scale(.95)';
-
-                setTimeout(function () {
-                    card.remove();
-                }, 300);
-
+            if (!confirm('Are you sure you want to delete this address?')) {
+                return;
             }
 
+                    /*
+                     * Delete is handled by Laravel.
+                     * The button should be inside:
+                     *
+                     * <form method="POST">
+                     *     @csrf
+                     *     @method('DELETE')
+                     * </form >
+                     *
+                     * Submit that form.
+                     */
+
+            const form = button.closest('form');
+
+            if (form) {
+                form.submit();
+            }
         }
 
 
-        function setDefaultAddress(event, button) {
-
-            event.preventDefault();
-
-            document.querySelectorAll('.sudheera-default-badge')
-                .forEach(function (badge) {
-                    badge.remove();
-                });
-
-            document.querySelectorAll('.sudheera-address-card')
-                .forEach(function (card) {
-
-                    var title = card.querySelector(
-                        '.sudheera-address-type'
-                    );
-
-                    if (!card.querySelector('.sudheera-default-badge')) {
-
-                        if (card.contains(button)) {
-
-                            var badge = document.createElement('span');
-
-                            badge.className =
-                                'sudheera-default-badge';
-
-                            badge.innerHTML =
-                                '<i class="fa fa-check"></i> Default';
-
-                            title.parentElement.appendChild(badge);
-
-                            button.remove();
-
-                        }
-
-                    }
-
-                });
-
-        }
-
+        /*
+        |--------------------------------------------------------------------------
+        | ADD ADDRESS
+        |--------------------------------------------------------------------------
+        */
 
         function saveAddress() {
 
-            var form = document.getElementById('addAddressForm');
+            const form =
+                document.getElementById('addAddressForm');
 
+            if (!form) {
+                return;
+            }
+
+            /*
+             * Browser validation
+             */
             if (!form.checkValidity()) {
 
                 form.reportValidity();
 
                 return;
-
             }
 
-            alert('Address saved successfully!');
-
-            var modalElement =
-                document.getElementById('modalAddAddress');
-
-            var modal =
-                bootstrap.Modal.getInstance(modalElement);
-
-            if (modal) {
-                modal.hide();
-            }
-
-            form.reset();
-
+            /*
+             * Submit to Laravel.
+             *
+             * Do NOT use preventDefault().
+             * Laravel will store the address in the database.
+             */
+            form.submit();
         }
 
 
+        /*
+        |--------------------------------------------------------------------------
+        | UPDATE ADDRESS
+        |--------------------------------------------------------------------------
+        */
+
         function updateAddress() {
 
-            var form =
+            const form =
                 document.getElementById('editAddressForm');
 
+            if (!form) {
+                return;
+            }
+
+            /*
+             * Browser validation
+             */
             if (!form.checkValidity()) {
 
                 form.reportValidity();
 
                 return;
-
             }
 
-            alert('Address updated successfully!');
+            /*
+             * Submit to Laravel.
+             *
+             * The form action was already set inside
+             * openEditAddress().
+             */
+            form.submit();
+        }
 
-            var modalElement =
-                document.getElementById('modalEditAddress');
 
-            var modal =
-                bootstrap.Modal.getInstance(modalElement);
+        /*
+        |--------------------------------------------------------------------------
+        | SET DEFAULT ADDRESS
+        |--------------------------------------------------------------------------
+        */
 
-            if (modal) {
-                modal.hide();
+        function setDefaultAddress(event, button) {
+
+            /*
+             * If this button is inside a Laravel form,
+             * let the form submit normally.
+             */
+
+            if (event) {
+                event.preventDefault();
             }
 
+            const form = button.closest('form');
+
+            if (form) {
+                form.submit();
+            }
         }
 
     </script>

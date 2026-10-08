@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Address;
 use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
@@ -8,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\BlogCategory;
-
+use Illuminate\Support\Facades\Auth;
 
 class PageControllers extends Controller
 {
@@ -428,9 +430,54 @@ class PageControllers extends Controller
     {
         return view('website.login');
     }
+
     public function cart()
     {
-        return view('website.cart');
+        if (!Auth::guard('customer')->check()) {
+            return redirect()
+                ->route('login')
+                ->with('error', 'Please login first.');
+        }
+
+        $customerId = Auth::guard('customer')->id();
+
+        $cartItems = \App\Models\CartItem::with([
+            'variant.product:id,title,slug,image',
+            'variant.attributeValues.attribute'
+        ])
+            ->where('user_id', $customerId)
+            ->latest()
+            ->get();
+
+        $subtotal = $cartItems->sum(function ($item) {
+            return (float) $item->unit_price * (int) $item->quantity;
+        });
+
+        $actualTotal = $cartItems->sum(function ($item) {
+
+            $actualPrice = $item->variant->actual_price
+                ?? $item->unit_price;
+
+            return (float) $actualPrice * (int) $item->quantity;
+        });
+
+        $discount = max(0, $actualTotal - $subtotal);
+
+        $shipping = 0;
+
+        $total = $subtotal + $shipping;
+
+        $cartCount = $cartItems->sum('quantity');
+
+        return view('website.cart', compact(
+            'cartItems',
+            'subtotal',
+            'actualTotal',
+            'discount',
+            'shipping',
+            'total',
+            'cartCount'
+        ));
     }
     public function wishlist()
     {
@@ -474,15 +521,29 @@ class PageControllers extends Controller
     }
     public function addresses()
     {
-        return view('website.addresses');
+        $customer = Auth::guard('customer')->user();
+
+        $addresses = Address::where('customer_id', $customer->id)
+            ->latest()
+            ->get();
+        return view('website.addresses', compact('addresses', 'customer'));
     }
     public function account_settings()
     {
-        return view('website.account-settings');
+        $customer = Auth::guard('customer')->user();
+
+        $address = Address::where('customer_id', $customer->id)
+            ->latest()
+            ->first();
+        return view('website.account-settings', compact('customer', 'address'));
     }
     public function account()
     {
-        return view('website.account');
+        $customer = Auth::guard('customer')->user();
+        $address = Address::where('customer_id', $customer->id)
+            ->latest()
+            ->first();
+        return view('website.account', compact('customer', 'address'));
     }
     public function offers()
     {

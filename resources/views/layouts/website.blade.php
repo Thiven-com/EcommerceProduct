@@ -1401,7 +1401,7 @@
                 <!-- Logo -->
                 <div class="navbar-logo">
                     <a href="{{ route('home') }}">
-                        <img src="{{ asset('website') }}/images/logo (5).png" alt="" style="width: 150px;">
+                        <img src="{{ asset('website') }}/images/sudheera.png" alt="" style="width: 150px;">
                     </a>
                 </div>
 
@@ -3530,7 +3530,7 @@
 
                         <a href="{{ route('home') }}" class="sudheera-footer-logo">
 
-                            <img src="{{ asset('website') }}/images/logo (6).png" alt=""
+                            <img src="{{ asset('website') }}/images/llll.png" alt=""
                                 style="width: 200px; justify-content: center;">
 
                         </a>

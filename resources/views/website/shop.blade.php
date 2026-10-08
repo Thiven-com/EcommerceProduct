@@ -1135,14 +1135,14 @@
 
                 <!-- Add To Cart -->
 
-                <button
-                    type="button"
-                    class="add-cart-btn"
-                    data-product-id="{{ $product->id }}"
-                    data-variant-id="{{ $variant?->id }}"
-                >
-                    ADD TO CART
-                </button>
+<button
+    type="button"
+    class="add-cart-btn"
+    data-product-id="{{ $product->id }}"
+    data-variant-id="{{ $variant?->id }}"
+>
+    ADD TO CART
+</button>
 
 
             </div>
@@ -1443,6 +1443,100 @@
 
         });
 
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('.add-cart-btn').forEach(function (button) {
+
+        button.addEventListener('click', function () {
+
+            const variantId = this.dataset.variantId;
+            const currentButton = this;
+
+            if (!variantId) {
+                alert('Product variant not available.');
+                return;
+            }
+
+            const originalText = currentButton.innerHTML;
+
+            currentButton.disabled = true;
+            currentButton.innerHTML = 'ADDING...';
+
+            fetch("{{ route('cart.add') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({
+                    product_variant_id: variantId,
+                    quantity: 1
+                })
+            })
+            .then(async response => {
+
+                const data = await response.json();
+
+                if (response.status === 401) {
+                    alert(data.message || 'Please login first.');
+
+                    window.location.href = "{{ route('login') }}";
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Something went wrong.');
+                }
+
+                return data;
+            })
+            .then(data => {
+
+                if (!data) {
+                    return;
+                }
+
+                if (data.status) {
+
+                    currentButton.innerHTML = 'ADDED ✓';
+
+                    // Update cart count if available
+                    document.querySelectorAll('.cart-count').forEach(function (element) {
+                        element.textContent = data.cart_count;
+                    });
+
+                    setTimeout(function () {
+                        currentButton.innerHTML = originalText;
+                        currentButton.disabled = false;
+                    }, 1500);
+
+                } else {
+
+                    currentButton.innerHTML = originalText;
+                    currentButton.disabled = false;
+
+                    alert(data.message || 'Unable to add product to cart.');
+                }
+            })
+            .catch(function (error) {
+
+                console.error('Add to cart error:', error);
+
+                currentButton.innerHTML = originalText;
+                currentButton.disabled = false;
+
+                alert(error.message || 'Something went wrong. Please try again.');
+            });
+
+        });
+
+    });
+
+});
 </script>
 
 @endsection

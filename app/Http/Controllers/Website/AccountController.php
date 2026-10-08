@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Website;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
+use App\Models\CartItem;
 use App\Models\Customer;
 use App\Models\WishlistItem;
 use App\Services\WhatsAppService;
@@ -135,40 +137,342 @@ class AccountController extends Controller
 
 
 
-   public function addToWishlist(Request $request)
-{
-    if (!Auth::guard('customer')->check()) {
-        return response()->json([
-            'status' => false,
-            'message' => 'Please login first.'
-        ], 401);
-    }
+    public function addToWishlist(Request $request)
+    {
+        if (!Auth::guard('customer')->check()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Please login first.'
+            ], 401);
+        }
 
-    $request->validate([
-        'product_variant_id' => 'required|exists:product_variants,id',
-    ]);
+        $request->validate([
+            'product_variant_id' => 'required|exists:product_variants,id',
+        ]);
 
-    $customerId = Auth::guard('customer')->id();
+        $customerId = Auth::guard('customer')->id();
 
-    $exists = WishlistItem::where('customer_id', $customerId)
-        ->where('product_variant_id', $request->product_variant_id)
-        ->exists();
+        $exists = WishlistItem::where('customer_id', $customerId)
+            ->where('product_variant_id', $request->product_variant_id)
+            ->exists();
 
-    if ($exists) {
+        if ($exists) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Product already added to wishlist.'
+            ]);
+        }
+
+        WishlistItem::create([
+            'customer_id' => $customerId,
+            'product_variant_id' => $request->product_variant_id,
+        ]);
+
         return response()->json([
             'status' => true,
-            'message' => 'Product already added to wishlist.'
+            'message' => 'Product added to wishlist.'
         ]);
     }
 
-    WishlistItem::create([
-        'customer_id' => $customerId,
-        'product_variant_id' => $request->product_variant_id,
-    ]);
+    public function storeAddress(Request $request)
+    {
+        $customer = Auth::guard('customer')->user();
 
-    return response()->json([
-        'status' => true,
-        'message' => 'Product added to wishlist.'
-    ]);
-}
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'mobile' => 'required|string|max:20',
+            'alternate_mobile' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'gst' => 'nullable|string|max:50',
+            'pincode' => 'required|string|max:10',
+            'city' => 'required|string|max:255',
+            'state_id' => 'nullable|integer',
+            'landmark' => 'nullable|string|max:255',
+            'address' => 'required|string',
+            'address_2' => 'nullable|string',
+        ]);
+
+        $validated['customer_id'] = $customer->id;
+
+        /*
+         * If customer has no address yet,
+         * make this address default automatically.
+         */
+        $hasAddress = Address::where(
+            'customer_id',
+            $customer->id
+        )->exists();
+
+        $validated['is_default'] = !$hasAddress;
+
+        Address::create($validated);
+
+        return redirect()
+            ->route('addresses')
+            ->with('success', 'Address added successfully.');
+    }
+
+
+    public function updateAddress(Request $request, $id)
+    {
+        $customer = Auth::guard('customer')->user();
+
+        $address = Address::where('id', $id)
+            ->where('customer_id', $customer->id)
+            ->firstOrFail();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'mobile' => 'required|string|max:20',
+            'alternate_mobile' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'gst' => 'nullable|string|max:50',
+            'pincode' => 'required|string|max:10',
+            'city' => 'required|string|max:255',
+            'state_id' => 'nullable|integer',
+            'landmark' => 'nullable|string|max:255',
+            'address' => 'required|string',
+            'address_2' => 'nullable|string',
+        ]);
+
+        $address->update($validated);
+
+        return redirect()
+            ->route('addresses')
+            ->with('success', 'Address updated successfully.');
+    }
+
+
+    public function deleteAddress($id)
+    {
+        $customer = Auth::guard('customer')->user();
+
+        $address = Address::where('id', $id)
+            ->where('customer_id', $customer->id)
+            ->firstOrFail();
+
+        $wasDefault = $address->is_default;
+
+        $address->delete();
+
+        /*
+         * If deleted address was default,
+         * automatically make another address default.
+         */
+        if ($wasDefault) {
+
+            $newDefault = Address::where(
+                'customer_id',
+                $customer->id
+            )
+                ->latest()
+                ->first();
+
+            if ($newDefault) {
+                $newDefault->update([
+                    'is_default' => true
+                ]);
+            }
+        }
+
+        return redirect()
+            ->route('addresses')
+            ->with('success', 'Address deleted successfully.');
+    }
+
+
+    public function setDefaultAddress($id)
+    {
+        $customer = Auth::guard('customer')->user();
+
+        $address = Address::where('id', $id)
+            ->where('customer_id', $customer->id)
+            ->firstOrFail();
+
+        Address::where('customer_id', $customer->id)
+            ->update([
+                'is_default' => false
+            ]);
+
+        $address->update([
+            'is_default' => true
+        ]);
+
+        return redirect()
+            ->route('addresses')
+            ->with('success', 'Default address updated successfully.');
+    }
+
+
+    public function addToCart(Request $request)
+    {
+        if (!Auth::guard('customer')->check()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Please login first.'
+            ], 401);
+        }
+
+        $request->validate([
+            'product_variant_id' => 'required|exists:product_variants,id',
+            'quantity' => 'nullable|integer|min:1',
+        ]);
+
+        $customerId = Auth::guard('customer')->id();
+
+        $quantity = $request->quantity ?? 1;
+
+        $variant = \App\Models\ProductVariant::findOrFail(
+            $request->product_variant_id
+        );
+
+        /*
+         * Check whether this variant is already
+         * available in the customer's cart.
+         */
+        $cartItem = \App\Models\CartItem::where('user_id', $customerId)
+            ->where('product_variant_id', $request->product_variant_id)
+            ->first();
+
+        if ($cartItem) {
+
+            // If already exists, increase quantity
+            $cartItem->quantity += $quantity;
+
+            // Update latest price
+            $cartItem->unit_price = $variant->price;
+
+            $cartItem->save();
+
+            $message = 'Product quantity updated in cart.';
+        } else {
+
+            // Add new product to cart
+            $cartItem = \App\Models\CartItem::create([
+                'user_id' => $customerId,
+                'session_id' => null,
+                'product_variant_id' => $request->product_variant_id,
+                'quantity' => $quantity,
+                'unit_price' => $variant->price,
+            ]);
+
+            $message = 'Product added to cart successfully.';
+        }
+
+        /*
+         * Get total cart quantity
+         */
+        $cartCount = \App\Models\CartItem::where('user_id', $customerId)
+            ->sum('quantity');
+
+        return response()->json([
+            'status' => true,
+            'message' => $message,
+            'cart_count' => $cartCount,
+            'cart_item_id' => $cartItem->id,
+        ]);
+    }
+
+    public function removeFromCart($id)
+    {
+        if (!Auth::guard('customer')->check()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Please login first.'
+            ], 401);
+        }
+
+        $customerId = Auth::guard('customer')->id();
+
+        $cartItem = CartItem::where('id', $id)
+            ->where('user_id', $customerId)
+            ->first();
+
+        if (!$cartItem) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Cart item not found.'
+            ], 404);
+        }
+
+        $cartItem->delete();
+
+        $cartCount = CartItem::where('user_id', $customerId)
+            ->sum('quantity');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Product removed from cart.',
+            'cart_count' => $cartCount
+        ]);
+    }
+
+
+    public function updateCartQuantity(Request $request, $id)
+    {
+        if (!Auth::guard('customer')->check()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Please login first.'
+            ], 401);
+        }
+
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $customerId = Auth::guard('customer')->id();
+
+        $cartItem = CartItem::where('id', $id)
+            ->where('user_id', $customerId)
+            ->first();
+
+        if (!$cartItem) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Cart item not found.'
+            ], 404);
+        }
+
+        $cartItem->quantity = $request->quantity;
+        $cartItem->save();
+
+        $itemTotal = (float) $cartItem->unit_price * (int) $cartItem->quantity;
+
+        $cartItems = CartItem::where('user_id', $customerId)->get();
+
+        $subtotal = $cartItems->sum(function ($item) {
+            return (float) $item->unit_price * (int) $item->quantity;
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Shipping
+        |--------------------------------------------------------------------------
+        */
+
+        $shipping = 0;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Total
+        |--------------------------------------------------------------------------
+        */
+
+        $total = $subtotal + $shipping;
+
+        $cartCount = $cartItems->sum('quantity');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Cart quantity updated successfully.',
+            'quantity' => $cartItem->quantity,
+            'item_total' => number_format($itemTotal, 2),
+            'subtotal' => number_format($subtotal, 2),
+            'shipping' => number_format($shipping, 2),
+            'total' => number_format($total, 2),
+            'cart_count' => $cartCount,
+        ]);
+    }
+
 }
