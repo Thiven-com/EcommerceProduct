@@ -1598,6 +1598,17 @@
             }
 
         }
+         .wishlist.active {
+            color: #a92d0f;
+        }
+
+        .wishlist.active .wishlist-icon {
+            color: #a92d0f;
+        }
+
+        .wishlist.active .wishlist-icon {
+            font-size: 18px;
+        }
     </style>
 
 
@@ -3974,11 +3985,13 @@
 
                                 <!-- Wishlist -->
 
-                                <button type="button" class="wishlist" data-product-id="{{ $product->id }}"
-                                    onclick="event.stopPropagation();">
+                                <button type="button"
+                                    class="wishlist {{ $variant && in_array($variant->id, $wishlistVariantIds ?? []) ? 'active' : '' }}"
+                                    data-variant-id="{{ $variant?->id }}" onclick="event.stopPropagation();">
 
-                                    ♡
-
+                                    <span class="wishlist-icon">
+                                        {{ $variant && in_array($variant->id, $wishlistVariantIds ?? []) ? '♥' : '♡' }}
+                                    </span>
                                 </button>
 
 
@@ -5092,5 +5105,81 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 </script>
+ <script>
+        document.addEventListener('DOMContentLoaded', function () {
 
+            document.querySelectorAll('.wishlist').forEach(function (button) {
+
+                button.addEventListener('click', function (event) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    const wishlistButton = this;
+                    const variantId = wishlistButton.getAttribute('data-variant-id');
+
+                    if (!variantId) {
+                        alert('Product variant not found.');
+                        return;
+                    }
+
+                    fetch('{{ route('wishlist.add') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            product_variant_id: variantId
+                        })
+                    })
+                        .then(async function (response) {
+
+                            const data = await response.json();
+
+                            if (response.status === 401) {
+                                window.location.href = '{{ route('login') }}';
+                                return;
+                            }
+
+                            if (!response.ok) {
+                                throw new Error(
+                                    data.message || 'Something went wrong.'
+                                );
+                            }
+
+                            if (data.status) {
+
+                                // Change wishlist button to active
+                                wishlistButton.classList.add('active');
+
+                                // Change ♡ to ♥
+                                const icon = wishlistButton.querySelector('.wishlist-icon');
+
+                                if (icon) {
+                                    icon.textContent = '♥';
+                                }
+
+                                alert(data.message);
+                            }
+
+                        })
+                        .catch(function (error) {
+
+                            console.error('Wishlist Error:', error);
+
+                            alert(
+                                error.message ||
+                                'Something went wrong.'
+                            );
+
+                        });
+
+                });
+
+            });
+
+        });
+    </script>
 @endsection

@@ -1005,10 +1005,12 @@
                             @endif
 
 
-                            <button type="button" class="product-image-wishlist" title="Add to Wishlist"
-                                data-product-id="{{ $product->id }}">
+                             <button
+                                class="product-image-wishlist {{ in_array($variant?->id, $wishlistVariantIds ?? []) ? 'active' : '' }}"
+                                title="Add to Wishlist" type="button" data-variant-id="{{ $variant?->id }}">
 
-                                <i class="fa-regular fa-heart"></i>
+                                <i
+                                    class="{{ in_array($variant?->id, $wishlistVariantIds ?? []) ? 'fa-solid' : 'fa-regular' }} fa-heart"></i>
 
                             </button>
 
@@ -1743,6 +1745,70 @@
         }
 
 
+          /*
+    |--------------------------------------------------------------------------
+    | Wishlist Data
+    |--------------------------------------------------------------------------
+    */
+
+    const wishlistVariantIds =
+        @json($wishlistVariantIds ?? []);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update Wishlist Icon
+    |--------------------------------------------------------------------------
+    */
+
+    function updateWishlistIcon(variantId) {
+
+        const wishlistButton =
+            document.querySelector('.product-image-wishlist');
+
+        if (!wishlistButton) {
+            return;
+        }
+
+        const icon =
+            wishlistButton.querySelector('i');
+
+        if (!icon) {
+            return;
+        }
+
+        const numericVariantId =
+            Number(variantId);
+
+        const isWishlisted =
+            wishlistVariantIds.includes(numericVariantId);
+
+        if (isWishlisted) {
+
+            wishlistButton.classList.add('active');
+
+            icon.classList.remove(
+                'fa-regular'
+            );
+
+            icon.classList.add(
+                'fa-solid'
+            );
+
+        } else {
+
+            wishlistButton.classList.remove('active');
+
+            icon.classList.remove(
+                'fa-solid'
+            );
+
+            icon.classList.add(
+                'fa-regular'
+            );
+        }
+    }
+
         /*
         |--------------------------------------------------------------------------
         | Product Variants
@@ -1783,6 +1849,30 @@
 
                     const variantId =
                         this.getAttribute('data-variant-id');
+
+                         /*
+                |--------------------------------------------------------------------------
+                | Update Wishlist Variant ID
+                |--------------------------------------------------------------------------
+                */
+
+                const wishlistButton =
+                    document.querySelector('.product-image-wishlist');
+
+                if (wishlistButton) {
+
+                    wishlistButton.setAttribute(
+                        'data-variant-id',
+                        variantId
+                    );
+                }
+                  /*
+                |--------------------------------------------------------------------------
+                | Update Wishlist Heart
+                |--------------------------------------------------------------------------
+                */
+
+                updateWishlistIcon(variantId);
 
 
                     const variantSku =
@@ -1829,11 +1919,15 @@
 
                     if (variantImage) {
 
-                        document
-                            .getElementById('mainProductImage')
-                            .src = variantImage;
+                    const mainImage =
+                        document.getElementById(
+                            'mainProductImage'
+                        );
 
+                    if (mainImage) {
+                        mainImage.src = variantImage;
                     }
+                }
 
 
                     /*
@@ -1887,44 +1981,219 @@
 
 
         /*
+    |--------------------------------------------------------------------------
+    | Wishlist
+    |--------------------------------------------------------------------------
+    */
+
+    const wishlistButton =
+        document.querySelector('.product-image-wishlist');
+
+    if (wishlistButton) {
+
+        /*
         |--------------------------------------------------------------------------
-        | Wishlist
+        | Set Initial Wishlist State
         |--------------------------------------------------------------------------
         */
 
-        const wishlistButton =
-            document.querySelector(
-                '.product-image-wishlist'
+        const initialVariantId =
+            wishlistButton.getAttribute(
+                'data-variant-id'
             );
 
-
-        if (wishlistButton) {
-
-            wishlistButton.addEventListener(
-                'click',
-                function () {
-
-                    const icon =
-                        this.querySelector('i');
-
-
-                    if (!icon) {
-                        return;
-                    }
-
-
-                    icon.classList.toggle(
-                        'fa-regular'
-                    );
-
-                    icon.classList.toggle(
-                        'fa-solid'
-                    );
-
-                }
-            );
-
+        if (initialVariantId) {
+            updateWishlistIcon(initialVariantId);
         }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Wishlist Click
+        |--------------------------------------------------------------------------
+        */
+
+        wishlistButton.addEventListener(
+            'click',
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                const button = this;
+
+                const variantId =
+                    button.getAttribute(
+                        'data-variant-id'
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Validate Variant
+                |--------------------------------------------------------------------------
+                */
+
+                if (!variantId) {
+
+                    alert(
+                        'Product variant not found.'
+                    );
+
+                    return;
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Send Wishlist Request
+                |--------------------------------------------------------------------------
+                */
+
+                fetch(
+                    '{{ route('wishlist.add') }}',
+                    {
+                        method: 'POST',
+
+                        headers: {
+                            'Content-Type':
+                                'application/json',
+
+                            'X-CSRF-TOKEN':
+                                '{{ csrf_token() }}',
+
+                            'Accept':
+                                'application/json'
+                        },
+
+                        body: JSON.stringify({
+                            product_variant_id:
+                                variantId
+                        })
+                    }
+                )
+
+                .then(
+                    async function (response) {
+
+                        const data =
+                            await response.json();
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | Customer Not Logged In
+                        |--------------------------------------------------------------------------
+                        */
+
+                        if (
+                            response.status === 401
+                        ) {
+
+                            window.location.href =
+                                '{{ route('login') }}';
+
+                            return;
+                        }
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | Server Error
+                        |--------------------------------------------------------------------------
+                        */
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                data.message ||
+                                'Something went wrong.'
+                            );
+                        }
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | Success
+                        |--------------------------------------------------------------------------
+                        */
+
+                        if (data.status) {
+
+                            const numericVariantId =
+                                Number(variantId);
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Add Variant To Local Wishlist Array
+                            |--------------------------------------------------------------------------
+                            */
+
+                            if (
+                                !wishlistVariantIds.includes(
+                                    numericVariantId
+                                )
+                            ) {
+
+                                wishlistVariantIds.push(
+                                    numericVariantId
+                                );
+                            }
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Update Heart
+                            |--------------------------------------------------------------------------
+                            */
+
+                            updateWishlistIcon(
+                                numericVariantId
+                            );
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Success Message
+                            |--------------------------------------------------------------------------
+                            */
+
+                            alert(
+                                data.message
+                            );
+
+                        } else {
+
+                            alert(
+                                data.message ||
+                                'Unable to add to wishlist.'
+                            );
+                        }
+
+                    }
+                )
+
+                .catch(
+                    function (error) {
+
+                        console.error(
+                            'Wishlist Error:',
+                            error
+                        );
+
+                        alert(
+                            error.message ||
+                            'Something went wrong.'
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    }
 
 
 
