@@ -546,125 +546,129 @@ class OrderController extends Controller
         return view('admin.orders.show', compact('order', 'states', 'tracking'));
     }
 
-    public function updateStatus(Request $request)
-    {
-        $data = $request->validate([
-            'status' => 'sometimes|string',
-            'payment_status' => 'sometimes|string',
-        ]);
-        $order = Order::where('id', $request->id)->first();
-        if (!isset($order->id)) {
-            Alert::toast('Order Details Not Found', 'warning');
-            return redirect()->back();
-        }
-        DB::beginTransaction();
-        try {
-            if (isset($data['status'])) {
-                $order->status = $data['status'];
-            }
+    // public function updateStatus(Request $request)
+    // {
+    //     $data = $request->validate([
+    //         'status' => 'sometimes|string',
+    //         'payment_status' => 'sometimes|string',
+    //     ]);
+    //     $order = Order::where('id', $request->id)->first();
+    //     if (!isset($order->id)) {
+    //         Alert::toast('Order Details Not Found', 'warning');
+    //         return redirect()->back();
+    //     }
+    //     DB::beginTransaction();
+    //     try {
+    //         if (isset($data['status'])) {
+    //             $order->status = $data['status'];
+    //         }
 
-            if (isset($data['payment_status'])) {
-                $order->payment_status = $data['payment_status'];
-            }
-
-
-            $order->save();
+    //         if (isset($data['payment_status'])) {
+    //             $order->payment_status = $data['payment_status'];
+    //         }
 
 
-            //order status history - only if status changed (not on every update)
-            try {
-                $lastStatus = OrderStatusHistory::where('order_id', $order->id)
-                    ->latest()
-                    ->value('status');
-
-                // Only insert if status changed
-                if ($lastStatus !== ($data['status'] ?? null)) {
-
-                    $orderstatushistory = new OrderStatusHistory();
-                    $orderstatushistory->order_id = $order->id;
-                    $orderstatushistory->status = $data['status'] ?? null;
-                    $orderstatushistory->remark = 'Status updated to ' . ($data['status'] ?? 'N/A') . ' via admin order update';
-                    $orderstatushistory->save();
-                }
-            } catch (Exception $e) {
-                Log::info($e->getMessage());
-            }
-
-            $user = Customer::where('id', $order->customer_id)->first();
-            $name = $user->name ?? 'Customer';
-            $invoiceId = $order->invoice_id;
-            $amount = $order->grand_total;
-            if (isset($user->id)) {
-                if ($data['status'] == 'shipped') {
-                    $message = $this->sendWhatsAppMessage(
-                        $user->mobile,
-                        'order_shipped_template',
-                        [
-                            'field_1' => $name,
-                            'field_2' => $invoiceId,
-                            'field_3' => $amount,
-                        ]
-                    );
-                    try {
-                        $whatsappService = new WhatsAppService();
-                        $result = $whatsappService->sendTemplateMessage($message);
-                    } catch (Exception $e) {
-                        $result = false;
-                        Log::info($e->getMessage());
-                    }
-                } else if ($data['status'] == 'delivered') {
-                    $message = $this->sendWhatsAppMessage(
-                        $user->mobile,
-                        'order_delivered_template',
-                        [
-                            'field_1' => $name,
-                            'field_2' => $invoiceId,
-                            'field_3' => $amount,
-                        ]
-                    );
-                    try {
-                        $whatsappService = new WhatsAppService();
-                        $result = $whatsappService->sendTemplateMessage($message);
-                    } catch (Exception $e) {
-                        $result = false;
-                        Log::info($e->getMessage());
-                    }
-                } else if ($data['status'] == 'cancelled') {
-                    $message = $this->sendWhatsAppMessage(
-                        $user->mobile,
-                        'order_cancel_template',
-                        [
-                            'field_1' => $name,
-                            'field_2' => $invoiceId,
-                            'field_3' => $amount,
-                        ]
-                    );
-                    try {
-                        $whatsappService = new WhatsAppService();
-                        $result = $whatsappService->sendTemplateMessage($message);
-                    } catch (Exception $e) {
-                        $result = false;
-                        Log::info($e->getMessage());
-                    }
-                }
-            }
+    //         $order->save();
 
 
-            if (!empty($request->payment_status)) {
-                Payment::where('order_id', $order->id)->update(['status' => $data['payment_status']]);
-            }
+    //         //order status history - only if status changed (not on every update)
+    //         try {
+    //             $lastStatus = OrderStatusHistory::where('order_id', $order->id)
+    //                 ->latest()
+    //                 ->value('status');
+
+    //             // Only insert if status changed
+    //             if ($lastStatus !== ($data['status'] ?? null)) {
+
+    //                 $orderstatushistory = new OrderStatusHistory();
+    //                 $orderstatushistory->order_id = $order->id;
+    //                 $orderstatushistory->status = $data['status'] ?? null;
+    //                 $orderstatushistory->remark = 'Status updated to ' . ($data['status'] ?? 'N/A') . ' via admin order update';
+    //                 $orderstatushistory->save();
+    //             }
+    //         } catch (Exception $e) {
+    //             Log::info($e->getMessage());
+    //         }
+
+    //         $user = Customer::where('id', $order->customer_id)->first();
+    //         $name = $user->name ?? 'Customer';
+    //         $invoiceId = $order->invoice_id;
+    //         $amount = $order->grand_total;
+    //         if (isset($user->id)) {
+    //             if ($data['status'] == 'shipped') {
+    //                 $message = $this->sendWhatsAppMessage(
+    //                     $user->mobile,
+    //                     'order_shipped_template',
+    //                     [
+    //                         'field_1' => $name,
+    //                         'field_2' => $invoiceId,
+    //                         'field_3' => $amount,
+    //                     ]
+    //                 );
+    //                 try {
+    //                     $whatsappService = new WhatsAppService();
+    //                     $result = $whatsappService->sendTemplateMessage($message);
+    //                 } catch (Exception $e) {
+    //                     $result = false;
+    //                     Log::info($e->getMessage());
+    //                 }
+    //             } else if ($data['status'] == 'delivered') {
+    //                 $message = $this->sendWhatsAppMessage(
+    //                     $user->mobile,
+    //                     'order_delivered_template',
+    //                     [
+    //                         'field_1' => $name,
+    //                         'field_2' => $invoiceId,
+    //                         'field_3' => $amount,
+    //                     ]
+    //                 );
+    //                 try {
+    //                     $whatsappService = new WhatsAppService();
+    //                     $result = $whatsappService->sendTemplateMessage($message);
+    //                 } catch (Exception $e) {
+    //                     $result = false;
+    //                     Log::info($e->getMessage());
+    //                 }
+    //             } else if ($data['status'] == 'cancelled') {
+    //                 $message = $this->sendWhatsAppMessage(
+    //                     $user->mobile,
+    //                     'order_cancel_template',
+    //                     [
+    //                         'field_1' => $name,
+    //                         'field_2' => $invoiceId,
+    //                         'field_3' => $amount,
+    //                     ]
+    //                 );
+    //                 try {
+    //                     $whatsappService = new WhatsAppService();
+    //                     $result = $whatsappService->sendTemplateMessage($message);
+    //                 } catch (Exception $e) {
+    //                     $result = false;
+    //                     Log::info($e->getMessage());
+    //                 }
+    //             }
+    //         }
 
 
-            DB::commit();
-            Alert::toast('Order Updated', 'success');
-            return redirect()->back();
-        } catch (\Throwable $e) {
-            Log::error('Error updating order: ' . $e->getMessage());
-            DB::rollBack();
-            Alert::toast('Unable To Update', 'warning');
-            return redirect()->back();
-        }
-    }
+    //         if (!empty($request->payment_status)) {
+    //             Payment::where('order_id', $order->id)->update(['status' => $data['payment_status']]);
+    //         }
+
+
+    //         DB::commit();
+    //         Alert::toast('Order Updated', 'success');
+    //         return redirect()->back();
+    //     } catch (\Throwable $e) {
+    //         Log::error('Error updating order: ' . $e->getMessage());
+    //         DB::rollBack();
+    //         Alert::toast('Unable To Update', 'warning');
+    //         return redirect()->back();
+    //     }
+    // }
+
+
+
+
     public function updateOrder(Request $request)
     {
         $data = $request->validate([
