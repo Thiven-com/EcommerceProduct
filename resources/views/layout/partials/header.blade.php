@@ -5,13 +5,13 @@
         <!-- Logo -->
         <div class="header-left active">
             <a href="{{url('admin/dashboard')}}" class="logo logo-normal">
-                <img src="{{asset($site->site_logo)}}" alt="Img">
+                <img src="{{asset($site->site_logo ?? ' ')}}" alt="Img">
             </a>
             <a href="{{url('admin/dashboard')}}" class="logo logo-white">
-                <img src="{{asset($site->site_logo)}}" alt="Img">
+                <img src="{{asset($site->site_logo ?? ' ')}}" alt="Img">
             </a>
             <a href="{{url('admin/dashboard')}}" class="logo-small">
-                <img src="{{asset($site->site_logo)}}" alt="Img">
+                <img src="{{asset($site->site_logo ?? ' ')}}" alt="Img">
             </a>
         </div>
         <!-- /Logo -->

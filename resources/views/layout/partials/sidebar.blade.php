@@ -6,13 +6,13 @@
         <!-- Logo -->
         <div class="sidebar-logo active">
                 <a href="{{ route('admin.dashboard') }}" class="logo logo-normal">
-                        <img src="{{asset($site->site_logo ?? ' ')}}" alt="Img">
+                        <img src="{{asset($site->site_logo ?? ' ' ?? ' ')}}" alt="Img">
                 </a>
                 <a href="{{ route('admin.dashboard') }}" class="logo logo-white">
-                        <img src="{{asset($site->site_logo ?? ' ')}}" alt="Img">
+                        <img src="{{asset($site->site_logo ?? ' ' ?? ' ')}}" alt="Img">
                 </a>
                 <a href="{{ route('admin.dashboard') }}" class="logo-small">
-                        <img src="{{asset($site->site_logo ?? ' ')}}" alt="Img">
+                        <img src="{{asset($site->site_logo ?? ' ' ?? ' ')}}" alt="Img">
                 </a>
                 <a id="toggle_btn" href="javascript:void(0);">
                         <i data-feather="chevrons-left" class="feather-16"></i>

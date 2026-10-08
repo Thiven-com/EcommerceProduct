@@ -309,7 +309,7 @@
 											<div class="col-xl-3">
 												<div class="new-logo ms-xl-auto">
 													<a href="#">
-														<img src="{{ asset($site->site_logo) }}" alt="Logo">
+														<img src="{{ asset($site->site_logo ?? ' ') }}" alt="Logo">
 														<span><i class="ti ti-x"></i></span>
 													</a>
 												</div>

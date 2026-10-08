@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Banner;
+use App\Models\Category;
+use Carbon\Carbon;
 
 
 class PageControllers extends Controller
@@ -8,7 +11,23 @@ class PageControllers extends Controller
     //
     public function home()
     {
-        return view('website.home');
+        $now = Carbon::now();
+
+        $banners = Banner::where('active', true)
+            ->where(function ($query) use ($now) {
+                $query->whereNull('starts_at')
+                    ->orWhere('starts_at', '<=', $now);
+            })
+            ->where(function ($query) use ($now) {
+                $query->whereNull('ends_at')
+                    ->orWhere('ends_at', '>=', $now);
+            })
+            ->orderBy('sort_order', 'asc')
+            ->get();
+        $categories = Category::where('status', 'show')
+        ->orderBy('id', 'asc')
+        ->get();
+        return view('website.home', compact('banners', 'categories'));
     }
     public function shop()
     {

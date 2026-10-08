@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageControllers;
+use App\Http\Controllers\Website\AccountController;
 
 Route::get('/', [PageControllers::class, 'home'])->name('home');
 Route::get('shop', [PageControllers::class, 'shop'])->name('shop');
@@ -9,7 +10,12 @@ Route::get('productdetails', [PageControllers::class, 'product_details'])->name(
 Route::get('blog', [PageControllers::class, 'blog'])->name('blog');
 Route::get('blogdetails', [PageControllers::class, 'blog_details'])->name('blogdetails');
 Route::get('aboutus', [PageControllers::class, 'aboutus'])->name('aboutus');
-Route::get('login', [PageControllers::class, 'login'])->name('login');
+Route::get('login', [AccountController::class, 'login'])->name('login');
+Route::get('logout', [AccountController::class, 'logout'])->name('logout');
+Route::post('/send-otp', [AccountController::class, 'sendOtp'])
+    ->name('sendOtp');
+Route::post('/verify-otp', [AccountController::class, 'verifyOtp'])
+    ->name('verifyOtp');
 Route::get('cart', [PageControllers::class, 'cart'])->name('cart');
 Route::get('wishlist', [PageControllers::class, 'wishlist'])->name('wishlist');
 Route::get('contactus', [PageControllers::class, 'contactus'])->name('contactus');

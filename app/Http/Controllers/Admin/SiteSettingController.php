@@ -90,7 +90,7 @@ class SiteSettingController extends Controller
         }
         if($request->hasFile('site_logo'))
         {
-            $site->site_logo = $request->site_logo->store('site');
+            $site->site_logo ?? ' ' = $request->site_logo->store('site');
         }
         if($request->hasFile('favicon'))
         {

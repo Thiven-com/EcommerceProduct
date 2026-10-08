@@ -11,6 +11,7 @@ use Alert;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
+use Intervention\Image\Facades\Image;
 
 class BrandController extends Controller
 {
@@ -51,23 +52,29 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         $brand = new Brand();
+
         $brand->name = $request->name;
         $brand->slug = $this->slugGenerate($request->name, 0);
+
         $manager = new ImageManager(new Driver());
+
         if ($request->hasFile('image')) {
-            $product_image = request()->file('image');
-            $productName = $brand->slug . "." . 'webp';
-            $image = $manager->read($product_image);
-            $image->resize(237, 255);
-            $image->toWebp(70)->save(public_path('brands/') . $productName);
-            $imagePath = 'brands/' . $productName;
-            $brand->image = $imagePath;
+
+            $file = $request->file('image');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('brands'), $fileName);
+
+            $brand->image = 'brands/' . $fileName;
         }
-        $brand->status     = $request->has('status') ? 'show' : 'hide';
+
+        $brand->status = $request->has('status') ? 'show' : 'hide';
+
         $brand->save();
 
-        Alert::toast('Brand created Succesfully', 'success');
-        return redirect(route('admin.brands.index'));
+        Alert::toast('Brand created Successfully', 'success');
+
+        return redirect()->route('admin.brands.index');
     }
 
     /**
@@ -111,15 +118,15 @@ class BrandController extends Controller
         $brand->name = $request->name;
         $manager = new ImageManager(new Driver());
         if ($request->hasFile('image')) {
-            $product_image = request()->file('image');
-            $productName = $brand->slug . "." . 'webp';
-            $image = $manager->read($product_image);
-            $image->resize(237, 255);
-            $image->toWebp(70)->save(public_path('brands/') . $productName);
-            $imagePath = 'brands/' . $productName;
-            $brand->image = $imagePath;
+
+            $file = $request->file('image');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('brands'), $fileName);
+
+            $brand->image = 'brands/' . $fileName;
         }
-        $brand->status     = $request->has('status') ? 'show' : 'hide';
+        $brand->status = $request->has('status') ? 'show' : 'hide';
         $brand->save();
 
         Alert::toast('Brand Updated Succesfully', 'success');

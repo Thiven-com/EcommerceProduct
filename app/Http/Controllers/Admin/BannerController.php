@@ -66,15 +66,15 @@ class BannerController extends Controller
 
         $manager = new ImageManager(new Driver());
         if ($request->hasFile('image')) {
-            $product_image = request()->file('image');
-            $productName = $request->title . "." . 'webp';
-            $image = $manager->read($product_image);
-            $image->resize(866, 541);
-            $image->toWebp(70)->save(public_path('banners/') . $productName);
-            $imagePath = 'banners/' . $productName;
-            $banner->image = $imagePath;
+
+            $file = $request->file('image');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('banners'), $fileName);
+
+            $banner->image = 'banners/' . $fileName;
         }
-        $banner->status     = $request->has('status') ? 'show' : 'hide';
+        $banner->status = $request->has('status') ? 'show' : 'hide';
         $banner->offer_slug = $request->offer_slug;
         $banner->save();
 
@@ -122,15 +122,15 @@ class BannerController extends Controller
         }
         $manager = new ImageManager(new Driver());
         if ($request->hasFile('image')) {
-            $product_image = request()->file('image');
-            $productName = $banner->title . "." . 'webp';
-            $image = $manager->read($product_image);
-            $image->resize(866, 541);
-            $image->toWebp(70)->save(public_path('banners/') . $productName);
-            $imagePath = 'banners/' . $productName;
-            $banner->image = $imagePath;
+
+            $file = $request->file('image');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('banners'), $fileName);
+
+            $banner->image = 'banners/' . $fileName;
         }
-        $banner->status     = $request->has('status') ? 'show' : 'hide';
+        $banner->status = $request->has('status') ? 'show' : 'hide';
         $banner->category_id = $request->category_id;
         $banner->offer_slug = $request->offer_slug;
         $banner->save();

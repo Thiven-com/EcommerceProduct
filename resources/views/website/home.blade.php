@@ -2,8 +2,8 @@
 @section('content')
     <style>
         /* =========================================
-                                               HERO BANNER
-                                            ========================================= */
+                                                   HERO BANNER
+                                                ========================================= */
 
         .hero-banner {
             width: 100%;
@@ -36,8 +36,8 @@
 
 
         /* =========================================
-                                               HERO CONTENT
-                                            ========================================= */
+                                                   HERO CONTENT
+                                                ========================================= */
 
         .hero-content {
             position: absolute;
@@ -110,8 +110,8 @@
 
 
         /* =========================================
-                                               BUTTONS
-                                            ========================================= */
+                                                   BUTTONS
+                                                ========================================= */
 
         .hero-buttons {
             display: flex;
@@ -175,8 +175,8 @@
 
 
         /* =========================================
-                                               FEATURES
-                                            ========================================= */
+                                                   FEATURES
+                                                ========================================= */
 
         .hero-features {
             display: flex;
@@ -230,8 +230,8 @@
 
 
         /* =========================================
-                                               ARROWS
-                                            ========================================= */
+                                                   ARROWS
+                                                ========================================= */
 
         .hero-arrow {
             position: absolute;
@@ -274,8 +274,8 @@
 
 
         /* =========================================
-                                               DOTS
-                                            ========================================= */
+                                                   DOTS
+                                                ========================================= */
 
         .hero-dots {
             position: absolute;
@@ -306,8 +306,8 @@
 
 
         /* =========================================
-                                               TABLET
-                                            ========================================= */
+                                                   TABLET
+                                                ========================================= */
 
         @media (max-width: 1100px) {
 
@@ -334,8 +334,8 @@
 
 
         /* =========================================
-                                               MOBILE
-                                            ========================================= */
+                                                   MOBILE
+                                                ========================================= */
 
         @media (max-width: 768px) {
 
@@ -395,8 +395,8 @@
 
 
         /* =========================================
-                                               SMALL MOBILE
-                                            ========================================= */
+                                                   SMALL MOBILE
+                                                ========================================= */
 
         @media (max-width: 480px) {
 
@@ -446,8 +446,8 @@
 
 
         /* =========================================
-                                               SHOP BY CATEGORY
-                                            ========================================= */
+                                                   SHOP BY CATEGORY
+                                                ========================================= */
 
         .shop-category-section {
             width: 100%;
@@ -462,8 +462,8 @@
 
 
         /* =========================================
-                                               HEADING
-                                            ========================================= */
+                                                   HEADING
+                                                ========================================= */
 
         .category-heading {
             max-width: 1100px;
@@ -539,8 +539,8 @@
 
 
         /* =========================================
-                                               CATEGORY WRAPPER
-                                            ========================================= */
+                                                   CATEGORY WRAPPER
+                                                ========================================= */
 
         .category-wrapper {
             width: 100%;
@@ -554,8 +554,8 @@
 
 
         /* =========================================
-                                               CARD
-                                            ========================================= */
+                                                   CARD
+                                                ========================================= */
 
         .category-card {
             min-width: 0;
@@ -592,8 +592,8 @@
 
 
         /* =========================================
-                                               IMAGE
-                                            ========================================= */
+                                                   IMAGE
+                                                ========================================= */
 
         .category-image {
             width: 100%;
@@ -624,8 +624,8 @@
 
 
         /* =========================================
-                                               INFO
-                                            ========================================= */
+                                                   INFO
+                                                ========================================= */
 
         .category-info {
             min-height: 62px;
@@ -671,8 +671,8 @@
 
 
         /* =========================================
-                                               ARROW
-                                            ========================================= */
+                                                   ARROW
+                                                ========================================= */
 
         .category-arrow {
             width: 23px;
@@ -708,8 +708,8 @@
 
 
         /* =========================================
-                                               TABLET
-                                            ========================================= */
+                                                   TABLET
+                                                ========================================= */
 
         @media (max-width: 1100px) {
 
@@ -726,8 +726,8 @@
 
 
         /* =========================================
-                                               MOBILE
-                                            ========================================= */
+                                                   MOBILE
+                                                ========================================= */
 
         @media (max-width: 700px) {
 
@@ -805,8 +805,8 @@
 
 
         /* =========================================
-                                               SMALL MOBILE
-                                            ========================================= */
+                                                   SMALL MOBILE
+                                                ========================================= */
 
         @media (max-width: 400px) {
 
@@ -817,8 +817,8 @@
         }
 
         /* =========================================
-                                               PROMOTIONAL COLLECTION SECTION
-                                            ========================================= */
+                                                   PROMOTIONAL COLLECTION SECTION
+                                                ========================================= */
 
         .promo-section {
             width: 100%;
@@ -848,8 +848,8 @@
 
 
         /* =========================================
-                                               COMMON CARD
-                                            ========================================= */
+                                                   COMMON CARD
+                                                ========================================= */
 
         .promo-card {
             position: relative;
@@ -883,8 +883,8 @@
 
 
         /* =========================================
-                                               IMAGE
-                                            ========================================= */
+                                                   IMAGE
+                                                ========================================= */
 
         .promo-card img {
             position: absolute;
@@ -911,8 +911,8 @@
 
 
         /* =========================================
-                                               OVERLAY
-                                            ========================================= */
+                                                   OVERLAY
+                                                ========================================= */
 
         .promo-overlay {
             position: absolute;
@@ -926,8 +926,8 @@
 
 
         /* =========================================
-                                               WEDDING CARD
-                                            ========================================= */
+                                                   WEDDING CARD
+                                                ========================================= */
 
         .wedding-card {
             grid-column: 1;
@@ -1039,8 +1039,8 @@
 
 
         /* =========================================
-                                               DECORATIVE FLOWERS
-                                            ========================================= */
+                                                   DECORATIVE FLOWERS
+                                                ========================================= */
 
         .decor-flower {
             position: absolute;
@@ -1075,8 +1075,8 @@
 
 
         /* =========================================
-                                               FESTIVE CARD
-                                            ========================================= */
+                                                   FESTIVE CARD
+                                                ========================================= */
 
         .festive-card {
             grid-column: 2;
@@ -1202,8 +1202,8 @@
 
 
         /* =========================================
-                                               COTTON CARD
-                                            ========================================= */
+                                                   COTTON CARD
+                                                ========================================= */
 
         .cotton-card {
             grid-column: 3;
@@ -1262,8 +1262,8 @@
 
 
         /* =========================================
-                                               NEW ARRIVALS
-                                            ========================================= */
+                                                   NEW ARRIVALS
+                                                ========================================= */
 
         .arrivals-card {
             grid-column: 2 / 4;
@@ -1336,8 +1336,8 @@
 
 
         /* =========================================
-                                               TABLET
-                                            ========================================= */
+                                                   TABLET
+                                                ========================================= */
 
         @media (max-width: 900px) {
 
@@ -1378,8 +1378,8 @@
 
 
         /* =========================================
-                                               MOBILE
-                                            ========================================= */
+                                                   MOBILE
+                                                ========================================= */
 
         @media (max-width: 600px) {
 
@@ -1484,8 +1484,8 @@
 
 
         /* =========================================
-                                               VERY SMALL DEVICES
-                                            ========================================= */
+                                                   VERY SMALL DEVICES
+                                                ========================================= */
 
         @media (max-width: 380px) {
 
@@ -1507,498 +1507,315 @@
             }
 
         }
-  /* =========================================================
-   MOBILE HERO BANNER
-========================================================= */
 
-@media (max-width: 767px) {
+        /* =========================================================
+       MOBILE HERO BANNER
+    ========================================================= */
 
-    /* Hide text/content in mobile */
-    .hero-content {
-        display: none !important;
-    }
+        @media (max-width: 767px) {
 
-    /* Keep Previous / Next buttons visible */
-    .hero-arrow {
-        display: flex !important;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 10;
+            /* Hide text/content in mobile */
+            .hero-content {
+                display: none !important;
+            }
 
-        width: 38px;
-        height: 38px;
+            /* Keep Previous / Next buttons visible */
+            .hero-arrow {
+                display: flex !important;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 10;
 
-        align-items: center;
-        justify-content: center;
+                width: 38px;
+                height: 38px;
 
-        border: none;
-        border-radius: 50%;
+                align-items: center;
+                justify-content: center;
 
-        background: rgba(255, 255, 255, 0.42);
-        color: #30000e;
+                border: none;
+                border-radius: 50%;
 
-        font-size: 28px;
-        line-height: 1;
+                background: rgba(255, 255, 255, 0.42);
+                color: #30000e;
 
-        cursor: pointer;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-    }
+                font-size: 28px;
+                line-height: 1;
 
-    /* Previous button */
-    .hero-prev {
-        left: 10px;
-    }
+                cursor: pointer;
+                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            }
 
-    /* Next button */
-    .hero-next {
-        right: 10px;
-    }
+            /* Previous button */
+            .hero-prev {
+                left: 10px;
+            }
 
-    /* Hide slider dots */
-    .hero-dots {
-        display: none !important;
-    }
+            /* Next button */
+            .hero-next {
+                right: 10px;
+            }
 
-    /* Hero section */
-    .hero-banner {
-        width: 94%;
-        height: 30vh;
-        min-height: 0;
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
-        position: relative;
-        margin: 10px;
-    }
+            /* Hide slider dots */
+            .hero-dots {
+                display: none !important;
+            }
 
-    /* Slides */
-    .hero-slide {
-        width: 100%;
-        height: 30vh;
-        min-height: 0;
-        padding: 0;
-        margin: 0;
-        position: relative;
-        overflow: hidden;
-    }
+            /* Hero section */
+            .hero-banner {
+                width: 94%;
+                height: 30vh;
+                min-height: 0;
+                padding: 0;
+                margin: 0;
+                overflow: hidden;
+                position: relative;
+                margin: 10px;
+            }
 
-    /* Banner image */
-    .hero-image {
-        width: 100%;
-        height: 30vh;
-        min-height: 0;
-        max-height: none;
-        display: block;
-        object-fit: cover;
-        object-position: center;
-        border-radius: 20px;
-    }
+            /* Slides */
+            .hero-slide {
+                width: 100%;
+                height: 30vh;
+                min-height: 0;
+                padding: 0;
+                margin: 0;
+                position: relative;
+                overflow: hidden;
+            }
 
-}
+            /* Banner image */
+            .hero-image {
+                width: 100%;
+                height: 30vh;
+                min-height: 0;
+                max-height: none;
+                display: block;
+                object-fit: cover;
+                object-position: center;
+                border-radius: 20px;
+            }
+
+        }
     </style>
 
 
     <!-- HERO BANNER -->
     <section class="hero-banner">
 
-        <!-- ================= BANNER 1 ================= -->
-        <div class="hero-slide active">
+        @forelse($banners as $index => $banner)
 
-            <img src="{{ asset('website/images/bannerr.png') }}" alt="The Beauty of Six Yards" class="hero-image">
+            <div class="hero-slide {{ $index === 0 ? 'active' : '' }}">
 
-            <div class="hero-content">
+                {{-- Banner Image --}}
+                <img src="{{ asset($banner->image) }}" alt="{{ $banner->title ?? 'Banner' }}" class="hero-image">
 
-                <span class="hero-small-title">
-                    TIMELESS ELEGANCE
-                </span>
+                <div class="hero-content">
 
-                <h1>
-                    The Beauty of<br>
-                    <span>Six Yards</span>
-                </h1>
+                    {{-- Banner Title --}}
+                    @if($banner->title)
+                        <span class="hero-small-title">
+                            {{ strtoupper($banner->title) }}
+                        </span>
+                    @endif
 
-                <p>
-                    Discover exquisite sarees crafted for<br>
-                    modern women with traditional roots.
-                </p>
+                    <h1>
+                        Discover Our<br>
+                        <span>Collection</span>
+                    </h1>
 
-                <div class="hero-buttons">
-                    <a href="#" class="hero-btn hero-btn-primary">
-                        SHOP NEW ARRIVALS
-                        <span>→</span>
-                    </a>
+                    <p>
+                        Explore our latest collection<br>
+                        crafted with elegance and quality.
+                    </p>
 
-                    <a href="#" class="hero-btn hero-btn-secondary">
-                        EXPLORE COLLECTIONS
-                        <span>→</span>
-                    </a>
-                </div>
+                    <div class="hero-buttons">
 
-                <div class="hero-features">
+                        {{-- Primary Button --}}
+                        @if($banner->link_url)
+                            <a href="{{ $banner->link_url }}" class="hero-btn hero-btn-primary">
+                                SHOP NOW
+                                <span>→</span>
+                            </a>
+                        @else
+                            <a href="{{ url('/shop') }}" class="hero-btn hero-btn-primary">
+                                SHOP NOW
+                                <span>→</span>
+                            </a>
+                        @endif
 
-                    <div class="hero-feature">
-                        <div class="feature-icon">◇</div>
-                        <div>
-                            <strong>100% Authentic</strong>
-                            <small>Fabrics</small>
-                        </div>
+                        {{-- Secondary Button --}}
+                        <a href="{{ url('/collections') }}" class="hero-btn hero-btn-secondary">
+                            EXPLORE COLLECTIONS
+                            <span>→</span>
+                        </a>
+
                     </div>
 
-                    <div class="hero-feature">
-                        <div class="feature-icon">♢</div>
-                        <div>
-                            <strong>Handpicked</strong>
-                            <small>Collections</small>
+                    <div class="hero-features">
+
+                        <div class="hero-feature">
+                            <div class="feature-icon">◇</div>
+                            <div>
+                                <strong>100% Authentic</strong>
+                                <small>Fabrics</small>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="hero-feature">
-                        <div class="feature-icon">◇</div>
-                        <div>
-                            <strong>Secure</strong>
-                            <small>Payments</small>
+                        <div class="hero-feature">
+                            <div class="feature-icon">♢</div>
+                            <div>
+                                <strong>Handpicked</strong>
+                                <small>Collections</small>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="hero-feature">
-                        <div class="feature-icon">♧</div>
-                        <div>
-                            <strong>Premium Quality</strong>
-                            <small>Guaranteed</small>
+                        <div class="hero-feature">
+                            <div class="feature-icon">◇</div>
+                            <div>
+                                <strong>Secure</strong>
+                                <small>Payments</small>
+                            </div>
                         </div>
-                    </div>
 
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- ================= BANNER 2 ================= -->
-        <div class="hero-slide">
-
-            <img src="{{ asset('website') }}/images/banner22.png" alt="Elegant Saree Collection" class="hero-image">
-
-            <div class="hero-content">
-
-                <span class="hero-small-title">
-                    GRACEFUL COLLECTION
-                </span>
-
-                <h1>
-                    Draped in<br>
-                    <span>Elegance</span>
-                </h1>
-
-                <p>
-                    Explore timeless sarees designed<br>
-                    to celebrate every special moment.
-                </p>
-
-                <div class="hero-buttons">
-                    <a href="#" class="hero-btn hero-btn-primary">
-                        SHOP COLLECTION
-                        <span>→</span>
-                    </a>
-
-                    <a href="#" class="hero-btn hero-btn-secondary">
-                        VIEW ALL SAREES
-                        <span>→</span>
-                    </a>
-                </div>
-
-                <div class="hero-features">
-
-                    <div class="hero-feature">
-                        <div class="feature-icon">◇</div>
-                        <div>
-                            <strong>Premium</strong>
-                            <small>Materials</small>
+                        <div class="hero-feature">
+                            <div class="feature-icon">♧</div>
+                            <div>
+                                <strong>Premium Quality</strong>
+                                <small>Guaranteed</small>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="hero-feature">
-                        <div class="feature-icon">♢</div>
-                        <div>
-                            <strong>Exclusive</strong>
-                            <small>Designs</small>
-                        </div>
-                    </div>
-
-                    <div class="hero-feature">
-                        <div class="feature-icon">◇</div>
-                        <div>
-                            <strong>Secure</strong>
-                            <small>Payments</small>
-                        </div>
-                    </div>
-
-                    <div class="hero-feature">
-                        <div class="feature-icon">♧</div>
-                        <div>
-                            <strong>Quality</strong>
-                            <small>Assured</small>
-                        </div>
                     </div>
 
                 </div>
 
             </div>
 
-        </div>
+        @empty
+
+            {{-- Show nothing if there are no active banners --}}
+
+        @endforelse
 
 
-        <!-- ================= BANNER 3 ================= -->
-        <div class="hero-slide">
+        @if($banners->count() > 1)
 
-            <img src="{{ asset('website') }}/images/banner33.png" alt="Traditional Saree Collection" class="hero-image">
+            <!-- Previous Button -->
+            <button class="hero-arrow hero-prev" type="button">
+                ‹
+            </button>
 
-            <div class="hero-content">
+            <!-- Next Button -->
+            <button class="hero-arrow hero-next" type="button">
+                ›
+            </button>
 
-                <span class="hero-small-title">
-                    HERITAGE & CRAFT
-                </span>
 
-                <h1>
-                    Tradition Meets<br>
-                    <span>Modern Style</span>
-                </h1>
+            <!-- Slider Dots -->
+            <div class="hero-dots">
 
-                <p>
-                    Discover beautifully crafted sarees<br>
-                    inspired by India's rich heritage.
-                </p>
+                @foreach($banners as $index => $banner)
 
-                <div class="hero-buttons">
-                    <a href="#" class="hero-btn hero-btn-primary">
-                        SHOP NOW
-                        <span>→</span>
-                    </a>
+                    <span class="hero-dot {{ $index === 0 ? 'active' : '' }}" data-slide="{{ $index }}">
+                    </span>
 
-                    <a href="#" class="hero-btn hero-btn-secondary">
-                        EXPLORE COLLECTIONS
-                        <span>→</span>
-                    </a>
-                </div>
-
-                <div class="hero-features">
-
-                    <div class="hero-feature">
-                        <div class="feature-icon">◇</div>
-                        <div>
-                            <strong>Authentic</strong>
-                            <small>Craftsmanship</small>
-                        </div>
-                    </div>
-
-                    <div class="hero-feature">
-                        <div class="feature-icon">♢</div>
-                        <div>
-                            <strong>Handpicked</strong>
-                            <small>Sarees</small>
-                        </div>
-                    </div>
-
-                    <div class="hero-feature">
-                        <div class="feature-icon">◇</div>
-                        <div>
-                            <strong>Easy</strong>
-                            <small>Shopping</small>
-                        </div>
-                    </div>
-
-                    <div class="hero-feature">
-                        <div class="feature-icon">♧</div>
-                        <div>
-                            <strong>Premium</strong>
-                            <small>Quality</small>
-                        </div>
-                    </div>
-
-                </div>
+                @endforeach
 
             </div>
 
-        </div>
-
-
-        <!-- Previous Button -->
-        <button class="hero-arrow hero-prev" type="button">
-            ‹
-        </button>
-
-        <!-- Next Button -->
-        <button class="hero-arrow hero-next" type="button">
-            ›
-        </button>
-
-
-        <!-- Slider Dots -->
-        <div class="hero-dots">
-            <span class="hero-dot active" data-slide="0"></span>
-            <span class="hero-dot" data-slide="1"></span>
-            <span class="hero-dot" data-slide="2"></span>
-        </div>
+        @endif
 
     </section>
 
-    <section class="shop-category-section">
-        <div class="category-heading">
-            <div class="heading-line"></div>
+<section class="shop-category-section">
 
-            <div class="heading-content">
-                <h2>Shop By Category</h2>
-                <p>Find your perfect drape for every occasion</p>
+    <div class="category-heading">
+
+        <div class="heading-line"></div>
+
+        <div class="heading-content">
+            <h2>Shop By Category</h2>
+            <p>Find your perfect drape for every occasion</p>
+        </div>
+
+        <div class="heading-line"></div>
+
+    </div>
+
+
+    <div class="category-wrapper">
+
+        @forelse($categories as $category)
+
+            <a href="{{ route('shop', ['category' => $category->slug]) }}"
+               class="category-card">
+
+                <div class="category-image">
+
+                    @if($category->image)
+
+                        <img
+                            src="{{ asset($category->image) }}"
+                            alt="{{ $category->title }}"
+                        >
+
+                    @else
+
+                        <img
+                            src="{{ asset('website/images/category-placeholder.png') }}"
+                            alt="{{ $category->title }}"
+                        >
+
+                    @endif
+
+                </div>
+
+
+                <div class="category-info">
+
+                    <div>
+
+                        <h3>
+                            {{ $category->title }}
+                        </h3>
+
+                        <p>
+                            {{ $category->description ?? 'Explore Collection' }}
+                        </p>
+
+                    </div>
+
+                    <span class="category-arrow">
+                        ›
+                    </span>
+
+                </div>
+
+            </a>
+
+        @empty
+
+            <div class="no-category">
+                <p>No categories available.</p>
             </div>
 
-            <div class="heading-line"></div>
-        </div>
+        @endforelse
 
-        <div class="category-wrapper">
+    </div>
 
-            <!-- Category 1 -->
-            <a href="{{ route('shop') }}" class="category-card">
-                <div class="category-image">
-                    <img src="{{ asset('website') }}/images/silk-sarees.png" alt="Silk Sarees">
-                </div>
+</section>
 
-                <div class="category-info">
-                    <div>
-                        <h3>Silk Sarees</h3>
-                        <p>500+ Styles</p>
-                    </div>
 
-                    <span class="category-arrow">›</span>
-                </div>
-            </a>
 
-            <!-- Category 2 -->
-            <a href="{{ route('shop') }}" class="category-card">
-                <div class="category-image">
-                    <img src="{{ asset('website') }}/images/kanjivaram.png" alt="Kanjivaram Sarees">
-                </div>
 
-                <div class="category-info">
-                    <div>
-                        <h3>Kanjivaram</h3>
-                        <p>300+ Styles</p>
-                    </div>
-
-                    <span class="category-arrow">›</span>
-                </div>
-            </a>
-
-            <!-- Category 3 -->
-            <a href="{{ route('shop') }}" class="category-card">
-                <div class="category-image">
-                    <img src="{{ asset('website') }}/images/banarasi.png" alt="Banarasi Sarees">
-                </div>
-
-                <div class="category-info">
-                    <div>
-                        <h3>Banarasi</h3>
-                        <p>250+ Styles</p>
-                    </div>
-
-                    <span class="category-arrow">›</span>
-                </div>
-            </a>
-
-            <!-- Category 4 -->
-            <a href="{{ route('shop') }}" class="category-card">
-                <div class="category-image">
-                    <img src="{{ asset('website') }}/images/cotton.png" alt="Cotton Sarees">
-                </div>
-
-                <div class="category-info">
-                    <div>
-                        <h3>Cotton</h3>
-                        <p>400+ Styles</p>
-                    </div>
-
-                    <span class="category-arrow">›</span>
-                </div>
-            </a>
-
-            <!-- Category 5 -->
-            <a href="{{ route('shop') }}" class="category-card">
-                <div class="category-image">
-                    <img src="{{ asset('website') }}/images/organza.png" alt="Organza Sarees">
-                </div>
-
-                <div class="category-info">
-                    <div>
-                        <h3>Organza</h3>
-                        <p>400+ Styles</p>
-                    </div>
-
-                    <span class="category-arrow">›</span>
-                </div>
-            </a>
-
-            <!-- Category 6 -->
-            <a href="{{ route('shop') }}" class="category-card">
-                <div class="category-image">
-                    <img src="{{ asset('website') }}/images/georgette.png" alt="Georgette Sarees">
-                </div>
-
-                <div class="category-info">
-                    <div>
-                        <h3>Georgette</h3>
-                        <p>280+ Styles</p>
-                    </div>
-
-                    <span class="category-arrow">›</span>
-                </div>
-            </a>
-
-            <!-- Category 7 -->
-            <a href="{{ route('shop') }}" class="category-card">
-                <div class="category-image">
-                    <img src="{{ asset('website') }}/images/designer.png" alt="Designer Sarees">
-                </div>
-
-                <div class="category-info">
-                    <div>
-                        <h3>Designer</h3>
-                        <p>320+ Styles</p>
-                    </div>
-
-                    <span class="category-arrow">›</span>
-                </div>
-            </a>
-
-            <!-- Category 8 -->
-            <a href="{{ route('shop') }}" class="category-card">
-                <div class="category-image">
-                    <img src="{{ asset('website') }}/images/linen.png" alt="Linen Sarees">
-                </div>
-
-                <div class="category-info">
-                    <div>
-                        <h3>Linen</h3>
-                        <p>200+ Styles</p>
-                    </div>
-
-                    <span class="category-arrow">›</span>
-                </div>
-            </a>
-
-        </div>
-    </section>
-   
-   
-   
-   
     <section class="promo-section">
 
         <div class="promo-grid">
 
             <!-- =========================
-                                                         LEFT - WEDDING COLLECTION
-                                                    ========================== -->
+                                                             LEFT - WEDDING COLLECTION
+                                                        ========================== -->
             <a href="#" class="promo-card wedding-card">
 
                 <img src="{{ asset('website') }}/images/weddingcollection.png" alt="Wedding Collection" />
@@ -2019,7 +1836,7 @@
                         Make every moment<br>
                         more special
                     </p>
-                    
+
                     <span class="promo-button">
                         EXPLORE NOW
                         <span>→</span>
@@ -2031,8 +1848,8 @@
 
 
             <!-- =========================
-                                                         RIGHT TOP - FESTIVE
-                                                    ========================== -->
+                                                             RIGHT TOP - FESTIVE
+                                                        ========================== -->
             <a href="#" class="promo-card festive-card">
 
                 <img src="{{ asset('website') }}/images/festivespecial.png" alt="Festive Special" />
@@ -2059,8 +1876,8 @@
 
 
             <!-- =========================
-                                                         RIGHT TOP - COTTON
-                                                    ========================== -->
+                                                             RIGHT TOP - COTTON
+                                                        ========================== -->
             <a href="#" class="promo-card cotton-card">
 
                 <img src="{{ asset('website') }}/images/dailywearecotton.png" alt="Daily Wear Cotton Sarees" />
@@ -2089,8 +1906,8 @@
 
 
             <!-- =========================
-                                                         RIGHT BOTTOM - NEW ARRIVALS
-                                                    ========================== -->
+                                                             RIGHT BOTTOM - NEW ARRIVALS
+                                                        ========================== -->
             <a href="#" class="promo-card arrivals-card">
 
                 <img src="{{ asset('website') }}/images/new.png" alt="New Arrivals" />
@@ -2122,15 +1939,15 @@
 
     </section>
     <!-- =========================
-                                                 SWIPER CSS
-                                            ========================= -->
+                                                     SWIPER CSS
+                                                ========================= -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
 
     <style>
         /* =========================================
-                                                   BESTSELLER SECTION
-                                                ========================================= */
+                                                       BESTSELLER SECTION
+                                                    ========================================= */
 
         .bestseller-section {
             width: 100%;
@@ -2141,8 +1958,8 @@
 
 
         /* =========================================
-                                                   HEADER
-                                                ========================================= */
+                                                       HEADER
+                                                    ========================================= */
 
         .bestseller-header {
             max-width: 1180px;
@@ -2155,8 +1972,8 @@
 
 
         /* =========================================
-                                                   TITLE
-                                                ========================================= */
+                                                       TITLE
+                                                    ========================================= */
 
         .bestseller-title-wrap {
             display: flex;
@@ -2205,8 +2022,8 @@
 
 
         /* =========================================
-                                                   FILTERS
-                                                ========================================= */
+                                                       FILTERS
+                                                    ========================================= */
 
         .bestseller-filters {
             display: flex;
@@ -2267,8 +2084,8 @@
 
 
         /* =========================================
-                                                   SLIDER
-                                                ========================================= */
+                                                       SLIDER
+                                                    ========================================= */
 
         .bestseller-slider {
             width: 100%;
@@ -2287,8 +2104,8 @@
 
 
         /* =========================================
-                                                   PRODUCT CARD
-                                                ========================================= */
+                                                       PRODUCT CARD
+                                                    ========================================= */
 
         .product-card {
             width: 100%;
@@ -2319,8 +2136,8 @@
 
 
         /* =========================================
-                                                   PRODUCT IMAGE
-                                                ========================================= */
+                                                       PRODUCT IMAGE
+                                                    ========================================= */
 
         .product-image {
             position: relative;
@@ -2347,8 +2164,8 @@
 
 
         /* =========================================
-                                                   BADGES
-                                                ========================================= */
+                                                       BADGES
+                                                    ========================================= */
 
         .product-badge {
             position: absolute;
@@ -2379,8 +2196,8 @@
 
 
         /* =========================================
-                                                   WISHLIST
-                                                ========================================= */
+                                                       WISHLIST
+                                                    ========================================= */
 
         .wishlist {
             position: absolute;
@@ -2420,8 +2237,8 @@
 
 
         /* =========================================
-                                                   QUICK ADD
-                                                ========================================= */
+                                                       QUICK ADD
+                                                    ========================================= */
 
         .quick-add {
             position: absolute;
@@ -2460,8 +2277,8 @@
 
 
         /* =========================================
-                                                   DETAILS
-                                                ========================================= */
+                                                       DETAILS
+                                                    ========================================= */
 
         .product-details {
             padding: 7px 8px 8px;
@@ -2488,8 +2305,8 @@
 
 
         /* =========================================
-                                                   FABRIC TAG
-                                                ========================================= */
+                                                       FABRIC TAG
+                                                    ========================================= */
 
         .fabric-tag {
             display: inline-block;
@@ -2507,8 +2324,8 @@
 
 
         /* =========================================
-                                                   META
-                                                ========================================= */
+                                                       META
+                                                    ========================================= */
 
         .product-meta {
             min-height: 23px;
@@ -2536,8 +2353,8 @@
 
 
         /* =========================================
-                                                   COLOR DOTS
-                                                ========================================= */
+                                                       COLOR DOTS
+                                                    ========================================= */
 
         .color-dots {
             margin-left: auto;
@@ -2575,8 +2392,8 @@
 
 
         /* =========================================
-                                                   PRICE
-                                                ========================================= */
+                                                       PRICE
+                                                    ========================================= */
 
         .price-row {
             display: flex;
@@ -2621,8 +2438,8 @@
 
 
         /* =========================================
-                                                   SLIDER FOOTER
-                                                ========================================= */
+                                                       SLIDER FOOTER
+                                                    ========================================= */
 
         .bestseller-slider-footer {
             max-width: 1480px;
@@ -2678,8 +2495,8 @@
 
 
         /* =========================================
-                                                   TABLET
-                                                ========================================= */
+                                                       TABLET
+                                                    ========================================= */
 
         @media (max-width: 1050px) {
 
@@ -2709,8 +2526,8 @@
 
 
         /* =========================================
-                                                   MOBILE
-                                                ========================================= */
+                                                       MOBILE
+                                                    ========================================= */
 
         @media (max-width: 650px) {
 
@@ -2769,8 +2586,8 @@
         }
 
         /* =========================================
-                                               WHY CHOOSE SUDHEERA
-                                            ========================================= */
+                                                   WHY CHOOSE SUDHEERA
+                                                ========================================= */
 
         .why-sudheera {
             position: relative;
@@ -2801,8 +2618,8 @@
 
 
         /* =========================================
-                                               HEADER
-                                            ========================================= */
+                                                   HEADER
+                                                ========================================= */
 
         .why-header {
             position: relative;
@@ -2843,8 +2660,8 @@
 
 
         /* =========================================
-                                               FEATURES
-                                            ========================================= */
+                                                   FEATURES
+                                                ========================================= */
 
         .why-features {
             position: relative;
@@ -2863,8 +2680,8 @@
 
 
         /* =========================================
-                                               FEATURE CARD
-                                            ========================================= */
+                                                   FEATURE CARD
+                                                ========================================= */
 
         .why-card {
             min-height: 43px;
@@ -2922,8 +2739,8 @@
 
 
         /* =========================================
-                                               ICON
-                                            ========================================= */
+                                                   ICON
+                                                ========================================= */
 
         .why-icon {
             flex-shrink: 0;
@@ -2943,8 +2760,8 @@
 
 
         /* =========================================
-                                               CONTENT
-                                            ========================================= */
+                                                   CONTENT
+                                                ========================================= */
 
         .why-content {
             min-width: 0;
@@ -2986,8 +2803,8 @@
 
 
         /* =========================================
-                                               DECORATIVE FLOWERS
-                                            ========================================= */
+                                                   DECORATIVE FLOWERS
+                                                ========================================= */
 
         .why-decoration {
             position: absolute;
@@ -3026,8 +2843,8 @@
 
 
         /* =========================================
-                                               TABLET
-                                            ========================================= */
+                                                   TABLET
+                                                ========================================= */
 
         @media (max-width: 900px) {
 
@@ -3048,8 +2865,8 @@
 
 
         /* =========================================
-                                               MOBILE
-                                            ========================================= */
+                                                   MOBILE
+                                                ========================================= */
 
         @media (max-width: 600px) {
 
@@ -3109,8 +2926,8 @@
 
 
         /* =========================================
-                                               SMALL MOBILE
-                                            ========================================= */
+                                                   SMALL MOBILE
+                                                ========================================= */
 
         @media (max-width: 380px) {
 
@@ -3127,8 +2944,8 @@
         }
 
         /* =========================================
-                                               TESTIMONIALS SECTION
-                                            ========================================= */
+                                                   TESTIMONIALS SECTION
+                                                ========================================= */
 
         .testimonials-section {
             width: 100%;
@@ -3156,8 +2973,8 @@
 
 
         /* =========================================
-                                               MAIN CONTAINER
-                                            ========================================= */
+                                                   MAIN CONTAINER
+                                                ========================================= */
 
         .testimonials-container {
             position: relative;
@@ -3182,8 +2999,8 @@
 
 
         /* =========================================
-                                               CUSTOMER GALLERY
-                                            ========================================= */
+                                                   CUSTOMER GALLERY
+                                                ========================================= */
 
         .customer-gallery {
             position: relative;
@@ -3211,8 +3028,8 @@
 
 
         /* =========================================
-                                               CUSTOMER PHOTO
-                                            ========================================= */
+                                                   CUSTOMER PHOTO
+                                                ========================================= */
 
         /* Image scroll container */
         .customer-photos {
@@ -3321,8 +3138,8 @@
 
 
         /* =========================================
-                                               HEADING
-                                            ========================================= */
+                                                   HEADING
+                                                ========================================= */
 
         .testimonial-content {
             min-width: 0;
@@ -3373,8 +3190,8 @@
 
 
         /* =========================================
-                                               TESTIMONIAL CARD
-                                            ========================================= */
+                                                   TESTIMONIAL CARD
+                                                ========================================= */
 
         .testimonial-card {
             width: 100%;
@@ -3413,8 +3230,8 @@
 
 
         /* =========================================
-                                               QUOTE
-                                            ========================================= */
+                                                   QUOTE
+                                                ========================================= */
 
         .quote-mark {
             flex-shrink: 0;
@@ -3436,8 +3253,8 @@
 
 
         /* =========================================
-                                               REVIEW
-                                            ========================================= */
+                                                   REVIEW
+                                                ========================================= */
 
         .testimonial-text {
             min-width: 0;
@@ -3459,8 +3276,8 @@
 
 
         /* =========================================
-                                               STARS
-                                            ========================================= */
+                                                   STARS
+                                                ========================================= */
 
         .testimonial-stars {
             margin-top: 4px;
@@ -3474,8 +3291,8 @@
 
 
         /* =========================================
-                                               CUSTOMER INFO
-                                            ========================================= */
+                                                   CUSTOMER INFO
+                                                ========================================= */
 
         .customer-info {
             margin-top: 2px;
@@ -3521,8 +3338,8 @@
 
 
         /* =========================================
-                                               ARROWS
-                                            ========================================= */
+                                                   ARROWS
+                                                ========================================= */
 
         .testimonial-arrow {
             flex-shrink: 0;
@@ -3598,8 +3415,8 @@
         }
 
         /* =========================================
-                                               TABLET
-                                            ========================================= */
+                                                   TABLET
+                                                ========================================= */
 
         @media (max-width: 900px) {
 
@@ -3635,331 +3452,331 @@
 
 
         /* =========================================
-                                               MOBILE
-                                            ========================================= */
-
-         /* =========================================================
-    TESTIMONIALS - MOBILE RESPONSIVE
- ========================================================= */
-
- @media (max-width: 600px) {
-
-     /* Main Section */
-     .testimonials-section {
-         width: 100%;
-         padding: 30px 12px 35px;
-         overflow: hidden;
-         background: #fffdf9;
-     }
-
-     /* Main Container */
-     .testimonials-container {
-         width: 100%;
-         min-height: auto;
-         display: flex;
-         flex-direction: column;
-         gap: 15px;
-         position: relative;
-     }
-
-     /* =====================================================
-        CUSTOMER GALLERY
-     ===================================================== */
-
-     .customer-gallery {
-         width: 100%;
-         position: relative;
-     }
-
-     /* Customer Images - Horizontal Scroll */
-     .customer-photos {
-         width: 100%;
-         display: flex;
-         gap: 9px;
-         overflow-x: auto;
-         overflow-y: hidden;
-         padding: 5px 3px 10px;
-
-         scroll-behavior: smooth;
-         scroll-snap-type: x mandatory;
-
-         scrollbar-width: none;
-         -ms-overflow-style: none;
-     }
-
-     .customer-photos::-webkit-scrollbar {
-         display: none;
-     }
-
-     /* Customer Image */
-     .customer-photo {
-         flex: 0 0 72px;
-         width: 72px;
-         min-width: 72px;
-         height: 72px;
+                                                   MOBILE
+                                                ========================================= */
+
+        /* =========================================================
+        TESTIMONIALS - MOBILE RESPONSIVE
+     ========================================================= */
+
+        @media (max-width: 600px) {
+
+            /* Main Section */
+            .testimonials-section {
+                width: 100%;
+                padding: 30px 12px 35px;
+                overflow: hidden;
+                background: #fffdf9;
+            }
+
+            /* Main Container */
+            .testimonials-container {
+                width: 100%;
+                min-height: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                position: relative;
+            }
+
+            /* =====================================================
+            CUSTOMER GALLERY
+         ===================================================== */
+
+            .customer-gallery {
+                width: 100%;
+                position: relative;
+            }
+
+            /* Customer Images - Horizontal Scroll */
+            .customer-photos {
+                width: 100%;
+                display: flex;
+                gap: 9px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding: 5px 3px 10px;
+
+                scroll-behavior: smooth;
+                scroll-snap-type: x mandatory;
+
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            .customer-photos::-webkit-scrollbar {
+                display: none;
+            }
+
+            /* Customer Image */
+            .customer-photo {
+                flex: 0 0 72px;
+                width: 72px;
+                min-width: 72px;
+                height: 72px;
 
-         border-radius: 50%;
-         overflow: hidden;
+                border-radius: 50%;
+                overflow: hidden;
 
-         scroll-snap-align: center;
+                scroll-snap-align: center;
 
-         border: 2px solid transparent;
+                border: 2px solid transparent;
 
-         background: #f5eee7;
+                background: #f5eee7;
 
-         transition:
-             transform 0.25s ease,
-             border-color 0.25s ease,
-             box-shadow 0.25s ease;
-     }
+                transition:
+                    transform 0.25s ease,
+                    border-color 0.25s ease,
+                    box-shadow 0.25s ease;
+            }
 
-     .customer-photo img {
-         width: 100%;
-         height: 100%;
-         display: block;
-         object-fit: cover;
-     }
+            .customer-photo img {
+                width: 100%;
+                height: 100%;
+                display: block;
+                object-fit: cover;
+            }
 
-     /* Active Customer */
-     .customer-photo.active {
-         border-color: #9b6b32;
+            /* Active Customer */
+            .customer-photo.active {
+                border-color: #9b6b32;
 
-         transform: scale(1.06);
+                transform: scale(1.06);
 
-         box-shadow:
-             0 4px 12px rgba(100, 55, 30, 0.18);
-     }
+                box-shadow:
+                    0 4px 12px rgba(100, 55, 30, 0.18);
+            }
 
-     /* Previous Gallery Button */
-     .gallery-prev {
-         display: none !important;
-     }
+            /* Previous Gallery Button */
+            .gallery-prev {
+                display: none !important;
+            }
 
-     /* =====================================================
-        TESTIMONIAL CONTENT
-     ===================================================== */
+            /* =====================================================
+            TESTIMONIAL CONTENT
+         ===================================================== */
 
-     .testimonial-content {
-         width: 100%;
-         min-width: 0;
+            .testimonial-content {
+                width: 100%;
+                min-width: 0;
 
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-     }
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
 
-     /* Heading */
-     .testimonial-heading {
-         width: 100%;
+            /* Heading */
+            .testimonial-heading {
+                width: 100%;
 
-         display: flex;
-         align-items: center;
-         justify-content: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
-         gap: 6px;
-         margin: 0 0 12px;
-     }
+                gap: 6px;
+                margin: 0 0 12px;
+            }
 
-     .heading-heart {
-         font-size: 17px;
-         color: #c42c5a;
-     }
+            .heading-heart {
+                font-size: 17px;
+                color: #c42c5a;
+            }
 
-     .testimonial-heading h2 {
-         margin: 0;
+            .testimonial-heading h2 {
+                margin: 0;
 
-         font-family: Georgia, "Times New Roman", serif;
+                font-family: Georgia, "Times New Roman", serif;
 
-         font-size: 21px;
-         line-height: 1.2;
+                font-size: 21px;
+                line-height: 1.2;
 
-         font-weight: 600;
+                font-weight: 600;
 
-         color: #27201d;
+                color: #27201d;
 
-         text-align: center;
-     }
+                text-align: center;
+            }
 
-     /* =====================================================
-        TESTIMONIAL CARD
-     ===================================================== */
+            /* =====================================================
+            TESTIMONIAL CARD
+         ===================================================== */
 
-     .testimonial-card {
-         width: 100%;
-         max-width: 100%;
+            .testimonial-card {
+                width: 100%;
+                max-width: 100%;
 
-         min-height: auto;
+                min-height: auto;
 
-         display: flex;
-         align-items: flex-start;
+                display: flex;
+                align-items: flex-start;
 
-         gap: 8px;
+                gap: 8px;
 
-         padding: 15px 14px;
+                padding: 15px 14px;
 
-         border-radius: 12px;
+                border-radius: 12px;
 
-         background: rgba(255, 255, 255, 0.95);
+                background: rgba(255, 255, 255, 0.95);
 
-         border: 1px solid #eadfd5;
+                border: 1px solid #eadfd5;
 
-         box-shadow:
-             0 4px 16px rgba(70, 25, 30, 0.08);
-     }
+                box-shadow:
+                    0 4px 16px rgba(70, 25, 30, 0.08);
+            }
 
-     /* Quote */
-     .quote-mark {
-         flex-shrink: 0;
+            /* Quote */
+            .quote-mark {
+                flex-shrink: 0;
 
-         margin-top: -3px;
+                margin-top: -3px;
 
-         font-size: 27px;
-         line-height: 1;
+                font-size: 27px;
+                line-height: 1;
 
-         color: #a98145;
-     }
+                color: #a98145;
+            }
 
-     /* Review */
-     .testimonial-text {
-         min-width: 0;
-         width: 100%;
-     }
+            /* Review */
+            .testimonial-text {
+                min-width: 0;
+                width: 100%;
+            }
 
-     .testimonial-text p {
-         margin: 0;
+            .testimonial-text p {
+                margin: 0;
 
-         font-family: Arial, sans-serif;
+                font-family: Arial, sans-serif;
 
-         font-size: 12px;
-         line-height: 1.55;
+                font-size: 12px;
+                line-height: 1.55;
 
-         color: #3e3733;
-     }
+                color: #3e3733;
+            }
 
-     /* Stars */
-     .testimonial-stars {
-         margin-top: 7px;
+            /* Stars */
+            .testimonial-stars {
+                margin-top: 7px;
 
-         font-size: 12px;
-         letter-spacing: 1px;
+                font-size: 12px;
+                letter-spacing: 1px;
 
-         color: #d29a21;
-     }
+                color: #d29a21;
+            }
 
-     /* Customer Name */
-     .customer-info {
-         margin-top: 5px;
+            /* Customer Name */
+            .customer-info {
+                margin-top: 5px;
 
-         display: flex;
-         align-items: center;
+                display: flex;
+                align-items: center;
 
-         gap: 5px;
-         flex-wrap: wrap;
-     }
+                gap: 5px;
+                flex-wrap: wrap;
+            }
 
-     .customer-info strong {
-         font-size: 11px;
-     }
+            .customer-info strong {
+                font-size: 11px;
+            }
 
-     .customer-info span {
-         font-size: 10px;
-     }
+            .customer-info span {
+                font-size: 10px;
+            }
 
-     /* =====================================================
-        NEXT BUTTON
-     ===================================================== */
+            /* =====================================================
+            NEXT BUTTON
+         ===================================================== */
 
-     .testimonial-next {
-         position: absolute;
+            .testimonial-next {
+                position: absolute;
 
-         right: 5px;
-         top: 28px;
+                right: 5px;
+                top: 28px;
 
-         width: 32px;
-         height: 32px;
+                width: 32px;
+                height: 32px;
 
-         display: flex;
-         align-items: center;
-         justify-content: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
-         border: 1px solid rgba(155, 107, 50, 0.25);
+                border: 1px solid rgba(155, 107, 50, 0.25);
 
-         border-radius: 50%;
+                border-radius: 50%;
 
-         background: rgba(255, 255, 255, 0.95);
+                background: rgba(255, 255, 255, 0.95);
 
-         color: #6d3b22;
+                color: #6d3b22;
 
-         font-size: 18px;
+                font-size: 18px;
 
-         cursor: pointer;
+                cursor: pointer;
 
-         z-index: 5;
+                z-index: 5;
 
-         box-shadow:
-             0 3px 10px rgba(70, 30, 20, 0.12);
-     }
+                box-shadow:
+                    0 3px 10px rgba(70, 30, 20, 0.12);
+            }
 
-     .testimonial-next:active {
-         transform: scale(0.94);
-     }
- }
+            .testimonial-next:active {
+                transform: scale(0.94);
+            }
+        }
 
 
- /* =========================================================
-    VERY SMALL MOBILE
- ========================================================= */
+        /* =========================================================
+        VERY SMALL MOBILE
+     ========================================================= */
 
- @media (max-width: 380px) {
+        @media (max-width: 380px) {
 
-     .testimonials-section {
-         padding: 25px 10px 30px;
-     }
+            .testimonials-section {
+                padding: 25px 10px 30px;
+            }
 
-     .customer-photos {
-         gap: 7px;
-     }
+            .customer-photos {
+                gap: 7px;
+            }
 
-     .customer-photo {
-         flex: 0 0 62px;
-         width: 62px;
-         min-width: 62px;
-         height: 62px;
-     }
+            .customer-photo {
+                flex: 0 0 62px;
+                width: 62px;
+                min-width: 62px;
+                height: 62px;
+            }
 
-     .testimonial-heading h2 {
-         font-size: 18px;
-     }
+            .testimonial-heading h2 {
+                font-size: 18px;
+            }
 
-     .testimonial-card {
-         padding: 13px 11px;
-     }
+            .testimonial-card {
+                padding: 13px 11px;
+            }
 
-     .testimonial-text p {
-         font-size: 11px;
-         line-height: 1.5;
-     }
+            .testimonial-text p {
+                font-size: 11px;
+                line-height: 1.5;
+            }
 
-     .testimonial-next {
-         width: 29px;
-         height: 29px;
-         font-size: 16px;
-         display: none;
-     }
-     
- }
+            .testimonial-next {
+                width: 29px;
+                height: 29px;
+                font-size: 16px;
+                display: none;
+            }
+
+        }
     </style>
 
 
     <!-- =========================================================
-                                                 BESTSELLER SECTION
-                                            ========================================================= -->
+                                                     BESTSELLER SECTION
+                                                ========================================================= -->
 
     <section class="bestseller-section">
 
         <!-- =========================
-                                                     HEADER
-                                                ========================== -->
+                                                         HEADER
+                                                    ========================== -->
 
         <div class="bestseller-header">
 
@@ -3990,8 +3807,8 @@
 
 
             <!-- =========================
-                                                         FILTER BUTTONS
-                                                    ========================== -->
+                                                             FILTER BUTTONS
+                                                        ========================== -->
 
             <div class="bestseller-filters">
 
@@ -4026,8 +3843,8 @@
 
 
         <!-- =====================================================
-                                                     ALL PRODUCTS SLIDER
-                                                ====================================================== -->
+                                                         ALL PRODUCTS SLIDER
+                                                    ====================================================== -->
 
         <div class="bestseller-slider swiper" id="bestseller-all">
 
@@ -4784,8 +4601,8 @@
 
             </div>
             <!-- =====================================================
-                                                     SLIDER CONTROLS
-                                                ====================================================== -->
+                                                         SLIDER CONTROLS
+                                                    ====================================================== -->
 
             <div class="bestseller-slider-footer">
 
@@ -5061,8 +4878,8 @@
 
 
     <!-- =========================
-                                                 SWIPER JS
-                                            ========================= -->
+                                                     SWIPER JS
+                                                ========================= -->
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
@@ -5325,96 +5142,96 @@
                         if (product.badge) {
 
                             badge = `
-                                                                        <span class="product-badge ${product.badgeClass}">
-                                                                            ${product.badge}
-                                                                        </span>
-                                                                    `;
+                                                                            <span class="product-badge ${product.badgeClass}">
+                                                                                ${product.badge}
+                                                                            </span>
+                                                                        `;
 
                         }
 
 
                         const slide = `
 
-                                                                    <div class="swiper-slide">
+                                                                        <div class="swiper-slide">
 
-                                                                        <article class="product-card">
+                                                                            <article class="product-card">
 
-                                                                            <div class="product-image">
+                                                                                <div class="product-image">
 
-                                                                                <img
-                                                                                    src="${product.image}"
-                                                                                    alt="${product.name}">
+                                                                                    <img
+                                                                                        src="${product.image}"
+                                                                                        alt="${product.name}">
 
-                                                                                ${badge}
+                                                                                    ${badge}
 
-                                                                                <button
-                                                                                    class="wishlist">
-                                                                                    ♡
-                                                                                </button>
+                                                                                    <button
+                                                                                        class="wishlist">
+                                                                                        ♡
+                                                                                    </button>
 
-                                                                                <button
-                                                                                    class="quick-add">
-                                                                                    +
-                                                                                </button>
+                                                                                    <button
+                                                                                        class="quick-add">
+                                                                                        +
+                                                                                    </button>
 
-                                                                            </div>
-
-
-                                                                            <div class="product-details">
-
-                                                                                <h3>
-                                                                                    ${product.name}
-                                                                                </h3>
-
-                                                                                <span class="fabric-tag">
-                                                                                    ${product.fabric}
-                                                                                </span>
+                                                                                </div>
 
 
-                                                                                <div class="product-meta">
+                                                                                <div class="product-details">
 
-                                                                                    <div class="stars">
-                                                                                        ★★★★★
-                                                                                    </div>
+                                                                                    <h3>
+                                                                                        ${product.name}
+                                                                                    </h3>
 
-                                                                                    <span class="rating">
-                                                                                        ${product.rating}
+                                                                                    <span class="fabric-tag">
+                                                                                        ${product.fabric}
                                                                                     </span>
 
-                                                                                    <div class="color-dots">
 
-                                                                                        <i></i>
-                                                                                        <i></i>
-                                                                                        <i></i>
+                                                                                    <div class="product-meta">
+
+                                                                                        <div class="stars">
+                                                                                            ★★★★★
+                                                                                        </div>
+
+                                                                                        <span class="rating">
+                                                                                            ${product.rating}
+                                                                                        </span>
+
+                                                                                        <div class="color-dots">
+
+                                                                                            <i></i>
+                                                                                            <i></i>
+                                                                                            <i></i>
+
+                                                                                        </div>
+
+                                                                                    </div>
+
+
+                                                                                    <div class="price-row">
+
+                                                                                        <strong>
+                                                                                            ${product.price}
+                                                                                        </strong>
+
+                                                                                        <del>
+                                                                                            ${product.oldPrice}
+                                                                                        </del>
+
+                                                                                        <span class="discount">
+                                                                                            ${product.discount}
+                                                                                        </span>
 
                                                                                     </div>
 
                                                                                 </div>
 
+                                                                            </article>
 
-                                                                                <div class="price-row">
+                                                                        </div>
 
-                                                                                    <strong>
-                                                                                        ${product.price}
-                                                                                    </strong>
-
-                                                                                    <del>
-                                                                                        ${product.oldPrice}
-                                                                                    </del>
-
-                                                                                    <span class="discount">
-                                                                                        ${product.discount}
-                                                                                    </span>
-
-                                                                                </div>
-
-                                                                            </div>
-
-                                                                        </article>
-
-                                                                    </div>
-
-                                                                `;
+                                                                    `;
 
                         bestsellerSwiper.appendSlide(slide);
 
@@ -5535,218 +5352,218 @@
         });
     </script>
     <script>
-document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function () {
 
-    const testimonials = [
-        {
-            text: '"The saree quality is amazing! Fabric is so soft and the color is exactly as shown. Loved shopping at Sudheera. Highly recommended!"',
-            name: "Ananya Sharma",
-            location: "Bangalore"
-        },
-        {
-            text: '"Absolutely loved the saree! The fabric feels premium and the delivery was very quick. Will definitely shop again."',
-            name: "Priya Menon",
-            location: "Chennai"
-        },
-        {
-            text: '"Beautiful saree and exactly like the pictures. The quality exceeded my expectations. Sudheera has become my favourite store!"',
-            name: "Meera Krishnan",
-            location: "Coimbatore"
-        },
-        {
-            text: '"The color, fabric and finishing are perfect. Received so many compliments when I wore it!"',
-            name: "Lakshmi R",
-            location: "Hyderabad"
-        },
-        {
-            text: '"Such a beautiful collection. The saree arrived perfectly packed and looked even better in person."',
-            name: "Divya Nair",
-            location: "Kochi"
-        },
-        {
-            text: '"Very happy with my purchase. Excellent quality and beautiful traditional designs."',
-            name: "Sneha Patel",
-            location: "Mumbai"
-        }
-    ];
+            const testimonials = [
+                {
+                    text: '"The saree quality is amazing! Fabric is so soft and the color is exactly as shown. Loved shopping at Sudheera. Highly recommended!"',
+                    name: "Ananya Sharma",
+                    location: "Bangalore"
+                },
+                {
+                    text: '"Absolutely loved the saree! The fabric feels premium and the delivery was very quick. Will definitely shop again."',
+                    name: "Priya Menon",
+                    location: "Chennai"
+                },
+                {
+                    text: '"Beautiful saree and exactly like the pictures. The quality exceeded my expectations. Sudheera has become my favourite store!"',
+                    name: "Meera Krishnan",
+                    location: "Coimbatore"
+                },
+                {
+                    text: '"The color, fabric and finishing are perfect. Received so many compliments when I wore it!"',
+                    name: "Lakshmi R",
+                    location: "Hyderabad"
+                },
+                {
+                    text: '"Such a beautiful collection. The saree arrived perfectly packed and looked even better in person."',
+                    name: "Divya Nair",
+                    location: "Kochi"
+                },
+                {
+                    text: '"Very happy with my purchase. Excellent quality and beautiful traditional designs."',
+                    name: "Sneha Patel",
+                    location: "Mumbai"
+                }
+            ];
 
-    let currentTestimonial = 0;
+            let currentTestimonial = 0;
 
-    const testimonialText =
-        document.getElementById("testimonialText");
+            const testimonialText =
+                document.getElementById("testimonialText");
 
-    const customerName =
-        document.getElementById("customerName");
+            const customerName =
+                document.getElementById("customerName");
 
-    const customerLocation =
-        document.getElementById("customerLocation");
+            const customerLocation =
+                document.getElementById("customerLocation");
 
-    const customerPhotos =
-        document.querySelectorAll(".customer-photo");
+            const customerPhotos =
+                document.querySelectorAll(".customer-photo");
 
-    const nextButton =
-        document.querySelector(".testimonial-next");
+            const nextButton =
+                document.querySelector(".testimonial-next");
 
-    const prevButton =
-        document.querySelector(".gallery-prev");
-
-
-    /* =========================================
-       SHOW TESTIMONIAL
-    ========================================= */
-
-    function showTestimonial(index, shouldScroll = false) {
-
-        currentTestimonial =
-            (index + testimonials.length) %
-            testimonials.length;
-
-        const item =
-            testimonials[currentTestimonial];
+            const prevButton =
+                document.querySelector(".gallery-prev");
 
 
-        /* Fade text */
+            /* =========================================
+               SHOW TESTIMONIAL
+            ========================================= */
 
-        testimonialText.style.opacity = "0";
+            function showTestimonial(index, shouldScroll = false) {
 
-        setTimeout(function () {
+                currentTestimonial =
+                    (index + testimonials.length) %
+                    testimonials.length;
 
-            testimonialText.textContent =
-                item.text;
-
-            customerName.textContent =
-                item.name;
-
-            customerLocation.textContent =
-                item.location;
-
-            testimonialText.style.opacity = "1";
-
-        }, 180);
+                const item =
+                    testimonials[currentTestimonial];
 
 
-        /* =====================================
-           ACTIVE IMAGE
-        ===================================== */
+                /* Fade text */
 
-        customerPhotos.forEach(function (photo, i) {
+                testimonialText.style.opacity = "0";
 
-            photo.classList.toggle(
-                "active",
-                i === currentTestimonial
-            );
+                setTimeout(function () {
 
-        });
+                    testimonialText.textContent =
+                        item.text;
+
+                    customerName.textContent =
+                        item.name;
+
+                    customerLocation.textContent =
+                        item.location;
+
+                    testimonialText.style.opacity = "1";
+
+                }, 180);
 
 
-        /* =====================================
-           SCROLL ONLY WHEN USER CHANGES IMAGE
-        ===================================== */
+                /* =====================================
+                   ACTIVE IMAGE
+                ===================================== */
 
-        if (
-            shouldScroll &&
-            customerPhotos[currentTestimonial]
-        ) {
+                customerPhotos.forEach(function (photo, i) {
 
-            customerPhotos[currentTestimonial].scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
-                inline: "center"
+                    photo.classList.toggle(
+                        "active",
+                        i === currentTestimonial
+                    );
+
+                });
+
+
+                /* =====================================
+                   SCROLL ONLY WHEN USER CHANGES IMAGE
+                ===================================== */
+
+                if (
+                    shouldScroll &&
+                    customerPhotos[currentTestimonial]
+                ) {
+
+                    customerPhotos[currentTestimonial].scrollIntoView({
+                        behavior: "smooth",
+                        block: "nearest",
+                        inline: "center"
+                    });
+
+                }
+
+            }
+
+
+            /* =========================================
+               NEXT BUTTON
+            ========================================= */
+
+            if (nextButton) {
+
+                nextButton.addEventListener("click", function () {
+
+                    showTestimonial(
+                        currentTestimonial + 1,
+                        true
+                    );
+
+                });
+
+            }
+
+
+            /* =========================================
+               PREVIOUS BUTTON
+            ========================================= */
+
+            if (prevButton) {
+
+                prevButton.addEventListener("click", function () {
+
+                    showTestimonial(
+                        currentTestimonial - 1,
+                        true
+                    );
+
+                });
+
+            }
+
+
+            /* =========================================
+               IMAGE CLICK
+            ========================================= */
+
+            customerPhotos.forEach(function (photo, index) {
+
+                photo.addEventListener("click", function () {
+
+                    showTestimonial(index, true);
+
+                });
+
             });
 
-        }
 
-    }
+            /* =========================================
+               FADE
+            ========================================= */
 
-
-    /* =========================================
-       NEXT BUTTON
-    ========================================= */
-
-    if (nextButton) {
-
-        nextButton.addEventListener("click", function () {
-
-            showTestimonial(
-                currentTestimonial + 1,
-                true
-            );
-
-        });
-
-    }
+            testimonialText.style.transition =
+                "opacity 0.18s ease";
 
 
-    /* =========================================
-       PREVIOUS BUTTON
-    ========================================= */
+            /* =========================================
+               AUTO SLIDE
+            ========================================= */
 
-    if (prevButton) {
+            setInterval(function () {
 
-        prevButton.addEventListener("click", function () {
+                /*
+                 * Do NOT scroll the page during
+                 * automatic testimonial changes.
+                 */
+                showTestimonial(
+                    currentTestimonial + 1,
+                    false
+                );
 
-            showTestimonial(
-                currentTestimonial - 1,
-                true
-            );
-
-        });
-
-    }
+            }, 5000);
 
 
-    /* =========================================
-       IMAGE CLICK
-    ========================================= */
+            /* =========================================
+               INITIAL LOAD
+            ========================================= */
 
-    customerPhotos.forEach(function (photo, index) {
-
-        photo.addEventListener("click", function () {
-
-            showTestimonial(index, true);
+            /*
+             * Important:
+             * false prevents scrollIntoView()
+             * when the page is refreshed.
+             */
+            showTestimonial(0, false);
 
         });
-
-    });
-
-
-    /* =========================================
-       FADE
-    ========================================= */
-
-    testimonialText.style.transition =
-        "opacity 0.18s ease";
-
-
-    /* =========================================
-       AUTO SLIDE
-    ========================================= */
-
-    setInterval(function () {
-
-        /*
-         * Do NOT scroll the page during
-         * automatic testimonial changes.
-         */
-        showTestimonial(
-            currentTestimonial + 1,
-            false
-        );
-
-    }, 5000);
-
-
-    /* =========================================
-       INITIAL LOAD
-    ========================================= */
-
-    /*
-     * Important:
-     * false prevents scrollIntoView()
-     * when the page is refreshed.
-     */
-    showTestimonial(0, false);
-
-});
-</script>
+    </script>
 @endsection

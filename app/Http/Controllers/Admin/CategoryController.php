@@ -63,16 +63,16 @@ class CategoryController extends Controller
         $category->description = $request->description;
         $manager = new ImageManager(new Driver());
         if ($request->hasFile('image')) {
-            $product_image = request()->file('image');
-            $productName = $category->slug . "." . 'webp';
-            $image = $manager->read($product_image);
-            $image->resize(237, 255);
-            $image->toWebp(70)->save(public_path('categories/') . $productName);
-            $imagePath = 'categories/' . $productName;
-            $category->image = $imagePath;
+
+            $file = $request->file('image');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('category'), $fileName);
+
+            $category->image = 'category/' . $fileName;
         }
         $category->parent_id = $request->category_id ?? 0;
-        $category->status     = $request->has('status') ? 'show' : 'hide';
+        $category->status = $request->has('status') ? 'show' : 'hide';
 
         $category->is_feature = $request->has('is_feature') ? 'yes' : 'no';
         $category->save();
@@ -127,16 +127,16 @@ class CategoryController extends Controller
         $category->description = $request->description;
         $manager = new ImageManager(new Driver());
         if ($request->hasFile('image')) {
-            $product_image = request()->file('image');
-            $productName = $category->slug . "." . 'webp';
-            $image = $manager->read($product_image);
-            $image->resize(237, 255);
-            $image->toWebp(70)->save(public_path('categories/') . $productName);
-            $imagePath = 'categories/' . $productName;
-            $category->image = $imagePath;
+
+            $file = $request->file('image');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('category'), $fileName);
+
+            $category->image = 'category/' . $fileName;
         }
         $category->parent_id = $request->category_id ?? 0;
-        $category->status     = $request->has('status') ? 'show' : 'hide';
+        $category->status = $request->has('status') ? 'show' : 'hide';
         $category->is_feature = $request->has('is_feature') ? 'yes' : 'no';
         $category->save();
 
