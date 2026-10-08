@@ -1,0 +1,1257 @@
+@extends('layouts.website')
+
+@section('content')
+
+<style>
+    /* =========================================================
+       SUDHEERA SAREES - MY ORDERS
+    ========================================================= */
+
+    .sudheera-orders-page {
+        background: #fbf8f3;
+        min-height: 100vh;
+        padding: 10px 0 10px;
+    }
+
+    /* ================= PAGE HEADER ================= */
+
+    .sudheera-page-header {
+        text-align: center;
+        margin-bottom: 48px;
+        padding-top: 25px;
+    }
+
+    .sudheera-page-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        color: #a47a25;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .sudheera-page-eyebrow::before,
+    .sudheera-page-eyebrow::after {
+        content: "";
+        width: 42px;
+        height: 1px;
+        background: #c9a35b;
+    }
+
+    .sudheera-page-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 54px;
+        line-height: 1;
+        font-weight: 600;
+        color: #420916;
+        margin: 0 0 15px;
+    }
+
+    .sudheera-page-subtitle {
+        max-width: 520px;
+        margin: 0 auto 16px;
+        color: #756c64;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .sudheera-breadcrumb {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 9px;
+        font-size: 13px;
+    }
+
+    .sudheera-breadcrumb a {
+        color: #76001f;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .sudheera-breadcrumb span {
+        color: #b6a99c;
+    }
+
+    .sudheera-breadcrumb .active {
+        color: #83786e;
+    }
+
+    .sudheera-header-line {
+        width: 70px;
+        height: 3px;
+        border-radius: 50px;
+        background: linear-gradient(
+            90deg,
+            #420916,
+            #c88618,
+            #420916
+        );
+        margin: 22px auto 0;
+    }
+
+    /* =========================================================
+       2 COLUMN ORDER GRID
+    ========================================================= */
+
+    .sudheera-orders-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 30px;
+        /* width: 100%; */
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .sudheera-order-item {
+        width: 100%;
+        min-width: 0;
+    }
+
+    /* =========================================================
+       ORDER CARD
+    ========================================================= */
+
+    .sudheera-order-card {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        background: #fff;
+        border: 1px solid #eadfce;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(66, 9, 22, .055);
+        transition: all .35s ease;
+    }
+
+    .sudheera-order-card:hover {
+        transform: translateY(-5px);
+        border-color: #d7bd8d;
+        box-shadow: 0 18px 42px rgba(66, 9, 22, .10);
+    }
+
+    .sudheera-card-line {
+        height: 3px;
+        width: 100%;
+        background: linear-gradient(
+            90deg,
+            #420916,
+            #8f3b16,
+            #c88618
+        );
+    }
+
+    .sudheera-order-content {
+        padding: 27px;
+    }
+
+    /* =========================================================
+       ORDER TOP
+    ========================================================= */
+
+    .sudheera-order-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        padding-bottom: 21px;
+        border-bottom: 1px solid #eee6dc;
+    }
+
+    .sudheera-label {
+        font-size: 10px;
+        color: #9a9087;
+        text-transform: uppercase;
+        letter-spacing: 1.3px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .sudheera-order-number {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 0 9px;
+    }
+
+    .sudheera-order-number a {
+        color: #420916;
+        text-decoration: none;
+    }
+
+    .sudheera-order-number a:hover {
+        color: #9a6910;
+    }
+
+    /* =========================================================
+       STATUS
+    ========================================================= */
+
+    .sudheera-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 50px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .3px;
+    }
+
+    .sudheera-status-success {
+        background: #edf5ed;
+        color: #52743d;
+    }
+
+    .sudheera-status-warning {
+        background: #fff5df;
+        color: #9a6910;
+    }
+
+    .sudheera-status-danger {
+        background: #faeaea;
+        color: #a52d2d;
+    }
+
+    .sudheera-status-shipped {
+        background: #f5ecdf;
+        color: #8b6524;
+    }
+
+    /* =========================================================
+       TOTAL
+    ========================================================= */
+
+    .sudheera-total-box {
+        text-align: right;
+    }
+
+    .sudheera-total {
+        color: #76001f;
+        font-size: 25px;
+        font-weight: 800;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
+    .sudheera-item-count {
+        display: block;
+        color: #91877d;
+        font-size: 11px;
+        margin-top: 5px;
+    }
+
+    /* =========================================================
+       DATE
+    ========================================================= */
+
+    .sudheera-order-date {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 0;
+        color: #71685f;
+        font-size: 13px;
+    }
+
+    .sudheera-order-date i {
+        width: 31px;
+        height: 31px;
+        border-radius: 50%;
+        background: #faf3e8;
+        color: #a47724;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        flex-shrink: 0;
+    }
+
+    /* =========================================================
+       SUMMARY
+    ========================================================= */
+
+    .sudheera-summary {
+        background: #fcfaf7;
+        border: 1px solid #eee6dc;
+        border-radius: 15px;
+        padding: 17px 18px;
+    }
+
+    .sudheera-summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #70675e;
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .sudheera-summary-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .sudheera-summary-total {
+        border-top: 1px dashed #d8cbb9;
+        margin-top: 13px;
+        padding-top: 14px;
+        color: #420916;
+        font-size: 14px;
+    }
+
+    .sudheera-summary-total strong:last-child {
+        color: #76001f;
+        font-size: 20px;
+    }
+
+    /* =========================================================
+       MESSAGE
+    ========================================================= */
+
+    .sudheera-order-message {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 18px;
+        padding: 13px 14px;
+        background: #fff8e9;
+        border-left: 3px solid #c88618;
+        border-radius: 9px;
+        color: #755c2c;
+        font-size: 12px;
+        line-height: 1.65;
+    }
+
+    .sudheera-order-message i {
+        color: #c88618;
+        margin-top: 2px;
+        flex-shrink: 0;
+    }
+
+    /* =========================================================
+       PAYMENT
+    ========================================================= */
+
+    .sudheera-payment {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-top: 18px;
+        padding-top: 18px;
+        border-top: 1px solid #eee6dc;
+    }
+
+    .sudheera-payment-value {
+        color: #420916;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .sudheera-payment-status {
+        text-align: right;
+    }
+
+    /* =========================================================
+       BUTTON
+    ========================================================= */
+
+    .sudheera-view-btn {
+        width: 100%;
+        min-height: 48px;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        border-radius: 11px;
+        background: #420916;
+        color: #fff !important;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .3px;
+        transition: all .3s ease;
+    }
+
+    .sudheera-view-btn:hover {
+        background: linear-gradient(
+            135deg,
+            #420916,
+            #76001f,
+            #a85c17
+        );
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(66, 9, 22, .20);
+    }
+
+    /* =========================================================
+       EMPTY STATE
+    ========================================================= */
+
+    .sudheera-empty {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #fff;
+        border: 1px solid #eadfce;
+        border-radius: 24px;
+        padding: 65px 25px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(66, 9, 22, .06);
+    }
+
+    .sudheera-empty-icon {
+        width: 85px;
+        height: 85px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        background: #faf0e8;
+        color: #76001f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+    }
+
+    .sudheera-empty h3 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 32px;
+        color: #420916;
+        margin-bottom: 8px;
+    }
+
+    .sudheera-empty p {
+        color: #81776d;
+        font-size: 14px;
+        margin-bottom: 23px;
+    }
+
+    .sudheera-shop-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 27px;
+        border-radius: 11px;
+        background: #420916;
+        color: #fff !important;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        transition: .3s ease;
+    }
+
+    .sudheera-shop-btn:hover {
+        background: #76001f;
+        transform: translateY(-2px);
+    }
+
+    /* =========================================================
+       TABLET
+    ========================================================= */
+
+    @media (max-width: 991px) {
+
+        .sudheera-orders-page {
+            padding: 50px 0 70px;
+        }
+
+        .sudheera-page-title {
+            font-size: 46px;
+        }
+
+        .sudheera-orders-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .sudheera-order-content {
+            padding: 22px;
+        }
+
+        .sudheera-order-top {
+            gap: 12px;
+        }
+
+        .sudheera-total {
+            font-size: 22px;
+        }
+    }
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media (max-width: 767px) {
+
+        .sudheera-orders-page {
+            padding: 35px 0 55px;
+        }
+
+        .sudheera-page-header {
+            padding-top: 15px;
+            margin-bottom: 32px;
+        }
+
+        .sudheera-page-title {
+            font-size: 38px;
+        }
+
+        .sudheera-page-eyebrow {
+            font-size: 9px;
+            letter-spacing: 2px;
+        }
+
+        .sudheera-page-eyebrow::before,
+        .sudheera-page-eyebrow::after {
+            width: 25px;
+        }
+
+        .sudheera-page-subtitle {
+            font-size: 13px;
+            padding: 0 15px;
+        }
+
+        /* ONE COLUMN ON MOBILE */
+
+        .sudheera-orders-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .sudheera-order-content {
+            padding: 20px;
+        }
+
+        .sudheera-order-number {
+            font-size: 21px;
+        }
+
+        .sudheera-total {
+            font-size: 21px;
+        }
+
+        .sudheera-summary {
+            padding: 15px;
+        }
+
+        .sudheera-payment {
+            gap: 18px;
+        }
+    }
+
+    /* =========================================================
+       SMALL MOBILE
+    ========================================================= */
+
+    @media (max-width: 480px) {
+
+        .sudheera-page-title {
+            font-size: 34px;
+        }
+
+        .sudheera-order-top {
+            flex-direction: column;
+        }
+
+        .sudheera-total-box {
+            text-align: left;
+        }
+
+        .sudheera-order-number {
+            font-size: 20px;
+        }
+
+        .sudheera-payment {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .sudheera-payment-status {
+            text-align: left;
+        }
+    }
+</style>
+
+
+<main class="sudheera-orders-page">
+
+    <div class="container">
+
+        <!-- =====================================================
+             PAGE HEADER
+        ====================================================== -->
+
+        <div class="sudheera-page-header">
+
+            <div class="sudheera-page-eyebrow">
+                SUDHEERA SAREES
+            </div>
+
+            <h1 class="sudheera-page-title">
+                My Orders
+            </h1>
+
+            <p class="sudheera-page-subtitle">
+                View your recent purchases and keep track of your
+                beautiful saree orders in one place.
+            </p>
+
+            <div class="sudheera-breadcrumb">
+                <a href="/">Home</a>
+                <span>/</span>
+                <span class="active">My Orders</span>
+            </div>
+
+            <div class="sudheera-header-line"></div>
+
+        </div>
+
+
+        <!-- =====================================================
+             2 COLUMN ORDER GRID
+        ====================================================== -->
+
+        <div class="sudheera-orders-grid">
+
+
+            <!-- =================================================
+                 ORDER 1
+            ================================================== -->
+
+            <div class="sudheera-order-item">
+
+                <div class="sudheera-order-card">
+
+                    <div class="sudheera-card-line"></div>
+
+                    <div class="sudheera-order-content">
+
+                        <div class="sudheera-order-top">
+
+                            <div>
+
+                                <div class="sudheera-label">
+                                    Order Number
+                                </div>
+
+                                <h4 class="sudheera-order-number">
+                                    <a href="#">
+                                        SDR-2026-00125
+                                    </a>
+                                </h4>
+
+                                <span class="sudheera-status sudheera-status-success">
+                                    <i class="fa fa-check-circle"></i>
+                                    Confirmed
+                                </span>
+
+                            </div>
+
+                            <div class="sudheera-total-box">
+
+                                <div class="sudheera-label">
+                                    Total
+                                </div>
+
+                                <div class="sudheera-total">
+                                    ₹4,850
+                                </div>
+
+                                <span class="sudheera-item-count">
+                                    2 Items
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DATE -->
+
+                        <div class="sudheera-order-date">
+
+                            <i class="fa fa-calendar"></i>
+
+                            <span>
+                                28 Aug 2026, 10:30 AM
+                            </span>
+
+                        </div>
+
+
+                        <!-- SUMMARY -->
+
+                        <div class="sudheera-summary">
+
+                            <div class="sudheera-summary-row">
+                                <span>Subtotal</span>
+                                <span>₹4,700</span>
+                            </div>
+
+                            <div class="sudheera-summary-row">
+                                <span>Shipping</span>
+                                <span>₹150</span>
+                            </div>
+
+                            <div class="sudheera-summary-row">
+                                <span>Discount</span>
+                                <span>− ₹0</span>
+                            </div>
+
+                            <div class="sudheera-summary-row sudheera-summary-total">
+
+                                <strong>Total Amount</strong>
+
+                                <strong>
+                                    ₹4,850
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- MESSAGE -->
+
+                        <div class="sudheera-order-message">
+
+                            <i class="fa fa-info-circle"></i>
+
+                            <span>
+                                Your order has been confirmed and is
+                                currently being prepared for dispatch.
+                            </span>
+
+                        </div>
+
+
+                        <!-- PAYMENT -->
+
+                        <div class="sudheera-payment">
+
+                            <div>
+
+                                <div class="sudheera-label">
+                                    Payment Method
+                                </div>
+
+                                <div class="sudheera-payment-value">
+                                    Online Payment
+                                </div>
+
+                            </div>
+
+                            <div class="sudheera-payment-status">
+
+                                <div class="sudheera-label">
+                                    Payment Status
+                                </div>
+
+                                <span class="sudheera-status sudheera-status-success">
+                                    Paid
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- BUTTON -->
+
+                        <a href="#" class="sudheera-view-btn">
+
+                            <i class="fa fa-eye"></i>
+
+                            View Order Details
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ORDER 2
+            ================================================== -->
+
+            <div class="sudheera-order-item">
+
+                <div class="sudheera-order-card">
+
+                    <div class="sudheera-card-line"></div>
+
+                    <div class="sudheera-order-content">
+
+                        <div class="sudheera-order-top">
+
+                            <div>
+
+                                <div class="sudheera-label">
+                                    Order Number
+                                </div>
+
+                                <h4 class="sudheera-order-number">
+                                    <a href="#">
+                                        SDR-2026-00118
+                                    </a>
+                                </h4>
+
+                                <span class="sudheera-status sudheera-status-shipped">
+                                    <i class="fa fa-truck"></i>
+                                    Shipped
+                                </span>
+
+                            </div>
+
+                            <div class="sudheera-total-box">
+
+                                <div class="sudheera-label">
+                                    Total
+                                </div>
+
+                                <div class="sudheera-total">
+                                    ₹3,250
+                                </div>
+
+                                <span class="sudheera-item-count">
+                                    1 Item
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DATE -->
+
+                        <div class="sudheera-order-date">
+
+                            <i class="fa fa-calendar"></i>
+
+                            <span>
+                                25 Aug 2026, 04:15 PM
+                            </span>
+
+                        </div>
+
+
+                        <!-- SUMMARY -->
+
+                        <div class="sudheera-summary">
+
+                            <div class="sudheera-summary-row">
+                                <span>Subtotal</span>
+                                <span>₹3,150</span>
+                            </div>
+
+                            <div class="sudheera-summary-row">
+                                <span>Shipping</span>
+                                <span>₹100</span>
+                            </div>
+
+                            <div class="sudheera-summary-row">
+                                <span>Discount</span>
+                                <span>− ₹0</span>
+                            </div>
+
+                            <div class="sudheera-summary-row sudheera-summary-total">
+
+                                <strong>Total Amount</strong>
+
+                                <strong>
+                                    ₹3,250
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- MESSAGE -->
+
+                        <div class="sudheera-order-message">
+
+                            <i class="fa fa-truck"></i>
+
+                            <span>
+                                Your saree order has been shipped and
+                                is currently on its way to you.
+                            </span>
+
+                        </div>
+
+
+                        <!-- PAYMENT -->
+
+                        <div class="sudheera-payment">
+
+                            <div>
+
+                                <div class="sudheera-label">
+                                    Payment Method
+                                </div>
+
+                                <div class="sudheera-payment-value">
+                                    Online Payment
+                                </div>
+
+                            </div>
+
+                            <div class="sudheera-payment-status">
+
+                                <div class="sudheera-label">
+                                    Payment Status
+                                </div>
+
+                                <span class="sudheera-status sudheera-status-success">
+                                    Paid
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- BUTTON -->
+
+                        <a href="#" class="sudheera-view-btn">
+
+                            <i class="fa fa-eye"></i>
+
+                            View Order Details
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ORDER 3
+            ================================================== -->
+
+            <div class="sudheera-order-item">
+
+                <div class="sudheera-order-card">
+
+                    <div class="sudheera-card-line"></div>
+
+                    <div class="sudheera-order-content">
+
+                        <div class="sudheera-order-top">
+
+                            <div>
+
+                                <div class="sudheera-label">
+                                    Order Number
+                                </div>
+
+                                <h4 class="sudheera-order-number">
+                                    <a href="#">
+                                        SDR-2026-00105
+                                    </a>
+                                </h4>
+
+                                <span class="sudheera-status sudheera-status-warning">
+                                    <i class="fa fa-clock"></i>
+                                    Pending
+                                </span>
+
+                            </div>
+
+                            <div class="sudheera-total-box">
+
+                                <div class="sudheera-label">
+                                    Total
+                                </div>
+
+                                <div class="sudheera-total">
+                                    ₹2,750
+                                </div>
+
+                                <span class="sudheera-item-count">
+                                    1 Item
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DATE -->
+
+                        <div class="sudheera-order-date">
+
+                            <i class="fa fa-calendar"></i>
+
+                            <span>
+                                22 Aug 2026, 11:45 AM
+                            </span>
+
+                        </div>
+
+
+                        <!-- SUMMARY -->
+
+                        <div class="sudheera-summary">
+
+                            <div class="sudheera-summary-row">
+                                <span>Subtotal</span>
+                                <span>₹2,750</span>
+                            </div>
+
+                            <div class="sudheera-summary-row">
+                                <span>Shipping</span>
+                                <span>Free</span>
+                            </div>
+
+                            <div class="sudheera-summary-row sudheera-summary-total">
+
+                                <strong>Total Amount</strong>
+
+                                <strong>
+                                    ₹2,750
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- MESSAGE -->
+
+                        <div class="sudheera-order-message">
+
+                            <i class="fa fa-clock"></i>
+
+                            <span>
+                                Your order has been received and is
+                                awaiting confirmation.
+                            </span>
+
+                        </div>
+
+
+                        <!-- PAYMENT -->
+
+                        <div class="sudheera-payment">
+
+                            <div>
+
+                                <div class="sudheera-label">
+                                    Payment Method
+                                </div>
+
+                                <div class="sudheera-payment-value">
+                                    Online Payment
+                                </div>
+
+                            </div>
+
+                            <div class="sudheera-payment-status">
+
+                                <div class="sudheera-label">
+                                    Payment Status
+                                </div>
+
+                                <span class="sudheera-status sudheera-status-warning">
+                                    Pending
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- BUTTON -->
+
+                        <a href="#" class="sudheera-view-btn">
+
+                            <i class="fa fa-eye"></i>
+
+                            View Order Details
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ORDER 4
+            ================================================== -->
+
+            <div class="sudheera-order-item">
+
+                <div class="sudheera-order-card">
+
+                    <div class="sudheera-card-line"></div>
+
+                    <div class="sudheera-order-content">
+
+                        <div class="sudheera-order-top">
+
+                            <div>
+
+                                <div class="sudheera-label">
+                                    Order Number
+                                </div>
+
+                                <h4 class="sudheera-order-number">
+                                    <a href="#">
+                                        SDR-2026-00098
+                                    </a>
+                                </h4>
+
+                                <span class="sudheera-status sudheera-status-danger">
+                                    <i class="fa fa-times-circle"></i>
+                                    Cancelled
+                                </span>
+
+                            </div>
+
+                            <div class="sudheera-total-box">
+
+                                <div class="sudheera-label">
+                                    Total
+                                </div>
+
+                                <div class="sudheera-total">
+                                    ₹5,200
+                                </div>
+
+                                <span class="sudheera-item-count">
+                                    2 Items
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DATE -->
+
+                        <div class="sudheera-order-date">
+
+                            <i class="fa fa-calendar"></i>
+
+                            <span>
+                                18 Aug 2026, 02:20 PM
+                            </span>
+
+                        </div>
+
+
+                        <!-- SUMMARY -->
+
+                        <div class="sudheera-summary">
+
+                            <div class="sudheera-summary-row">
+                                <span>Subtotal</span>
+                                <span>₹5,200</span>
+                            </div>
+
+                            <div class="sudheera-summary-row">
+                                <span>Shipping</span>
+                                <span>Free</span>
+                            </div>
+
+                            <div class="sudheera-summary-row">
+                                <span>Discount</span>
+                                <span>− ₹0</span>
+                            </div>
+
+                            <div class="sudheera-summary-row sudheera-summary-total">
+
+                                <strong>Total Amount</strong>
+
+                                <strong>
+                                    ₹5,200
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- MESSAGE -->
+
+                        <div class="sudheera-order-message">
+
+                            <i class="fa fa-times-circle"></i>
+
+                            <span>
+                                This order has been cancelled. If payment
+                                was completed, the refund will be processed
+                                according to our refund policy.
+                            </span>
+
+                        </div>
+
+
+                        <!-- PAYMENT -->
+
+                        <div class="sudheera-payment">
+
+                            <div>
+
+                                <div class="sudheera-label">
+                                    Payment Method
+                                </div>
+
+                                <div class="sudheera-payment-value">
+                                    Online Payment
+                                </div>
+
+                            </div>
+
+                            <div class="sudheera-payment-status">
+
+                                <div class="sudheera-label">
+                                    Payment Status
+                                </div>
+
+                                <span class="sudheera-status sudheera-status-danger">
+                                    Refunded
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- BUTTON -->
+
+                        <a href="#" class="sudheera-view-btn">
+
+                            <i class="fa fa-eye"></i>
+
+                            View Order Details
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+@endsection
