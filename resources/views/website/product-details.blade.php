@@ -838,29 +838,57 @@
      PRODUCT DETAILS PAGE
 ========================================================= -->
 
-<section class="product-details-page" style="margin-left: 20px; margin-right: 20px;">
+<!-- =========================================================
+     PRODUCT DETAILS PAGE
+========================================================= -->
+
+<section
+    class="product-details-page"
+    style="margin-left: 20px; margin-right: 20px;"
+>
 
     <div class="container">
 
-        <!-- Breadcrumb -->
+        <!-- =====================================================
+             BREADCRUMB
+        ====================================================== -->
+
         <div class="product-breadcrumb">
 
             <ul class="product-breadcrumb-list">
 
                 <li>
-                    <a href="#">Home</a>
+                    <a href="{{ route('home') }}">
+                        Home
+                    </a>
                 </li>
 
-                <li class="breadcrumb-divider">/</li>
-
-                <li>
-                    <a href="#">Sarees</a>
+                <li class="breadcrumb-divider">
+                    /
                 </li>
 
-                <li class="breadcrumb-divider">/</li>
+                @if($product->category)
+
+                    <li>
+
+                        <a href="{{ route('shop', ['category' => $product->category->slug]) }}">
+
+                            {{ $product->category->title }}
+
+                        </a>
+
+                    </li>
+
+                    <li class="breadcrumb-divider">
+                        /
+                    </li>
+
+                @endif
 
                 <li class="breadcrumb-current">
-                    Silk Saree
+
+                    {{ $product->title }}
+
                 </li>
 
             </ul>
@@ -868,12 +896,15 @@
         </div>
 
 
-        <!-- Main Product -->
+        <!-- =====================================================
+             MAIN PRODUCT
+        ====================================================== -->
+
         <div class="product-details-wrapper">
 
 
             <!-- =================================================
-                 LEFT - GALLERY
+                 LEFT - PRODUCT GALLERY
             ================================================= -->
 
             <div class="product-gallery">
@@ -881,65 +912,151 @@
                 <div class="product-gallery-layout">
 
 
-                    <!-- Thumbnails -->
+                    <!-- =================================================
+                         THUMBNAILS
+                    ================================================= -->
+
                     <div class="product-thumbnails">
 
-                        <div class="product-thumb active"
-                           onclick="changeProductImage(this, '{{ asset('website') }}/images/product11.jpg')">
 
-                            <img
-                                src="{{ asset('website') }}/images/product11.jpg"
-                                alt="Saree">
-                        </div>
+                        @if($productImage)
 
+                            <div
+                                class="product-thumb active"
+                                onclick="changeProductImage(
+                                    this,
+                                    '{{ asset($productImage) }}'
+                                )"
+                            >
 
-                        <div class="product-thumb"
-                            onclick="changeProductImage(this, '{{ asset('website') }}/images/product1.webp')">
+                                <img
+                                    src="{{ asset($productImage) }}"
+                                    alt="{{ $product->title }}"
+                                >
 
-                            <img
-                                src="{{ asset('website') }}/images/product1.webp"
-                                alt="Saree">
-                        </div>
+                            </div>
 
-
-                        <div class="product-thumb"
-                            onclick="changeProductImage(this, '{{ asset('website') }}/images/product2.webp')">
-
-                            <img
-                                src="{{ asset('website') }}/images/product2.webp"
-                                alt="Saree">
-                        </div>
+                        @endif
 
 
-                        <div class="product-thumb"
-                            onclick="changeProductImage(this, '{{ asset('website') }}/images/product3.webp')">
+                        {{-- Product main image if different from variant --}}
 
-                            <img
-                                src="{{ asset('website') }}/images/product3.webp"
-                                alt="Saree">
-                        </div>
+                        @if(
+                            !empty($product->image) &&
+                            $product->image !== $productImage
+                        )
+
+                            <div
+                                class="product-thumb"
+                                onclick="changeProductImage(
+                                    this,
+                                    '{{ asset($product->image) }}'
+                                )"
+                            >
+
+                                <img
+                                    src="{{ asset($product->image) }}"
+                                    alt="{{ $product->title }}"
+                                >
+
+                            </div>
+
+                        @endif
+
+
+                        {{-- Other variant images --}}
+
+                        @foreach($product->variants as $productVariant)
+
+                            @if(
+                                !empty($productVariant->image) &&
+                                $productVariant->image !== $productImage &&
+                                $productVariant->image !== $product->image
+                            )
+
+                                <div
+                                    class="product-thumb"
+                                    onclick="changeProductImage(
+                                        this,
+                                        '{{ asset($productVariant->image) }}'
+                                    )"
+                                >
+
+                                    <img
+                                        src="{{ asset($productVariant->image) }}"
+                                        alt="{{ $product->title }}"
+                                    >
+
+                                </div>
+
+                            @endif
+
+                        @endforeach
+
+
+                        @if(!$productImage)
+
+                            <div class="product-thumb active">
+
+                                <img
+                                    src="{{ asset('website/images/product-placeholder.png') }}"
+                                    alt="{{ $product->title }}"
+                                >
+
+                            </div>
+
+                        @endif
 
                     </div>
 
 
-                    <!-- Main Image -->
+                    <!-- =================================================
+                         MAIN IMAGE
+                    ================================================= -->
+
                     <div class="product-main-image">
 
-                        <span class="product-image-badge">
-                            New Arrival
-                        </span>
 
-                        <button class="product-image-wishlist"
-                            title="Add to Wishlist">
+                        @if($badge)
+
+                            <span class="product-image-badge">
+
+                                {{ $badge }}
+
+                            </span>
+
+                        @endif
+
+
+                        <button
+                            type="button"
+                            class="product-image-wishlist"
+                            title="Add to Wishlist"
+                            data-product-id="{{ $product->id }}"
+                        >
 
                             <i class="fa-regular fa-heart"></i>
 
                         </button>
 
-                        <img
-                            id="mainProductImage"
-                            src="{{ asset('website') }}/images/product11.jpg"
-                            alt="Premium Silk Saree">
+
+                        @if($productImage)
+
+                            <img
+                                id="mainProductImage"
+                                src="{{ asset($productImage) }}"
+                                alt="{{ $product->title }}"
+                            >
+
+                        @else
+
+                            <img
+                                id="mainProductImage"
+                                src="{{ asset('website/images/product-placeholder.png') }}"
+                                alt="{{ $product->title }}"
+                            >
+
+                        @endif
 
                     </div>
 
@@ -954,16 +1071,38 @@
 
             <div class="product-information">
 
-                <div class="product-brand">
-                    SUDHEERA COLLECTION
-                </div>
+
+                <!-- Brand -->
+
+                @if($product->brand)
+
+                    <div class="product-brand">
+
+                        {{ $product->brand->name }}
+
+                    </div>
+
+                @else
+
+                    <div class="product-brand">
+                        SUDHEERA COLLECTION
+                    </div>
+
+                @endif
+
+
+                <!-- Product Title -->
 
                 <h1 class="product-title">
-                    Traditional Pure Silk Saree with Zari Border
+
+                    {{ $product->title }}
+
                 </h1>
 
 
-                <!-- Rating -->
+                <!-- =================================================
+                     RATING / ORDERS
+                ================================================= -->
 
                 <div class="product-rating-row">
 
@@ -977,152 +1116,294 @@
 
                     </div>
 
+
                     <span class="product-review-text">
-                        4.8 (126 Reviews)
+
+                        @if($product->orders > 0)
+
+                            Bestselling
+
+                        @else
+
+                            No reviews yet
+
+                        @endif
+
                     </span>
+
 
                     <span class="product-review-divider"></span>
 
+
                     <span class="product-review-text">
-                        38 Sold
+
+                        {{ $product->orders ?? 0 }} Sold
+
                     </span>
 
                 </div>
 
 
-                <!-- Price -->
+                <!-- =================================================
+                     PRICE
+                ================================================= -->
 
                 <div class="product-price-row">
 
-                    <span class="product-current-price">
-                        ₹3,999
-                    </span>
 
-                    <span class="product-old-price">
-                        ₹5,499
-                    </span>
+                    @if(is_numeric($sellingPrice))
 
-                    <span class="product-discount">
-                        27% OFF
-                    </span>
+                        <span class="product-current-price">
+
+                            ₹{{ number_format((float) $sellingPrice, 0) }}
+
+                        </span>
+
+                    @endif
+
+
+                    @if(
+                        is_numeric($actualPrice) &&
+                        is_numeric($sellingPrice) &&
+                        (float) $actualPrice > (float) $sellingPrice
+                    )
+
+                        <span class="product-old-price">
+
+                            ₹{{ number_format((float) $actualPrice, 0) }}
+
+                        </span>
+
+                    @endif
+
+
+                    @if($discount > 0)
+
+                        <span class="product-discount">
+
+                            {{ $discount }}% OFF
+
+                        </span>
+
+                    @endif
 
                 </div>
+
 
                 <div class="product-tax-note">
+
                     Inclusive of all taxes
-                </div>
-
-
-                <!-- Description -->
-
-                <div class="product-short-description">
-
-                    Elevate your wardrobe with this beautifully crafted
-                    traditional silk saree. Designed with an elegant zari
-                    border and premium finish, perfect for festive occasions,
-                    weddings and celebrations.
 
                 </div>
 
 
-                <!-- Color -->
+                <!-- =================================================
+                     SHORT DESCRIPTION
+                ================================================= -->
+
+                @if(!empty($product->short_description))
+
+                    <div class="product-short-description">
+
+                        {!! nl2br(e($product->short_description)) !!}
+
+                    </div>
+
+                @elseif(!empty($product->description))
+
+                    <div class="product-short-description">
+
+                        {!! nl2br(e(Str::limit(strip_tags($product->description), 350))) !!}
+
+                    </div>
+
+                @endif
+
+
+                <!-- =================================================
+                     VARIANTS
+                ================================================= -->
+
+               @if($product->variants->count() >= 1)
+
+    <div class="product-option">
+
+        <div class="option-heading">
+
+            <h5 class="option-title">
+                VARIANT
+            </h5>
+
+            @php
+                $selectedVariantName = $variant?->sku ?? 'Select';
+
+                if ($variant && $variant->attributeMappings->count()) {
+                    $firstMapping = $variant->attributeMappings->first();
+
+                    if ($firstMapping->value) {
+                        $selectedVariantName = $firstMapping->value->name;
+                    }
+                }
+            @endphp
+
+            <span
+                class="option-selected"
+                id="selectedVariantName"
+            >
+                {{ $selectedVariantName }}
+            </span>
+
+        </div>
+
+
+        <div class="variant-options">
+
+            @foreach($product->variants as $productVariant)
+
+                @php
+                    $variantName = $productVariant->sku ?: 'Variant ' . $loop->iteration;
+
+                    if ($productVariant->attributeMappings->count()) {
+                        $firstMapping = $productVariant->attributeMappings->first();
+
+                        if ($firstMapping->value) {
+                            $variantName = $firstMapping->value->name;
+                        }
+                    }
+                @endphp
+
+                <button
+                    type="button"
+                    class="variant-option {{ $productVariant->id === $variant?->id ? 'active' : '' }}"
+
+                    data-variant-id="{{ $productVariant->id }}"
+
+                    data-variant-name="{{ $variantName }}"
+
+                    data-variant-image="{{ !empty($productVariant->image) ? asset($productVariant->image) : '' }}"
+
+                    data-variant-price="{{ $productVariant->price }}"
+
+                    data-variant-actual-price="{{ $productVariant->actual_price }}"
+
+                    data-variant-sku="{{ $productVariant->sku }}"
+                >
+
+                    {{ $variantName }}
+
+                </button>
+
+            @endforeach
+
+        </div>
+
+    </div>
+
+@endif
+
+
+                <!-- =================================================
+                     PRODUCT INFORMATION FROM DATABASE
+                ================================================= -->
 
                 <div class="product-option">
 
                     <div class="option-heading">
 
                         <h5 class="option-title">
-                            Color
+                            PRODUCT
                         </h5>
 
                         <span class="option-selected">
-                            Wine
+                            {{ $product->category?->title ?? 'Saree' }}
                         </span>
 
                     </div>
 
+
                     <div class="variant-options">
 
-                        <button class="variant-option active">
-                            Wine
-                        </button>
+                        @if($product->category)
 
-                        <button class="variant-option">
-                            Purple
-                        </button>
+                            <button
+                                type="button"
+                                class="variant-option active"
+                            >
 
-                        <button class="variant-option">
-                            Green
-                        </button>
+                                {{ $product->category->title }}
 
-                        <button class="variant-option">
-                            Maroon
-                        </button>
+                            </button>
+
+                        @endif
+
+
+                        @if($product->brand)
+
+                            <button
+                                type="button"
+                                class="variant-option"
+                            >
+
+                                {{ $product->brand->name }}
+
+                            </button>
+
+                        @endif
 
                     </div>
 
                 </div>
 
 
-                <!-- Size -->
-
-                <div class="product-option">
-
-                    <div class="option-heading">
-
-                        <h5 class="option-title">
-                            Blouse
-                        </h5>
-
-                        <span class="option-selected">
-                            Included
-                        </span>
-
-                    </div>
-
-                    <div class="variant-options">
-
-                        <button class="variant-option active">
-                            Included
-                        </button>
-
-                        <button class="variant-option">
-                            Without Blouse
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Purchase -->
+                <!-- =================================================
+                     PURCHASE
+                ================================================= -->
 
                 <div class="purchase-area">
 
                     <div class="quantity-cart-row">
 
 
+                        <!-- Quantity -->
+
                         <div class="quantity-selector">
 
-                            <button class="quantity-btn"
-                                onclick="changeQuantity(-1)">
+                            <button
+                                type="button"
+                                class="quantity-btn"
+                                onclick="changeQuantity(-1)"
+                            >
                                 −
                             </button>
 
-                            <span class="quantity-value"
-                                id="quantityValue">
+
+                            <span
+                                class="quantity-value"
+                                id="quantityValue"
+                            >
                                 1
                             </span>
 
-                            <button class="quantity-btn"
-                                onclick="changeQuantity(1)">
+
+                            <button
+                                type="button"
+                                class="quantity-btn"
+                                onclick="changeQuantity(1)"
+                            >
                                 +
                             </button>
 
                         </div>
 
 
-                        <button class="add-cart-button">
+                        <!-- Cart -->
+
+                        <button
+                            type="button"
+                            class="add-cart-button"
+                            data-product-id="{{ $product->id }}"
+                            data-variant-id="{{ $variant?->id }}"
+                        >
 
                             <i class="fa-solid fa-bag-shopping me-2"></i>
 
@@ -1133,7 +1414,14 @@
                     </div>
 
 
-                    <button class="buy-now-button">
+                    <!-- Buy Now -->
+
+                    <button
+                        type="button"
+                        class="buy-now-button"
+                        data-product-id="{{ $product->id }}"
+                        data-variant-id="{{ $variant?->id }}"
+                    >
 
                         BUY IT NOW
 
@@ -1142,7 +1430,9 @@
                 </div>
 
 
-                <!-- Delivery -->
+                <!-- =================================================
+                     DELIVERY
+                ================================================= -->
 
                 <div class="delivery-box">
 
@@ -1154,24 +1444,46 @@
 
                     </div>
 
+
                     <div class="pincode-row">
 
                         <input
                             type="text"
                             class="pincode-input"
+                            id="pincodeInput"
                             placeholder="Enter Pincode"
-                            maxlength="6">
+                            maxlength="6"
+                        >
 
-                        <button class="check-pincode">
+
+                        <button
+                            type="button"
+                            class="check-pincode"
+                            onclick="checkPincode()"
+                        >
+
                             CHECK
+
                         </button>
 
                     </div>
 
+
+                    <div
+                        id="pincodeMessage"
+                        style="
+                            margin-top:8px;
+                            font-size:12px;
+                            color:#777;
+                        "
+                    ></div>
+
                 </div>
 
 
-                <!-- Features -->
+                <!-- =================================================
+                     FEATURES
+                ================================================= -->
 
                 <div class="product-features">
 
@@ -1185,6 +1497,7 @@
 
                     </div>
 
+
                     <div class="product-feature">
 
                         <i class="fa-solid fa-rotate-left"></i>
@@ -1194,6 +1507,7 @@
                         </span>
 
                     </div>
+
 
                     <div class="product-feature">
 
@@ -1219,27 +1533,34 @@
         <div class="product-extra-section">
 
 
+            <!-- Tabs -->
+
             <div class="product-tabs">
 
-                <button class="product-tab active"
-                    onclick="openTab(event, 'descriptionTab')">
-
+                <button
+                    type="button"
+                    class="product-tab active"
+                    onclick="openTab(event, 'descriptionTab')"
+                >
                     DESCRIPTION
-
                 </button>
 
-                <button class="product-tab"
-                    onclick="openTab(event, 'detailsTab')">
 
+                <button
+                    type="button"
+                    class="product-tab"
+                    onclick="openTab(event, 'detailsTab')"
+                >
                     PRODUCT DETAILS
-
                 </button>
 
-                <button class="product-tab"
-                    onclick="openTab(event, 'shippingTab')">
 
+                <button
+                    type="button"
+                    class="product-tab"
+                    onclick="openTab(event, 'shippingTab')"
+                >
                     SHIPPING & RETURNS
-
                 </button>
 
             </div>
@@ -1248,123 +1569,183 @@
             <div class="tab-content">
 
 
-                <!-- Description -->
+                <!-- =================================================
+                     DESCRIPTION
+                ================================================= -->
 
-                <div id="descriptionTab"
-                    class="tab-panel active">
+                <div
+                    id="descriptionTab"
+                    class="tab-panel active"
+                >
 
                     <h4>
-                        About the Saree
+                        About {{ $product->title }}
                     </h4>
 
-                    <p>
-                        This elegant saree is thoughtfully designed for
-                        women who appreciate timeless Indian craftsmanship.
-                        The premium fabric, detailed zari work and graceful
-                        drape make it an ideal choice for weddings, festivals,
-                        family celebrations and special occasions.
-                    </p>
 
-                    <p>
-                        Pair it with traditional jewellery and a statement
-                        blouse to complete your festive look.
-                    </p>
+                    @if(!empty($product->description))
+
+                        {!! $product->description !!}
+
+                    @elseif(!empty($product->short_description))
+
+                        <p>
+                            {!! nl2br(e($product->short_description)) !!}
+                        </p>
+
+                    @else
+
+                        <p>
+                            Product description is currently unavailable.
+                        </p>
+
+                    @endif
 
                 </div>
 
 
-                <!-- Details -->
+                <!-- =================================================
+                     PRODUCT DETAILS
+                ================================================= -->
 
-                <div id="detailsTab"
-                    class="tab-panel">
+                <div
+                    id="detailsTab"
+                    class="tab-panel"
+                >
 
                     <h4>
                         Product Details
                     </h4>
 
+
                     <div class="details-list">
 
-                        <div class="details-item">
 
-                            <span class="details-label">
-                                Fabric
-                            </span>
+                        @if($product->category)
 
-                            <span class="details-value">
-                                Pure Silk
-                            </span>
+                            <div class="details-item">
 
-                        </div>
+                                <span class="details-label">
+                                    Category
+                                </span>
 
-                        <div class="details-item">
+                                <span class="details-value">
+                                    {{ $product->category->title }}
+                                </span>
 
-                            <span class="details-label">
-                                Saree Length
-                            </span>
+                            </div>
 
-                            <span class="details-value">
-                                5.5 Meters
-                            </span>
+                        @endif
 
-                        </div>
 
-                        <div class="details-item">
+                        @if($product->brand)
 
-                            <span class="details-label">
-                                Blouse Length
-                            </span>
+                            <div class="details-item">
 
-                            <span class="details-value">
-                                0.8 Meter
-                            </span>
+                                <span class="details-label">
+                                    Brand
+                                </span>
 
-                        </div>
+                                <span class="details-value">
+                                    {{ $product->brand->name }}
+                                </span>
 
-                        <div class="details-item">
+                            </div>
 
-                            <span class="details-label">
-                                Pattern
-                            </span>
+                        @endif
 
-                            <span class="details-value">
-                                Zari Border
-                            </span>
 
-                        </div>
+                        @if($variant?->sku)
 
-                        <div class="details-item">
+                            <div class="details-item">
 
-                            <span class="details-label">
-                                Occasion
-                            </span>
+                                <span class="details-label">
+                                    SKU
+                                </span>
 
-                            <span class="details-value">
-                                Festive / Wedding
-                            </span>
+                                <span class="details-value">
+                                    {{ $variant->sku }}
+                                </span>
 
-                        </div>
+                            </div>
 
-                        <div class="details-item">
+                        @endif
 
-                            <span class="details-label">
-                                Wash Care
-                            </span>
 
-                            <span class="details-value">
-                                Dry Clean
-                            </span>
+                        @if($variant?->weight)
 
-                        </div>
+                            <div class="details-item">
+
+                                <span class="details-label">
+                                    Weight
+                                </span>
+
+                                <span class="details-value">
+                                    {{ $variant->weight }}
+                                </span>
+
+                            </div>
+
+                        @endif
+
+
+                        @if($variant)
+
+                            <div class="details-item">
+
+                                <span class="details-label">
+                                    Availability
+                                </span>
+
+                                <span class="details-value">
+
+                                    @if($variant->preorder)
+
+                                        Pre-order
+
+                                    @else
+
+                                        Available
+
+                                    @endif
+
+                                </span>
+
+                            </div>
+
+                        @endif
+
+
+                        @if($product->status)
+
+                            <div class="details-item">
+
+                                <span class="details-label">
+                                    Status
+                                </span>
+
+                                <span class="details-value">
+                                    {{ ucfirst($product->status) }}
+                                </span>
+
+                            </div>
+
+                        @endif
+
 
                     </div>
 
                 </div>
 
 
-                <!-- Shipping -->
+                <!-- =================================================
+                     SHIPPING
+                ================================================= -->
 
-                <div id="shippingTab"
-                    class="tab-panel">
+                <div
+                    id="shippingTab"
+                    class="tab-panel"
+                >
 
                     <h4>
                         Shipping & Returns
@@ -1393,17 +1774,30 @@
 </section>
 
 
+
 <script>
 
-    /* =========================================================
-       PRODUCT IMAGE
-    ========================================================= */
+    /*
+    |--------------------------------------------------------------------------
+    | Product Image
+    |--------------------------------------------------------------------------
+    */
 
     function changeProductImage(element, image) {
 
-        document
-            .getElementById('mainProductImage')
-            .src = image;
+        if (!image) {
+            return;
+        }
+
+        const mainImage =
+            document.getElementById('mainProductImage');
+
+        if (mainImage) {
+
+            mainImage.src = image;
+
+        }
+
 
         document
             .querySelectorAll('.product-thumb')
@@ -1413,60 +1807,382 @@
 
             });
 
-        element.classList.add('active');
+
+        if (element) {
+
+            element.classList.add('active');
+
+        }
+
     }
 
 
-    /* =========================================================
-       QUANTITY
-    ========================================================= */
+    /*
+    |--------------------------------------------------------------------------
+    | Quantity
+    |--------------------------------------------------------------------------
+    */
 
     let quantity = 1;
+
 
     function changeQuantity(value) {
 
         quantity += value;
 
+
         if (quantity < 1) {
+
             quantity = 1;
+
         }
+
 
         document
             .getElementById('quantityValue')
             .textContent = quantity;
+
     }
 
 
-    /* =========================================================
-       VARIANTS
-    ========================================================= */
+    /*
+    |--------------------------------------------------------------------------
+    | Product Variants
+    |--------------------------------------------------------------------------
+    */
 
     document
-        .querySelectorAll('.variant-option')
+        .querySelectorAll('.variant-option[data-variant-id]')
         .forEach(function (button) {
 
             button.addEventListener('click', function () {
 
-                let parent = this.parentElement;
+                const parent =
+                    this.closest('.variant-options');
 
-                parent
-                    .querySelectorAll('.variant-option')
-                    .forEach(function (item) {
 
-                        item.classList.remove('active');
+                if (parent) {
 
-                    });
+                    parent
+                        .querySelectorAll('.variant-option')
+                        .forEach(function (item) {
+
+                            item.classList.remove('active');
+
+                        });
+
+                }
+
 
                 this.classList.add('active');
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Selected Variant
+                |--------------------------------------------------------------------------
+                */
+
+                const variantId =
+                    this.getAttribute('data-variant-id');
+
+
+                const variantSku =
+                    this.getAttribute('data-variant-sku');
+
+
+                const variantImage =
+                    this.getAttribute('data-variant-image');
+
+
+                const variantPrice =
+                    this.getAttribute('data-variant-price');
+
+
+                const variantActualPrice =
+                    this.getAttribute('data-variant-actual-price');
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Update selected variant text
+                |--------------------------------------------------------------------------
+                */
+
+                const selectedVariant =
+                    document.getElementById(
+                        'selectedVariantName'
+                    );
+
+
+                if (selectedVariant) {
+
+                    selectedVariant.textContent =
+                        variantSku || 'Selected';
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Update image
+                |--------------------------------------------------------------------------
+                */
+
+                if (variantImage) {
+
+                    document
+                        .getElementById('mainProductImage')
+                        .src = variantImage;
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Update price
+                |--------------------------------------------------------------------------
+                */
+
+                const currentPrice =
+                    document.querySelector(
+                        '.product-current-price'
+                    );
+
+
+                const oldPrice =
+                    document.querySelector(
+                        '.product-old-price'
+                    );
+
+
+                if (
+                    currentPrice &&
+                    variantPrice &&
+                    !isNaN(variantPrice)
+                ) {
+
+                    currentPrice.textContent =
+                        '₹' +
+                        Number(variantPrice)
+                            .toLocaleString('en-IN');
+
+                }
+
+
+                if (
+                    oldPrice &&
+                    variantActualPrice &&
+                    !isNaN(variantActualPrice)
+                ) {
+
+                    oldPrice.textContent =
+                        '₹' +
+                        Number(variantActualPrice)
+                            .toLocaleString('en-IN');
+
+                }
 
             });
 
         });
 
 
-    /* =========================================================
-       TABS
-    ========================================================= */
+    /*
+    |--------------------------------------------------------------------------
+    | Wishlist
+    |--------------------------------------------------------------------------
+    */
+
+    const wishlistButton =
+        document.querySelector(
+            '.product-image-wishlist'
+        );
+
+
+    if (wishlistButton) {
+
+        wishlistButton.addEventListener(
+            'click',
+            function () {
+
+                const icon =
+                    this.querySelector('i');
+
+
+                if (!icon) {
+                    return;
+                }
+
+
+                icon.classList.toggle(
+                    'fa-regular'
+                );
+
+                icon.classList.toggle(
+                    'fa-solid'
+                );
+
+            }
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Add To Cart - Visual State
+    |--------------------------------------------------------------------------
+    */
+
+    const addCartButton =
+        document.querySelector(
+            '.add-cart-button'
+        );
+
+
+    if (addCartButton) {
+
+        addCartButton.addEventListener(
+            'click',
+            function () {
+
+                const originalText =
+                    this.innerHTML;
+
+
+                this.innerHTML =
+                    '<i class="fa-solid fa-check me-2"></i> ADDED TO CART';
+
+
+                this.disabled = true;
+
+
+                const currentButton =
+                    this;
+
+
+                setTimeout(function () {
+
+                    currentButton.innerHTML =
+                        originalText;
+
+                    currentButton.disabled =
+                        false;
+
+                }, 1500);
+
+            }
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Buy Now - Visual State
+    |--------------------------------------------------------------------------
+    */
+
+    const buyNowButton =
+        document.querySelector(
+            '.buy-now-button'
+        );
+
+
+    if (buyNowButton) {
+
+        buyNowButton.addEventListener(
+            'click',
+            function () {
+
+                const originalText =
+                    this.innerHTML;
+
+
+                this.innerHTML =
+                    'PROCESSING...';
+
+
+                this.disabled = true;
+
+
+                const currentButton =
+                    this;
+
+
+                setTimeout(function () {
+
+                    currentButton.innerHTML =
+                        originalText;
+
+                    currentButton.disabled =
+                        false;
+
+                }, 1000);
+
+            }
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pincode
+    |--------------------------------------------------------------------------
+    */
+
+    function checkPincode() {
+
+        const input =
+            document.getElementById(
+                'pincodeInput'
+            );
+
+
+        const message =
+            document.getElementById(
+                'pincodeMessage'
+            );
+
+
+        if (!input || !message) {
+            return;
+        }
+
+
+        const pincode =
+            input.value.trim();
+
+
+        if (!/^[0-9]{6}$/.test(pincode)) {
+
+            message.textContent =
+                'Please enter a valid 6-digit pincode.';
+
+            message.style.color =
+                '#b00020';
+
+            return;
+
+        }
+
+
+        message.textContent =
+            'Delivery availability will be checked for this pincode.';
+
+        message.style.color =
+            '#497d45';
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tabs
+    |--------------------------------------------------------------------------
+    */
 
     function openTab(event, tabId) {
 
@@ -1478,6 +2194,7 @@
 
             });
 
+
         document
             .querySelectorAll('.product-tab')
             .forEach(function (tab) {
@@ -1486,11 +2203,24 @@
 
             });
 
-        document
-            .getElementById(tabId)
-            .classList.add('active');
 
-        event.currentTarget.classList.add('active');
+        const selectedPanel =
+            document.getElementById(tabId);
+
+
+        if (selectedPanel) {
+
+            selectedPanel.classList.add('active');
+
+        }
+
+
+        if (event && event.currentTarget) {
+
+            event.currentTarget.classList.add('active');
+
+        }
+
     }
 
 </script>

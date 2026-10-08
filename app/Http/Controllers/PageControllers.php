@@ -236,9 +236,131 @@ class PageControllers extends Controller
             'categoryCounts'
         ));
     }
-    public function product_details()
+    // public function product_details()
+    // {
+    //     return view('website.product-details');
+    // }
+
+    public function product_details($slug)
     {
-        return view('website.product-details');
+        $product = Product::with([
+            'category',
+            'brand',
+
+            // Product variants with dynamic attributes
+            'variants.attributeMappings.attribute',
+            'variants.attributeMappings.value',
+
+            // Variant media
+            'variants.media',
+
+            // Product media
+            'media',
+            'primaryMedia',
+        ])
+            ->where('slug', $slug)
+            ->where('status', 'show')
+            ->firstOrFail();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Select first variant
+        |--------------------------------------------------------------------------
+        */
+
+        $variant = $product->variant;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Price
+        |--------------------------------------------------------------------------
+        */
+
+        $sellingPrice = $variant?->price;
+        $actualPrice = $variant?->actual_price;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Discount
+        |--------------------------------------------------------------------------
+        */
+
+        $discount = 0;
+
+        if (
+            is_numeric($actualPrice) &&
+            is_numeric($sellingPrice) &&
+            (float) $actualPrice > 0 &&
+            (float) $actualPrice > (float) $sellingPrice
+        ) {
+            $discount = round(
+                (
+                    ((float) $actualPrice - (float) $sellingPrice)
+                    / (float) $actualPrice
+                ) * 100
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Product Image
+        |--------------------------------------------------------------------------
+        */
+
+        $productImage = null;
+
+        if ($variant && !empty($variant->image)) {
+
+            $productImage = $variant->image;
+
+        } elseif ($product->primaryMedia) {
+
+            $productImage = $product->primaryMedia->file_path ?? null;
+
+        } elseif (!empty($product->image)) {
+
+            $productImage = $product->image;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Badge
+        |--------------------------------------------------------------------------
+        */
+
+        $badge = null;
+
+        if ($product->orders > 0) {
+
+            $badge = 'Bestseller';
+
+        } elseif (
+            $product->created_at &&
+            $product->created_at->gt(now()->subDays(30))
+        ) {
+
+            $badge = 'New Arrival';
+
+        } elseif ($product->is_feature === 'yes') {
+
+            $badge = 'Featured';
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Return Product Details Page
+        |--------------------------------------------------------------------------
+        */
+
+        return view('website.product-details', compact(
+            'product',
+            'variant',
+            'sellingPrice',
+            'actualPrice',
+            'discount',
+            'productImage',
+            'badge'
+        ));
     }
     public function blog()
     {
