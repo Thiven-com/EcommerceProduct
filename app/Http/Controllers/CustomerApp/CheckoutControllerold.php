@@ -213,11 +213,8 @@ class CheckoutControllerold extends Controller
 
             if ($order->payment_method == 'razorpay') {
 
-                $key = 'rzp_live_STOPbzTdhTme4m';
-                $secret = 'FN7Ekc9YQHpQPx4j2asRH2MN';
-
-                // $key = 'rzp_test_R9GdWcNAde0fOH';
-                // $secret = 'EfDOgPQMM170Rv6ENjAaqsyM';
+                $key = 'rzp_test_R9GdWcNAde0fOH';
+                $secret = 'EfDOgPQMM170Rv6ENjAaqsyM';
 
                 $api = new Api($key, $secret);
 

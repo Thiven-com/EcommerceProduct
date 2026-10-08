@@ -27,7 +27,8 @@ class AccountController extends Controller
                 'message' => $validator->errors()->first()
             ]);
         }
-        $otp = rand(1000, 9999);
+        $otp = 1234;
+        // $otp = rand(1000, 9999);
         if ($request->mobile == 9154193014) {
             $otp = 1234;
         }

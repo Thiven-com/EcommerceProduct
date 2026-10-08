@@ -41,8 +41,8 @@ class CheckoutController extends Controller
 
         $validator = Validator::make($request->all(), [
             'shipping_address_id' => 'required|integer|exists:addresses,id',
-            'payment_method'      => 'required|string',     // e.g. cod|razorpay|stripe
-            'delivery_charges'    => 'sometimes|array',
+            'payment_method' => 'required|string',     // e.g. cod|razorpay|stripe
+            'delivery_charges' => 'sometimes|array',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -109,7 +109,7 @@ class CheckoutController extends Controller
         $outOfStockItems = [];
 
         foreach ($cart as $line) {
-            $variant = \App\Models\ProductVariant::select(
+            $variant = ProductVariant::select(
                 'id',
                 'stock',
                 'sku',
@@ -187,7 +187,7 @@ class CheckoutController extends Controller
             $itemsPrepared = [];
 
             foreach ($cart as $line) {
-                $variant = \App\Models\ProductVariant::with('product')
+                $variant = ProductVariant::with('product')
                     ->select('id', 'price', 'stock', 'product_id', 'sku', 'weight')
                     ->findOrFail($line->product_variant_id);
 
@@ -195,20 +195,20 @@ class CheckoutController extends Controller
                 //     abort(422, "Insufficient stock for SKU {$variant->sku}");
                 // }
 
-                $unitPrice = (float)$variant->price;
-                $lineTotal = $unitPrice * (int)$line->quantity;
+                $unitPrice = (float) $variant->price;
+                $lineTotal = $unitPrice * (int) $line->quantity;
                 $subtotal += $lineTotal;
-                $weight = (float)$variant->weight;
+                $weight = (float) $variant->weight;
 
                 $itemsPrepared[] = [
-                    'variant'   => $variant,
-                    'seller_id' => (int)($variant->product?->seller_id ?? 0),
+                    'variant' => $variant,
+                    'seller_id' => (int) ($variant->product?->seller_id ?? 0),
                     'unit_price' => $unitPrice,
-                    'quantity'  => (int)$line->quantity,
-                    'subtotal'  => $lineTotal,
-                    'title'     => (string)($variant->product?->title ?? ''),
-                    'sku'       => (string)$variant->sku,
-                    'weight'       => (float)$weight,
+                    'quantity' => (int) $line->quantity,
+                    'subtotal' => $lineTotal,
+                    'title' => (string) ($variant->product?->title ?? ''),
+                    'sku' => (string) $variant->sku,
+                    'weight' => (float) $weight,
                 ];
             }
 
@@ -236,19 +236,19 @@ class CheckoutController extends Controller
             $invoiceId = 'INV-' . now()->format('Ymd-His');
             // $invoiceId = 'INV-' . now()->format('Ymd-His') . '-' . \Str::upper(\Str::random(6));
 
-            $order = new \App\Models\Order();
-            $order->customer_id          = $user->id;
-            $order->status           = 'pending';
-            $order->subtotal         = $subtotal;
-            $order->tax_total        = 0.00;
-            $order->discount_total   = $discount;
-            $order->delivery_total   = 0.00; // after shipments
-            $order->grand_total      = 0.00; // after shipments
-            $order->invoice_id       = $invoiceId;
-            $order->payment_method   = $data['payment_method'];
-            $order->payment_status   = 'pending';
+            $order = new Order();
+            $order->customer_id = $user->id;
+            $order->status = 'pending';
+            $order->subtotal = $subtotal;
+            $order->tax_total = 0.00;
+            $order->discount_total = $discount;
+            $order->delivery_total = 0.00; // after shipments
+            $order->grand_total = 0.00; // after shipments
+            $order->invoice_id = $invoiceId;
+            $order->payment_method = $data['payment_method'];
+            $order->payment_status = 'pending';
             $order->shipping_address = $addressSnapshot; // same snapshot for both
-            $order->billing_address  = $addressSnapshot;
+            $order->billing_address = $addressSnapshot;
             $order->order_type = $orderType;
             $order->save();
             if ($order->order_type == 'preorder') {
@@ -256,7 +256,7 @@ class CheckoutController extends Controller
             } else {
                 $invoiceId = 'SSH' . str_pad($order->id, 4, '0', STR_PAD_LEFT);
             }
-            $order->invoice_id       = $invoiceId;
+            $order->invoice_id = $invoiceId;
             $order->save();
             if ($order->payment_method == 'cod') {
                 if ($discount > 0) {
@@ -275,20 +275,20 @@ class CheckoutController extends Controller
             $totalWeight = 0;
 
             foreach ($itemsPrepared as $row) {
-                $oi = new \App\Models\OrderItem();
-                $oi->order_id            = $order->id;
-                $oi->product_variant_id  = $row['variant']->id;
-                $oi->seller_id           = $row['seller_id'];
-                $oi->product_title       = $row['title'];
-                $oi->sku                 = $row['sku'];
-                $oi->unit_price          = $row['unit_price'];
-                $oi->quantity            = $row['quantity'];
-                $oi->subtotal            = $row['subtotal'];
-                $oi->weight              = $row['weight'];
+                $oi = new OrderItem();
+                $oi->order_id = $order->id;
+                $oi->product_variant_id = $row['variant']->id;
+                $oi->seller_id = $row['seller_id'];
+                $oi->product_title = $row['title'];
+                $oi->sku = $row['sku'];
+                $oi->unit_price = $row['unit_price'];
+                $oi->quantity = $row['quantity'];
+                $oi->subtotal = $row['subtotal'];
+                $oi->weight = $row['weight'];
                 $oi->save();
 
                 if ($orderType == 'order') {
-                    $row['variant']->stock = (int)$row['variant']->stock - (int)$row['quantity'];
+                    $row['variant']->stock = (int) $row['variant']->stock - (int) $row['quantity'];
                     $row['variant']->save();
                 }
 
@@ -336,7 +336,7 @@ class CheckoutController extends Controller
                     }
                     $latestCharge = FreightCharge::where('shipping_zone_id', $zone->id)->latest()->first();
                     if ($latestCharge->max_weight < $totalWeight) {
-                        $shipping = (float)$latestCharge->charge + 30;
+                        $shipping = (float) $latestCharge->charge + 30;
                     }
                 }
             }
@@ -345,22 +345,22 @@ class CheckoutController extends Controller
 
 
             // ---- Shipments per seller (billing=shipping same snapshot)
-            $bySeller = collect($orderItems)->groupBy(fn($it) => (int)$it->seller_id);
+            $bySeller = collect($orderItems)->groupBy(fn($it) => (int) $it->seller_id);
             $deliveryTotal = $shipping;
 
-            $grand = (float)$order->subtotal
-                + (float)$order->tax_total
-                - (float)$order->discount_total
-                + (float)$deliveryTotal;
+            $grand = (float) $order->subtotal
+                + (float) $order->tax_total
+                - (float) $order->discount_total
+                + (float) $deliveryTotal;
 
             $order->delivery_total = $deliveryTotal;
-            $order->grand_total    = $grand;
+            $order->grand_total = $grand;
             $order->save();
 
             if ($order->payment_method == 'razorpay') {
 
-                $key = 'rzp_live_STOPbzTdhTme4m';
-                $secret = 'FN7Ekc9YQHpQPx4j2asRH2MN';
+                $key = 'rzp_test_R9GdWcNAde0fOH';
+                $secret = 'EfDOgPQMM170Rv6ENjAaqsyM';
 
                 // $key = 'rzp_test_R9GdWcNAde0fOH';
                 // $secret = 'EfDOgPQMM170Rv6ENjAaqsyM';
@@ -379,13 +379,13 @@ class CheckoutController extends Controller
 
             // ---- Payment row
             $payment = new \App\Models\Payment();
-            $payment->order_id     = $order->id;
-            $payment->user_id      = $user->id;
-            $payment->amount       = $order->grand_total;
-            $payment->currency     = 'INR';
-            $payment->status       = 'pending';
-            $payment->method       = $order->payment_method;
-            $payment->provider     = in_array($order->payment_method, ['razorpay', 'stripe', 'phonepe']) ? $order->payment_method : null;
+            $payment->order_id = $order->id;
+            $payment->user_id = $user->id;
+            $payment->amount = $order->grand_total;
+            $payment->currency = 'INR';
+            $payment->status = 'pending';
+            $payment->method = $order->payment_method;
+            $payment->provider = in_array($order->payment_method, ['razorpay', 'stripe', 'phonepe']) ? $order->payment_method : null;
             $payment->provider_order_id = $razorpayResponse['id'] ?? null;
             $payment->reference_no = $order->invoice_id;
             $payment->save();
@@ -398,14 +398,14 @@ class CheckoutController extends Controller
 
             return response()->json([
                 'success' => 1,
-                'message'        => 'Order placed',
-                'order_id'       => $order->id,
-                'invoice_id'     => $order->invoice_id,
-                'payment_id'     => $payment->id,
+                'message' => 'Order placed',
+                'order_id' => $order->id,
+                'invoice_id' => $order->invoice_id,
+                'payment_id' => $payment->id,
                 'payment_status' => $order->payment_status,
-                'grand_total'    => $order->grand_total,
+                'grand_total' => $order->grand_total,
                 'delivery_total' => $order->delivery_total,
-                'address'        => $order->shipping_address, // same as billing
+                'address' => $order->shipping_address, // same as billing
                 'provider_order_id' => $payment->provider_order_id
             ]);
         });
@@ -414,16 +414,6 @@ class CheckoutController extends Controller
     public function show(Request $request)
     {
         $user = auth('sanctum')->user();
-        // dd($user);
-        // Cart
-        // $cartItems = CartItem::with([
-        //     'variant.product:id,title,slug,category_id,image,description,short_description',
-        //     'variant.media',
-        //     'variant.attributeValues.attribute',
-        // ])->where('user_id', $user->id)->get();
-
-        // $cart = new CartCollection($cartItems);
-
         $type = $request->order_type ?? 'order';
         $cartItems = CartItem::with([
             'variant.product:id,title,slug,category_id,image,description,short_description',
@@ -437,43 +427,20 @@ class CheckoutController extends Controller
                 'message' => 'Your Cart Is Empty'
             ]);
         }
-
-        // $inStockItems = [];
-        // $outOfStockItems = [];
-        // $actualtotal = 0;
-        // foreach ($cartItems as $item) {
-        //     if (($item->variant->stock ?? 0) > 0) {
-        //         $inStockItems[] = $item;
-        //     } else {
-        //         $outOfStockItems[] = $item;
-        //     }
-        // }
-
-        // // ✅ Case 1: All items in stock
-        // if (count($outOfStockItems) === 0) {
-        //     $cart = new CartCollection($cartItems);
-        // }
-
-        // ✅ Case 2: All items out of stock
-        // elseif (count($inStockItems) === 0) {
-        //     $cart = new CartCollection($cartItems);
-        // }
-
-        // // ❌ Case 3: Mixed
-        // else {
-        //     return response()->json([
-        //         'success' => 0,
-        //         'type' => 'mixed',
-        //         'message' => 'Some items are out of stock',
-        //         'out_of_stock_items' => new CartCollection(collect($outOfStockItems))
-        //     ]);
-        // }
-
+        $validator = Validator::make($request->all(), [
+            'address_id' => 'required|integer|exists:addresses,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => 0,
+                'message' => $validator->errors()->first()
+            ]);
+        }
         $inStockItems = [];
         $outOfStockItems = [];
 
         foreach ($cartItems as $line) {
-            $variant = \App\Models\ProductVariant::select(
+            $variant = ProductVariant::select(
                 'id',
                 'stock',
                 'sku',
@@ -550,16 +517,16 @@ class CheckoutController extends Controller
         $addresses = Address::where('customer_id', $user->id)
             ->orderByDesc('default')->get()
             ->map(fn($a) => [
-                'id'        => $a->id,
-                'name'      => $a->name,
-                'mobile'    => $a->mobile,
-                'email'     => $a->email,
-                'address1'  => $a->address,
-                'address2'  => $a->address_2,
-                'city'      => $a->city,
-                'state'     => $a->state ?? $a->state_id,
-                'pincode'   => $a->pincode,
-                'default'   => (bool) $a->default,
+                'id' => $a->id,
+                'name' => $a->name,
+                'mobile' => $a->mobile,
+                'email' => $a->email,
+                'address1' => $a->address,
+                'address2' => $a->address_2,
+                'city' => $a->city,
+                'state' => $a->state ?? $a->state_id,
+                'pincode' => $a->pincode,
+                'default' => (bool) $a->default,
             ]);
 
         // Shipping options
@@ -578,36 +545,36 @@ class CheckoutController extends Controller
                     : (is_string($g->config) ? (json_decode($g->config, true) ?: []) : []);
 
                 return [
-                    'code'        => $g->code,
-                    'name'        => $g->name,
-                    'image'       => $g->image ? asset($g->image) : null,
+                    'code' => $g->code,
+                    'name' => $g->name,
+                    'image' => $g->image ? asset($g->image) : null,
                     'description' => $g->description,
-                    'is_online'   => $g->is_online === 'yes',
+                    'is_online' => $g->is_online === 'yes',
                     'fee_percent' => (float) $g->fee_percent,
-                    'fee_fixed'   => (float) $g->fee_fixed,
-                    'sort_order'  => (int) $g->sort_order,
-                    'config'      => $config, // ← no json_decode() here
+                    'fee_fixed' => (float) $g->fee_fixed,
+                    'sort_order' => (int) $g->sort_order,
+                    'config' => $config, // ← no json_decode() here
                 ];
             })->values();
 
 
         // Summary
         if ($type == 'preorder') {
-            $cartArray  = $cart->toArray($request);
-            $subtotal   = (float)($cartArray['preorder_totals']['subtotal'] ?? 0);
-            $actualtotal   = (float)($cartArray['preorder_totals']['actualtotal'] ?? 0);
-            $shipping   = 0;
-            $discount   = 0;
-            $tax        = 0;
-            $items = (int)($cartArray['preorder_totals']['items'] ?? 0);
+            $cartArray = $cart->toArray($request);
+            $subtotal = (float) ($cartArray['preorder_totals']['subtotal'] ?? 0);
+            $actualtotal = (float) ($cartArray['preorder_totals']['actualtotal'] ?? 0);
+            $shipping = 0;
+            $discount = 0;
+            $tax = 0;
+            $items = (int) ($cartArray['preorder_totals']['items'] ?? 0);
         } else {
-            $cartArray  = $cart->toArray($request);
-            $subtotal   = (float)($cartArray['totals']['subtotal'] ?? 0);
-            $actualtotal   = (float)($cartArray['totals']['actualtotal'] ?? 0);
-            $shipping   = 0;
-            $discount   = 0;
-            $tax        = 0;
-            $items = (int)($cartArray['totals']['items'] ?? 0);
+            $cartArray = $cart->toArray($request);
+            $subtotal = (float) ($cartArray['totals']['subtotal'] ?? 0);
+            $actualtotal = (float) ($cartArray['totals']['actualtotal'] ?? 0);
+            $shipping = 0;
+            $discount = 0;
+            $tax = 0;
+            $items = (int) ($cartArray['totals']['items'] ?? 0);
         }
 
         // ✅ Calculate weight
@@ -617,7 +584,7 @@ class CheckoutController extends Controller
             $variant = $item->variant;
 
             $weight = $variant->weight ?? 0; // assume KG
-            $qty    = $item->quantity ?? 1;
+            $qty = $item->quantity ?? 1;
 
             $totalWeight += $weight * $qty;
         }
@@ -647,32 +614,10 @@ class CheckoutController extends Controller
                 }
                 $latestCharge = FreightCharge::where('shipping_zone_id', $zone->id)->latest()->first();
                 if ($latestCharge->max_weight < $totalWeight) {
-                    $shipping = (float)$latestCharge->charge + 30;
+                    $shipping = (float) $latestCharge->charge + 30;
                 }
             }
         }
-        // $delhivery = new DelhiveryService();
-        // if ($defaultAddress && !empty($defaultAddress->pincode)) {
-
-        //     $shippingResponse = $delhivery->calculateShipping([
-        //         'origin_pin'      => '572107', // your warehouse
-        //         'destination_pin' => $defaultAddress->pincode,
-        //         'weight'          => $weightInGrams,
-        //         'payment_type'    => 'Pre-paid',
-        //     ]);
-
-        //     // dd($shippingResponse);
-
-        //     if ($shippingResponse['success']) {
-        //         $shipping = $shippingResponse['data'][0]['total_amount'] ?? 0;
-        //     }
-        // }
-
-        // ✅ Business rules
-        // if ($subtotal >= 1000) {
-        //     $shipping = 0; // free shipping
-        // }
-
         $shipping = round($shipping);
         $appliedCoupon = null;
 
@@ -694,9 +639,9 @@ class CheckoutController extends Controller
                 }
 
                 $appliedCoupon = [
-                    'code'     => $coupon->code,
-                    'type'     => $coupon->type,
-                    'value'    => $coupon->discount,
+                    'code' => $coupon->code,
+                    'type' => $coupon->type,
+                    'value' => $coupon->discount,
                     'discount' => $discount,
                 ];
             }
@@ -705,18 +650,18 @@ class CheckoutController extends Controller
         $grandTotal = max(0, $subtotal + $shipping + $tax - $discount);
 
         return response()->json([
-            'success'          => 1,
-            'cart'             => $cartArray,
-            'addresses'        => $addresses,
+            'success' => 1,
+            'cart' => $cartArray,
+            'addresses' => $addresses,
             'payment_gateways' => $gateways,   // ← includes config
             'shipping_options' => $shippingOptions,
-            'summary'          => [
-                'items'       => $items,
-                'subtotal'    => $subtotal,
-                'actualtotal'    => $actualtotal,
-                'shipping'    => $shipping,
-                'discount'    => $discount,
-                'tax'         => $tax,
+            'summary' => [
+                'items' => $items,
+                'subtotal' => $subtotal,
+                'actualtotal' => $actualtotal,
+                'shipping' => $shipping,
+                'discount' => $discount,
+                'tax' => $tax,
                 'grand_total' => $grandTotal,
             ],
             'coupon' => $appliedCoupon,

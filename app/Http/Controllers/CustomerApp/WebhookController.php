@@ -22,10 +22,8 @@ class WebhookController extends Controller
     public function razorpay(Request $request)
     {
         $webhookSecret = '54e87af896ebf7202678a25dbc4d738ff0a01276c5648d9d49c73ffe0ffa4807';
-        $keyId = 'rzp_live_STOPbzTdhTme4m';
-        $keySecret = 'FN7Ekc9YQHpQPx4j2asRH2MN';
-        // $keyId = 'rzp_test_R9GdWcNAde0fOH';
-        // $keySecret = 'EfDOgPQMM170Rv6ENjAaqsyM';
+        $keyId = 'rzp_test_R9GdWcNAde0fOH';
+        $keySecret = 'EfDOgPQMM170Rv6ENjAaqsyM';
 
         // Raw payload required for signature verification
         $payload = $request->getContent();

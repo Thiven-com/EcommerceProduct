@@ -33,88 +33,6 @@ class CartController extends Controller
         return new CartCollection($items);
     }
 
-    /** Add a variant to cart (apply flash sale if active) */
-    // public function add(Request $request)
-    // {
-    //     $user = auth('sanctum')->user();
-
-
-    //     $validator = Validator::make($request->all(), [
-    //         'variant_id' => 'required|integer|exists:product_variants,id',
-    //         'quantity' => 'sometimes|integer|min:1|max:999',
-    //     ]);
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'success' => 0,
-    //             'message' => $validator->errors()->first()
-    //         ]);
-    //     }
-    //     $data = $validator->validated();
-    //     $qty = $data['quantity'] ?? 1;
-
-    //     $variant = ProductVariant::select('id', 'price', 'stock', 'actual_price', 'product_min_order', 'product_max_order')->findOrFail($data['variant_id']);
-    //     if ($variant->stock < 1) {
-
-    //         return response()->json([
-    //             'success' => 0,
-    //             'message' => 'Out of stock'
-    //         ], 422);
-    //     }
-
-    //     // if ($variant->product_min_order > $qty) {
-    //     //     $qty = $variant->product_min_order;
-    //     // }
-
-    //     // ✅ Inline normalization
-    //     $minQty = $variant->product_min_order ?? 1;
-    //     $maxQty = $variant->product_max_order ?? 999;
-
-    //     $qty = max($qty, $minQty);
-    //     $qty = min($qty, $maxQty);
-    //     // $qty = min($qty, $variant->stock);
-
-    //     // 🔹 Check if variant is in active flash sale
-    //     $price = $this->getEffectivePrice($variant);
-
-    //     $item = CartItem::where('user_id', $user->id)
-    //         ->where('product_variant_id', $variant->id)
-    //         ->first();
-
-    //     if ($item) {
-    //         // $newQty = min($item->quantity + $qty, $variant->stock);
-    //         $newQty = $qty;
-    //         // $newQty = $item->quantity + $qty;
-
-    //         // ✅ Apply limits AFTER increment
-    //         $newQty = max($newQty, $minQty);
-    //         $newQty = min($newQty, $maxQty);
-    //         // $newQty = min($newQty, $variant->stock);
-
-    //         $item->update([
-    //             'quantity' => $newQty,
-    //             'unit_price' => $price,
-    //         ]);
-    //     } else {
-    //         $item = new CartItem();
-    //         $item->user_id = $user->id;
-    //         $item->product_variant_id = $variant->id;
-    //         $item->quantity = $qty;
-    //         // $item->quantity           = min($qty, $variant->stock);
-    //         $item->unit_price = $price; // snapshot with flash price if available
-    //         $item->save();
-    //     }
-    //     $items = CartItem::with([
-    //         'variant.product:id,title,slug',
-    //         'variant.attributeValues.attribute'
-    //     ])
-    //         ->where('user_id', $user->id)
-    //         ->get();
-
-    //     $data = new CartCollection($items);
-
-    //     return response()->json(['success' => 1, 'data' => $data, 'message' => 'Added to cart', 'id' => $item->id]);
-    // }
-
     public function add(Request $request)
     {
         $user = auth('sanctum')->user();
@@ -222,58 +140,22 @@ class CartController extends Controller
             'id' => $item->id
         ]);
     }
-
-    /** Update quantity of a cart line */
-    // public function updateQuantity(Request $request, CartItem $cartItem)
-    // {
-    //     $user = auth('sanctum')->user();
-
-    //     if ($cartItem->user_id !== $user->id) {
-    //         return response()->json(['message' => 'Forbidden'], 403);
-    //     }
-
-
-    //     $variant = ProductVariant::select('id', 'price', 'stock', 'actual_price', 'product_min_order', 'product_max_order')->findOrFail($cartItem->product_variant_id);
-
-    //     $minQty = $variant->product_min_order ?? 1;
-    //     $maxQty = $variant->product_max_order ?? 10;
-
-    //     $data = $request->validate([
-    //         'quantity' => "required|integer|min:$minQty|max:$maxQty",
-    //     ]);
-    //     // if ($variant->stock < $data['quantity']) {
-    //     //     return response()->json(['message' => 'Insufficient stock'], 422);
-    //     // }
-
-    //     // if ($variant->stock < 1) {
-    //     //     return response()->json([
-    //     //         'success' => 0,
-    //     //         'message' => 'Out of stock'
-    //     //     ], 422);
-    //     // }
-
-    //     $qty = $data['quantity'];
-
-    //     $qty = max($qty, $minQty);
-    //     $qty = min($qty, $maxQty);
-    //     // $qty = min($qty, $variant->stock);
-
-    //     // 🔹 Apply flash sale if active
-    //     $price = $this->getEffectivePrice($variant);
-
-    //     $cartItem->quantity = $qty;
-    //     $cartItem->unit_price = $price;
-    //     $cartItem->save();
-
-    //     return response()->json(['success' => 1, 'message' => 'Quantity updated']);
-    // }
-
     public function updateQuantity(Request $request, CartItem $cartItem)
     {
         $user = auth('sanctum')->user();
 
+        if (!$user) {
+            return response()->json([
+                'success' => 0,
+                'message' => 'Unauthenticated',
+            ], 401);
+        }
+
         if ($cartItem->user_id !== $user->id) {
-            return response()->json(['message' => 'Forbidden'], 403);
+            return response()->json([
+                'success' => 0,
+                'message' => 'Forbidden',
+            ], 403);
         }
 
         $variant = ProductVariant::select(
@@ -290,45 +172,61 @@ class CartController extends Controller
         $minQty = $variant->product_min_order ?? 1;
         $maxQty = $variant->product_max_order ?? 10;
 
-        $data = $request->validate([
-            'quantity' => "required|integer|min:$minQty|max:$maxQty",
+        $validator = Validator::make($request->all(), [
+            'quantity' => [
+                'required',
+                'integer',
+                "min:$minQty",
+                "max:$maxQty",
+            ],
         ]);
 
-        $qty = $data['quantity'];
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => 0,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
 
-        // ✅ Determine stock source
-        $isPreorder = $variant->preorder ?? false;
+        $qty = $validator->validated()['quantity'];
+
+        // Determine stock source
+        $isPreorder = (bool) $variant->preorder;
 
         if ($variant->stock < 1) {
             if ($isPreorder) {
                 if ($variant->preorder_stock < 1) {
                     return response()->json([
                         'success' => 0,
-                        'message' => 'Preorder stock not available'
-                    ]);
+                        'message' => 'Preorder stock not available',
+                    ], 422);
                 }
+
                 $availableStock = $variant->preorder_stock;
                 $type = 'preorder';
             } else {
                 return response()->json([
                     'success' => 0,
-                    'message' => 'Out of stock'
-                ]);
+                    'message' => 'Out of stock',
+                ], 422);
             }
         } else {
             $availableStock = $variant->stock;
             $type = 'order';
         }
 
-        // ✅ Apply limits
-        $qty = max($qty, $minQty);
-        $qty = min($qty, $maxQty);
-        $qty = min($qty, $availableStock);
+        // Don't silently change an invalid requested quantity
+        if ($qty > $availableStock) {
+            return response()->json([
+                'success' => 0,
+                'message' => "Only {$availableStock} items available.",
+                'available_stock' => $availableStock,
+            ], 422);
+        }
 
-        // 🔹 Apply pricing (flash sale etc.)
         $price = $this->getEffectivePrice($variant);
 
-        // ✅ Update cart item
         $cartItem->quantity = $qty;
         $cartItem->unit_price = $price;
         $cartItem->type = $type;
@@ -336,25 +234,10 @@ class CartController extends Controller
 
         return response()->json([
             'success' => 1,
-            'message' => 'Quantity updated'
+            'message' => 'Quantity updated',
+            'quantity' => $qty,
         ]);
     }
-
-    /** Remove a single cart line */
-    // public function remove(CartItem $cartItem)
-    // {
-    //     $user = auth('sanctum')->user();
-
-    //     if ($cartItem->user_id !== $user->id) {
-    //         return response()->json(['success' => 0, 'message' => 'Forbidden'], 403);
-    //     }
-    //     if (!isset($cartItem->id)) {
-    //         return response()->json(['success' => 0, 'message' => 'Cart Details Not Found']);
-    //     }
-    //     $cartItem->delete();
-    //     return response()->json(['success' => 1, 'message' => 'Removed from cart']);
-    // }
-
     public function remove($id)
     {
         $user = auth('sanctum')->user();
