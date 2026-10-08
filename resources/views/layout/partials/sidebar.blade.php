@@ -194,7 +194,7 @@
                                                 @if (isset($admin->role) && $admin->role == 'super_admin')
 
                                                         <li class="{{ Request::is('admin/settings/company') ? 'active' : '' }}">
-                                                                <a href="{{route('site.settings.company')}}"><i
+                                                                <a href="{{route('admin.settings.company')}}"><i
                                                                                 class="ti ti-world fs-16 me-2"></i><span>Company
                                                                                 Settings</span><span
                                                                                 class="menu-arr ow"></span></a>

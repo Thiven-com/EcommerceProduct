@@ -107,13 +107,13 @@ class ProductController extends Controller
         $manager = new ImageManager(new Driver());
 
         if ($request->hasFile('image')) {
-            $productImage = $request->file('image');
-            // $productName = $product->slug . ".webp";
-            $hsnFileName = strtolower(preg_replace('/[^A-Za-z0-9_\-]/', '_', $request->hsn_code)) . ".webp";
-            $image = $manager->read($productImage);
-            $image->resize(450, 600);
-            $image->toWebp(100)->save(public_path('media/products/') . $hsnFileName);
-            $product->image = 'media/products/' . $hsnFileName;
+
+            $file = $request->file('image');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('media/products/'), $fileName);
+
+            $product->image = 'media/products/' . $fileName;
         }
 
         $product->category_id = $request->category_id ?? 0;
@@ -162,13 +162,15 @@ class ProductController extends Controller
             $sku = strtoupper(implode('_', $skuParts));
 
             $imagePath = null;
-            if (isset($variantInput['image']) && $variantInput['image'] instanceof \Illuminate\Http\UploadedFile) {
-                // $variantImgName = $sku . ".webp";
-                $skuFileName = strtolower(preg_replace('/[^A-Za-z0-9_\-]/', '_', $variantInput['sku'])) . ".webp";
-                $img = $manager->read($variantInput['image']);
-                $img->resize(450, 600);
-                $img->toWebp(100)->save(public_path('media/variants/') . $skuFileName);
-                $imagePath = 'media/variants/' . $skuFileName;
+            if ($request->hasFile('variant_image')) {
+
+                $file = $request->file('variant_image');
+
+                $imageName = time() . '.' . $file->getClientOriginalExtension();
+
+                $file->move(public_path('media/variants/'), $imageName);
+
+                $imagePath = 'media/variants/' . $imageName;
             }
 
             $variant = ProductVariant::create([
@@ -286,13 +288,14 @@ class ProductController extends Controller
 
         $manager = new ImageManager(new Driver());
 
-        if ($request->hasFile('image')) {
-            // $productName = $product->slug . ".webp";
-            $hsnFileName = strtolower(preg_replace('/[^A-Za-z0-9_\-]/', '_', $product->hsn_code)) . ".webp";
-            $image = $manager->read($request->file('image'));
-            $image->resize(450, 600);
-            $image->toWebp(100)->save(public_path('media/variants/') . $hsnFileName);
-            $product->image = 'media/variants/' . $hsnFileName;
+       if ($request->hasFile('image')) {
+
+            $file = $request->file('image');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('media/products/'), $fileName);
+
+            $product->image = 'media/products/' . $fileName;
         }
 
         $product->save();
@@ -451,13 +454,15 @@ class ProductController extends Controller
             $sku = strtoupper(implode('_', $skuParts));
 
             $imagePath = null;
-            if (isset($variantInput['image']) && $variantInput['image'] instanceof \Illuminate\Http\UploadedFile) {
-                // $variantImgName = $sku . ".webp";
-                $skuFileName = strtolower(preg_replace('/[^A-Za-z0-9_\-]/', '_', $newSku)) . ".webp";
-                $img = $manager->read($variantInput['image']);
-                $img->resize(450, 600);
-                $img->toWebp(100)->save(public_path('media/variants/') . $skuFileName);
-                $imagePath = 'media/variants/' . $skuFileName;
+            if ($request->hasFile('variant_image')) {
+
+                $file = $request->file('variant_image');
+
+                $imageName = time() . '.' . $file->getClientOriginalExtension();
+
+                $file->move(public_path('media/variants/'), $imageName);
+
+                $imagePath = 'media/variants/' . $imageName;
             }
             $videoPath = null;
 
