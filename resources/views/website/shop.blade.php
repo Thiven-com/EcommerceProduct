@@ -1024,13 +1024,20 @@
                 @endif
 
 
-                <button
-                    type="button"
-                    class="product-wishlist"
-                    data-product-id="{{ $product->id }}"
-                >
-                    ♡
-                </button>
+                @php
+    $isWishlisted = in_array(
+        $variant?->id,
+        $wishlistVariantIds ?? []
+    );
+@endphp
+
+<button
+    type="button"
+    class="product-wishlist {{ $isWishlisted ? 'active' : '' }}"
+    data-variant-id="{{ $variant?->id }}"
+>
+    {{ $isWishlisted ? '♥' : '♡' }}
+</button>
 
             </div>
 
@@ -1375,9 +1382,13 @@
 
     /*
     |--------------------------------------------------------------------------
-    | Wishlist Visual State
+    | Wishlist
     |--------------------------------------------------------------------------
     */
+
+    const wishlistVariantIds =
+        @json($wishlistVariantIds ?? []);
+
 
     document
         .querySelectorAll('.product-wishlist')
@@ -1389,15 +1400,182 @@
                 event.stopPropagation();
 
 
-                if (this.innerHTML.trim() === '♡') {
+                const variantId =
+                    this.getAttribute('data-variant-id');
 
-                    this.innerHTML = '♥';
 
-                } else {
+                /*
+                |--------------------------------------------------------------------------
+                | Variant Check
+                |--------------------------------------------------------------------------
+                */
 
-                    this.innerHTML = '♡';
+                if (!variantId) {
+
+                    alert('Product variant not found.');
+
+                    return;
 
                 }
+
+
+                const currentButton = this;
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Send Wishlist Request
+                |--------------------------------------------------------------------------
+                */
+
+                fetch('{{ route('wishlist.add') }}', {
+
+                    method: 'POST',
+
+                    headers: {
+
+                        'Content-Type':
+                            'application/json',
+
+                        'X-CSRF-TOKEN':
+                            '{{ csrf_token() }}',
+
+                        'Accept':
+                            'application/json'
+
+                    },
+
+                    body: JSON.stringify({
+
+                        product_variant_id:
+                            variantId
+
+                    })
+
+                })
+
+
+                .then(async function (response) {
+
+                    const data =
+                        await response.json();
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Login Required
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (response.status === 401) {
+
+                        window.location.href =
+                            '{{ route('login') }}';
+
+                        return;
+
+                    }
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Server Error
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (!response.ok) {
+
+                        throw new Error(
+
+                            data.message ||
+                            'Something went wrong.'
+
+                        );
+
+                    }
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Wishlist Success
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (data.status) {
+
+                        const numericVariantId =
+                            Number(variantId);
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | Update Local Wishlist State
+                        |--------------------------------------------------------------------------
+                        */
+
+                        if (
+                            !wishlistVariantIds.includes(
+                                numericVariantId
+                            )
+                        ) {
+
+                            wishlistVariantIds.push(
+                                numericVariantId
+                            );
+
+                        }
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | Change Heart
+                        |--------------------------------------------------------------------------
+                        */
+
+                        currentButton.innerHTML =
+                            '♥';
+
+
+                        currentButton.classList.add(
+                            'active'
+                        );
+
+
+                        alert(
+                            data.message
+                        );
+
+
+                    } else {
+
+                        alert(
+
+                            data.message ||
+                            'Unable to add to wishlist.'
+
+                        );
+
+                    }
+
+                })
+
+
+                .catch(function (error) {
+
+                    console.error(
+                        'Wishlist Error:',
+                        error
+                    );
+
+
+                    alert(
+
+                        error.message ||
+                        'Something went wrong.'
+
+                    );
+
+                });
 
             });
 

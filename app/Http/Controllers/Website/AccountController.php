@@ -135,7 +135,45 @@ class AccountController extends Controller
 
 
 
-   public function addToWishlist(Request $request)
+    public function addToWishlist(Request $request)
+    {
+        if (!Auth::guard('customer')->check()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Please login first.'
+            ], 401);
+        }
+
+        $request->validate([
+            'product_variant_id' => 'required|exists:product_variants,id',
+        ]);
+
+        $userId = Auth::guard('customer')->id();
+
+        $exists = WishlistItem::where('user_id', $userId)
+            ->where('product_variant_id', $request->product_variant_id)
+            ->exists();
+
+        if ($exists) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Product already added to wishlist.'
+            ]);
+        }
+
+        $wishlistItem = new WishlistItem();
+        $wishlistItem->user_id = $userId;
+        $wishlistItem->product_variant_id = $request->product_variant_id;
+        $wishlistItem->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Product added to wishlist.'
+        ]);
+    }
+
+
+    public function removeFromWishlist($id)
 {
     if (!Auth::guard('customer')->check()) {
         return response()->json([
@@ -144,31 +182,24 @@ class AccountController extends Controller
         ], 401);
     }
 
-    $request->validate([
-        'product_variant_id' => 'required|exists:product_variants,id',
-    ]);
+    $userId = Auth::guard('customer')->id();
 
-    $customerId = Auth::guard('customer')->id();
+    $wishlistItem = WishlistItem::where('id', $id)
+        ->where('user_id', $userId)
+        ->first();
 
-    $exists = WishlistItem::where('customer_id', $customerId)
-        ->where('product_variant_id', $request->product_variant_id)
-        ->exists();
-
-    if ($exists) {
+    if (!$wishlistItem) {
         return response()->json([
-            'status' => true,
-            'message' => 'Product already added to wishlist.'
-        ]);
+            'status' => false,
+            'message' => 'Wishlist item not found.'
+        ], 404);
     }
 
-    WishlistItem::create([
-        'customer_id' => $customerId,
-        'product_variant_id' => $request->product_variant_id,
-    ]);
+    $wishlistItem->delete();
 
     return response()->json([
         'status' => true,
-        'message' => 'Product added to wishlist.'
+        'message' => 'Product removed from wishlist.'
     ]);
 }
 }

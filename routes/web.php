@@ -21,6 +21,8 @@ Route::get('cart', [PageControllers::class, 'cart'])->name('cart');
 Route::get('wishlist', [PageControllers::class, 'wishlist'])->name('wishlist');
 Route::post('wishlist/add', [AccountController::class, 'addToWishlist'])
     ->name('wishlist.add');
+Route::delete('wishlist/remove/{id}', [AccountController::class, 'removeFromWishlist'])
+    ->name('wishlist.remove');
 Route::get('contactus', [PageControllers::class, 'contactus'])->name('contactus');
 Route::get('shippingdelivery', [PageControllers::class, 'shippingdelivery'])->name('shippingdelivery');
 Route::get('returnexchange', [PageControllers::class, 'returnexchange'])->name('returnexchange');
