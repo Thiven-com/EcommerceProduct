@@ -1,6 +1,7 @@
 @extends('layouts.website')
 @section('content')
     <style>
+        
         /* =========================================
                                                                    HERO BANNER
                                                                 ========================================= */
