@@ -56,23 +56,41 @@ class BlogController extends Controller
         $blog->youtube = $request->youtube;
         $manager = new ImageManager(new Driver());
 
+        // if ($request->hasFile('image')) {
+        //     $productImage = $request->file('image');
+        //     $productName = $request->slug . ".webp";
+        //     $image = $manager->read($productImage);
+        //     $image->resize(450, 600);
+        //     $image->toWebp(70)->save(public_path('blogs/image/') . $productName);
+        //     $blog->image = 'blogs/image/' . $productName;
+        //     // $blog->image = $request->image->store('blogs');
+        // }
         if ($request->hasFile('image')) {
-            $productImage = $request->file('image');
-            $productName = $request->slug . ".webp";
-            $image = $manager->read($productImage);
-            $image->resize(450, 600);
-            $image->toWebp(70)->save(public_path('blogs/image/') . $productName);
-            $blog->image = 'blogs/image/' . $productName;
-            // $blog->image = $request->image->store('blogs');
+
+            $file = $request->file('image');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('blogs/image/'), $fileName);
+
+            $blog->image = 'blogs/image/' . $fileName;
         }
+        // if ($request->hasFile('banner')) {
+        //     $productImage = $request->file('banner');
+        //     $bannerName = $request->slug . ".webp";
+        //     $image = $manager->read($productImage);
+        //     $image->resize(850, 510);
+        //     $image->toWebp(70)->save(public_path('blogs/banner/') . $bannerName);
+        //     $blog->banner = 'blogs/banner/' . $bannerName;
+        //     // $blog->banner = $request->banner->store('blogs');
+        // }
         if ($request->hasFile('banner')) {
-            $productImage = $request->file('banner');
-            $bannerName = $request->slug . ".webp";
-            $image = $manager->read($productImage);
-            $image->resize(850, 510);
-            $image->toWebp(70)->save(public_path('blogs/banner/') . $bannerName);
-            $blog->banner = 'blogs/banner/' . $bannerName;
-            // $blog->banner = $request->banner->store('blogs');
+
+            $file = $request->file('banner');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('blogs/banner/'), $fileName);
+
+            $blog->banner = 'blogs/banner/' . $fileName;
         }
         $blog->save();
 

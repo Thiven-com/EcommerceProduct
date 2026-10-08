@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Kanchipuram Silk Sare",
+        "image": "media\/products\/1791442770.webp",
+        "sale_price": "5499",
+        "actual_price": "6000",
+        "product_id": 1,
+        "product_variant_id": 1,
+        "stock": "55",
+        "sku": "SILK"
+    },
+    {
+        "name": "Banarasi Silk Saree",
+        "image": "media\/products\/1791443153.webp",
+        "sale_price": "6299",
+        "actual_price": "8000",
+        "product_id": 2,
+        "product_variant_id": 2,
+        "stock": "5",
+        "sku": "Sudhee1234"
+    },
+    {
+        "name": "Handloom Cotton Saree",
+        "image": "media\/products\/1791443236.webp",
+        "sale_price": "1899",
+        "actual_price": "2000",
+        "product_id": 3,
+        "product_variant_id": 3,
+        "stock": "5",
+        "sku": "iygikjrfv"
+    },
+    {
+        "name": "Premium Cotton Saree",
+        "image": "media\/products\/1791443340.webp",
+        "sale_price": "2199",
+        "actual_price": "3000",
+        "product_id": 4,
+        "product_variant_id": 4,
+        "stock": "5",
+        "sku": "ljkbvjvdb"
+    }
+]

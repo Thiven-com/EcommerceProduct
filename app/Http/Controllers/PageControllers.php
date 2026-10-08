@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 use App\Models\Banner;
 use App\Models\Category;
+use App\Models\Product;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 
 class PageControllers extends Controller
@@ -25,13 +27,212 @@ class PageControllers extends Controller
             ->orderBy('sort_order', 'asc')
             ->get();
         $categories = Category::where('status', 'show')
-        ->orderBy('id', 'asc')
-        ->get();
-        return view('website.home', compact('banners', 'categories'));
+            ->orderBy('id', 'asc')->take(8)
+            ->get();
+        $products = Product::with([
+            'category',
+            'variant',
+        ])
+            ->where('status', 'show')
+            ->whereHas('variant')
+            ->orderBy('orders', 'desc')
+            ->take(10)
+            ->get();
+        return view('website.home', compact('banners', 'categories', 'products'));
     }
-    public function shop()
+
+    public function shop(Request $request)
     {
-        return view('website.shop');
+        /*
+        |--------------------------------------------------------------------------
+        | Categories
+        |--------------------------------------------------------------------------
+        */
+
+        $categories = Category::where('status', 'show')
+            ->whereNull('deleted_at')
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('id', 'asc')
+            ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Products Query
+        |--------------------------------------------------------------------------
+        */
+
+        $productsQuery = Product::with([
+            'category',
+            'variant',
+        ])
+            ->where('status', 'show')
+            ->whereHas('variant');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Category Filter
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('category')) {
+
+            $category = $request->category;
+
+            $productsQuery->whereHas('category', function ($query) use ($category) {
+
+                $query->where('slug', $category)
+                    ->orWhere('id', $category);
+
+            });
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Minimum Price
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('min_price')) {
+
+            $minPrice = (float) $request->min_price;
+
+            $productsQuery->whereHas('variant', function ($query) use ($minPrice) {
+
+                $query->whereRaw(
+                    'CAST(price AS DECIMAL(15,2)) >= ?',
+                    [$minPrice]
+                );
+
+            });
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Maximum Price
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('max_price')) {
+
+            $maxPrice = (float) $request->max_price;
+
+            $productsQuery->whereHas('variant', function ($query) use ($maxPrice) {
+
+                $query->whereRaw(
+                    'CAST(price AS DECIMAL(15,2)) <= ?',
+                    [$maxPrice]
+                );
+
+            });
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Sorting
+        |--------------------------------------------------------------------------
+        */
+
+        switch ($request->get('sort')) {
+
+            case 'best-selling':
+
+                $productsQuery
+                    ->orderBy('orders', 'desc')
+                    ->orderBy('id', 'desc');
+
+                break;
+
+
+            case 'price-low':
+
+                $productsQuery->orderBy(
+                    Product::select('price')
+                        ->from('product_variants')
+                        ->whereColumn(
+                            'product_variants.product_id',
+                            'products.id'
+                        )
+                        ->limit(1),
+                    'asc'
+                );
+
+                break;
+
+
+            case 'price-high':
+
+                $productsQuery->orderBy(
+                    Product::select('price')
+                        ->from('product_variants')
+                        ->whereColumn(
+                            'product_variants.product_id',
+                            'products.id'
+                        )
+                        ->limit(1),
+                    'desc'
+                );
+
+                break;
+
+
+            case 'new-arrivals':
+
+                $productsQuery->orderBy('created_at', 'desc');
+
+                break;
+
+
+            default:
+
+                $productsQuery
+                    ->orderBy('is_feature', 'desc')
+                    ->orderBy('orders', 'desc')
+                    ->orderBy('id', 'desc');
+
+                break;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Pagination
+        |--------------------------------------------------------------------------
+        */
+
+        $products = $productsQuery
+            ->paginate(12)
+            ->withQueryString();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Category Product Counts
+        |--------------------------------------------------------------------------
+        */
+
+        $categoryCounts = Product::where('status', 'show')
+            ->whereHas('variant')
+            ->selectRaw('category_id, COUNT(*) as total')
+            ->groupBy('category_id')
+            ->pluck('total', 'category_id');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Return Shop Page
+        |--------------------------------------------------------------------------
+        */
+
+        return view('website.shop', compact(
+            'products',
+            'categories',
+            'categoryCounts'
+        ));
     }
     public function product_details()
     {

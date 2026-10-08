@@ -1484,33 +1484,79 @@
 
 
                     <!-- Account -->
-                    <a href="{{ route('login') }}" class="nav-icon" title="Account">
-                        <i class="fa-regular fa-user"></i>
-                    </a>
+                    @if(Auth::guard('customer')->check())
+                        <a href="{{ route('account') }}" class="nav-icon" title="My Account">
+                            <i class="fa-regular fa-user"></i>
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" class="nav-icon" title="Login">
+                            <i class="fa-regular fa-user"></i>
+                        </a>
+                    @endif
 
 
-                    <!-- Wishlist -->
-                    <a href="{{ route('wishlist') }}" class="nav-icon wishlist-icon" title="Wishlist">
+<!-- Wishlist -->
+@if(Auth::guard('customer')->check())
 
-                        <i class="fa-regular fa-heart"></i>
+    <a href="{{ route('wishlist') }}"
+       class="nav-icon wishlist-icon"
+       title="Wishlist">
 
-                        <span class="icon-count">
-                            8
-                        </span>
+        <i class="fa-regular fa-heart"></i>
 
-                    </a>
+        <span class="icon-count">
+            8
+        </span>
+
+    </a>
+
+@else
+
+    <a href="{{ route('login') }}"
+       class="nav-icon wishlist-icon"
+       title="Login">
+
+        <i class="fa-regular fa-heart"></i>
+
+        <span class="icon-count">
+            0
+        </span>
+
+    </a>
+
+@endif
 
 
-                    <!-- Cart -->
-                    <a href="{{ route('cart') }}" class="nav-icon cart-icon" title="Cart">
+<!-- Cart -->
+@if(Auth::guard('customer')->check())
 
-                        <i class="fa-solid fa-cart-shopping"></i>
+    <a href="{{ route('cart') }}"
+       class="nav-icon cart-icon"
+       title="Cart">
 
-                        <span class="icon-count">
-                            3
-                        </span>
+        <i class="fa-solid fa-cart-shopping"></i>
 
-                    </a>
+        <span class="icon-count">
+            3
+        </span>
+
+    </a>
+
+@else
+
+    <a href="{{ route('login') }}"
+       class="nav-icon cart-icon"
+       title="Login">
+
+        <i class="fa-solid fa-cart-shopping"></i>
+
+        <span class="icon-count">
+            0
+        </span>
+
+    </a>
+
+@endif
 
                 </div>
 

@@ -610,7 +610,7 @@
                         </a>
 
 
-                        <a href="#" class="sudheera-nav-item sudheera-nav-logout">
+                        <a href="{{ route('logout') }}" class="sudheera-nav-item sudheera-nav-logout">
 
                             <i class="icon icon-Logout"></i>
 

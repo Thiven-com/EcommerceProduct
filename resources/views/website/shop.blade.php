@@ -684,178 +684,95 @@
 
                         <!-- Category -->
 
-                        <div class="filter-group">
+<!-- Category -->
 
-                            <div class="filter-group-title">
-                                Shop By Category
-                            </div>
+<div class="filter-group">
 
-                            <label class="filter-option">
+    <div class="filter-group-title">
+        Shop By Category
+    </div>
 
-                                <div class="filter-option-left">
+    @forelse($categories as $category)
 
-                                    <input type="checkbox">
+        @php
+            $categoryCount = $categoryCounts[$category->id] ?? 0;
+        @endphp
 
-                                    <span>
-                                        Silk Sarees
-                                    </span>
+        <label class="filter-option">
 
-                                </div>
+            <div class="filter-option-left">
 
-                                <span class="filter-number">
-                                    08
-                                </span>
+                <input
+                    type="checkbox"
+                    class="category-filter"
+                    value="{{ $category->slug }}"
+                    {{ request('category') == $category->slug ? 'checked' : '' }}
+                >
 
-                            </label>
+                <span>
+                    {{ $category->title }}
+                </span>
 
+            </div>
 
-                            <label class="filter-option">
+            <span class="filter-number">
+                {{ str_pad($categoryCount, 2, '0', STR_PAD_LEFT) }}
+            </span>
 
-                                <div class="filter-option-left">
+        </label>
 
-                                    <input type="checkbox">
+    @empty
 
-                                    <span>
-                                        Cotton Sarees
-                                    </span>
+        <span style="font-size:13px;color:#999;">
+            No categories available
+        </span>
 
-                                </div>
+    @endforelse
 
-                                <span class="filter-number">
-                                    06
-                                </span>
-
-                            </label>
-
-
-                            <label class="filter-option">
-
-                                <div class="filter-option-left">
-
-                                    <input type="checkbox">
-
-                                    <span>
-                                        Party Wear
-                                    </span>
-
-                                </div>
-
-                                <span class="filter-number">
-                                    04
-                                </span>
-
-                            </label>
+</div>
 
 
-                            <label class="filter-option">
-
-                                <div class="filter-option-left">
-
-                                    <input type="checkbox">
-
-                                    <span>
-                                        Designer Sarees
-                                    </span>
-
-                                </div>
-
-                                <span class="filter-number">
-                                    03
-                                </span>
-
-                            </label>
-
-
-                            <label class="filter-option">
-
-                                <div class="filter-option-left">
-
-                                    <input type="checkbox">
-
-                                    <span>
-                                        Linen Sarees
-                                    </span>
-
-                                </div>
-
-                                <span class="filter-number">
-                                    03
-                                </span>
-
-                            </label>
-
-                        </div>
-
-
-                        <!-- Fabric -->
-
-                        <div class="filter-group">
-
-                            <div class="filter-group-title">
-                                Fabric
-                            </div>
-
-                            <label class="filter-option">
-
-                                <div class="filter-option-left">
-                                    <input type="checkbox">
-                                    <span>Pure Silk</span>
-                                </div>
-
-                            </label>
-
-                            <label class="filter-option">
-
-                                <div class="filter-option-left">
-                                    <input type="checkbox">
-                                    <span>Cotton</span>
-                                </div>
-
-                            </label>
-
-                            <label class="filter-option">
-
-                                <div class="filter-option-left">
-                                    <input type="checkbox">
-                                    <span>Organza</span>
-                                </div>
-
-                            </label>
-
-                            <label class="filter-option">
-
-                                <div class="filter-option-left">
-                                    <input type="checkbox">
-                                    <span>Georgette</span>
-                                </div>
-
-                            </label>
-
-                        </div>
 
 
                         <!-- Price -->
 
-                        <div class="filter-group">
+<!-- Price -->
 
-                            <div class="filter-group-title">
-                                Price Range
-                            </div>
+<div class="filter-group">
 
-                            <div class="filter-price">
+    <div class="filter-group-title">
+        Price Range
+    </div>
 
-                                <input type="number" placeholder="Min ₹">
+    <div class="filter-price">
 
-                                <input type="number" placeholder="Max ₹">
+        <input
+            type="number"
+            name="min_price"
+            id="minPrice"
+            placeholder="Min ₹"
+            value="{{ request('min_price') }}"
+        >
 
-                            </div>
+        <input
+            type="number"
+            name="max_price"
+            id="maxPrice"
+            placeholder="Max ₹"
+            value="{{ request('max_price') }}"
+        >
 
-                        </div>
+    </div>
 
+</div>
 
-                        <button class="filter-button">
-                            APPLY FILTER
-                        </button>
+<button
+    type="button"
+    class="filter-button"
+    onclick="applyFilters()"
+>
+    APPLY FILTER
+</button>
 
                     </aside>
 
@@ -878,29 +795,49 @@
                                     ☰ FILTER
                                 </button>
 
-                                <select class="sort-select">
 
-                                    <option>
-                                        Sort By: Featured
-                                    </option>
+<select
+    class="sort-select"
+    id="sortProducts"
+    onchange="applySort(this.value)"
+>
 
-                                    <option>
-                                        Best Selling
-                                    </option>
+    <option
+        value=""
+        {{ !request('sort') ? 'selected' : '' }}
+    >
+        Sort By: Featured
+    </option>
 
-                                    <option>
-                                        Price: Low to High
-                                    </option>
+    <option
+        value="best-selling"
+        {{ request('sort') == 'best-selling' ? 'selected' : '' }}
+    >
+        Best Selling
+    </option>
 
-                                    <option>
-                                        Price: High to Low
-                                    </option>
+    <option
+        value="price-low"
+        {{ request('sort') == 'price-low' ? 'selected' : '' }}
+    >
+        Price: Low to High
+    </option>
 
-                                    <option>
-                                        New Arrivals
-                                    </option>
+    <option
+        value="price-high"
+        {{ request('sort') == 'price-high' ? 'selected' : '' }}
+    >
+        Price: High to Low
+    </option>
 
-                                </select>
+    <option
+        value="new-arrivals"
+        {{ request('sort') == 'new-arrivals' ? 'selected' : '' }}
+    >
+        New Arrivals
+    </option>
+
+</select>
 
                             </div>
 
@@ -961,816 +898,282 @@
                                                          PRODUCT GRID
                                                     ================================================== -->
 
-                        <div class="sudheera-product-grid">
+ 
+<div class="sudheera-product-grid">
 
+    @forelse($products as $product)
 
-                            <!-- PRODUCT 1 -->
+        @php
 
-                            <div class="sudheera-product-card">
+            $variant = $product->variant;
 
-                                <div class="product-image-wrap">
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-                                        <img src="{{ asset('website') }}/images/product1.webp" alt="Kanchipuram Silk Saree">
-                                    </a>
+            $sellingPrice = $variant?->price;
+            $actualPrice = $variant?->actual_price;
 
-                                    <span class="product-badge">
-                                        Bestseller
-                                    </span>
+            /*
+            |--------------------------------------------------------------------------
+            | Discount
+            |--------------------------------------------------------------------------
+            */
 
-                                    <button class="product-wishlist">
-                                        ♡
-                                    </button>
+            $discount = 0;
 
-                                </div>
+            if (
+                is_numeric($actualPrice) &&
+                is_numeric($sellingPrice) &&
+                (float) $actualPrice > 0 &&
+                (float) $actualPrice > (float) $sellingPrice
+            ) {
+                $discount = round(
+                    (
+                        ((float) $actualPrice - (float) $sellingPrice)
+                        / (float) $actualPrice
+                    ) * 100
+                );
+            }
 
-                                <div class="product-info">
+            /*
+            |--------------------------------------------------------------------------
+            | Product Image
+            |--------------------------------------------------------------------------
+            */
 
-                                    <div class="product-category">
-                                        Pure Silk
-                                    </div>
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-                                        <h3 class="product-name">
-                                            Kanchipuram Silk Saree
-                                        </h3>
-                                    </a>
+            $productImage = null;
 
-                                    <div class="product-rating">
+            if ($variant && !empty($variant->image)) {
 
-                                        <span class="stars">
-                                            ★★★★★
-                                        </span>
+                $productImage = $variant->image;
 
-                                        <span class="rating-count">
-                                            4.9 (342)
-                                        </span>
+            } elseif (!empty($product->image)) {
 
-                                    </div>
+                $productImage = $product->image;
 
-                                    <div class="product-price">
+            }
 
-                                        <span class="price-current">
-                                            ₹4,999
-                                        </span>
+            /*
+            |--------------------------------------------------------------------------
+            | Product Badge
+            |--------------------------------------------------------------------------
+            */
 
-                                        <span class="price-old">
-                                            ₹6,999
-                                        </span>
+            $badge = null;
+            $badgeClass = '';
 
-                                        <span class="price-off">
-                                            28% OFF
-                                        </span>
+            if (
+                $product->orders > 0 &&
+                $loop->iteration <= 2
+            ) {
 
-                                    </div>
+                $badge = 'Bestseller';
 
-                                    <button class="add-cart-btn">
-                                        ADD TO CART
-                                    </button>
+            } elseif (
+                $product->created_at &&
+                $product->created_at->gt(now()->subDays(30))
+            ) {
 
-                                </div>
+                $badge = 'New';
+                $badgeClass = 'new';
 
-                            </div>
+            } elseif ($product->is_feature === 'yes') {
 
+                $badge = 'Featured';
 
-                            <!-- PRODUCT 2 -->
-                            <div class="sudheera-product-card">
+            }
 
-                                <div class="product-image-wrap">
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
+        @endphp
 
-                                        <img src="{{ asset('website') }}/images/product2.webp" alt="Organza Floral Saree">
-                                    </a>
 
-                                    <span class="product-badge new">
-                                        New
-                                    </span>
+        <div class="sudheera-product-card">
 
-                                    <button class="product-wishlist">
-                                        ♡
-                                    </button>
+            <!-- Product Image -->
 
-                                </div>
+            <div class="product-image-wrap">
 
-                                <div class="product-info">
+                <a
+                    href="{{ route('productdetails', ['slug' => $product->slug]) }}"
+                    class="sudheera-product-card-link"
+                >
 
-                                    <div class="product-category">
-                                        Organza
-                                    </div>
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
+                    @if($productImage)
 
-                                        <h3 class="product-name">
-                                            Organza Floral Saree
-                                        </h3>
-                                    </a>
+                        <img
+                            src="{{ asset($productImage) }}"
+                            alt="{{ $product->title }}"
+                            loading="lazy"
+                        >
 
-                                    <div class="product-rating">
+                    @else
 
-                                        <span class="stars">
-                                            ★★★★★
-                                        </span>
+                        <img
+                            src="{{ asset('website/images/product-placeholder.png') }}"
+                            alt="{{ $product->title }}"
+                            loading="lazy"
+                        >
 
-                                        <span class="rating-count">
-                                            4.8 (210)
-                                        </span>
+                    @endif
 
-                                    </div>
+                </a>
 
-                                    <div class="product-price">
 
-                                        <span class="price-current">
-                                            ₹2,799
-                                        </span>
+                @if($badge)
 
-                                        <span class="price-old">
-                                            ₹4,499
-                                        </span>
+                    <span class="product-badge {{ $badgeClass }}">
+                        {{ $badge }}
+                    </span>
 
-                                        <span class="price-off">
-                                            38% OFF
-                                        </span>
+                @endif
 
-                                    </div>
 
-                                    <button class="add-cart-btn">
-                                        ADD TO CART
-                                    </button>
+                <button
+                    type="button"
+                    class="product-wishlist"
+                    data-product-id="{{ $product->id }}"
+                >
+                    ♡
+                </button>
 
-                                </div>
+            </div>
 
-                            </div>
 
+            <!-- Product Information -->
 
+            <div class="product-info">
 
-                            <!-- PRODUCT 3 -->
-                            <div class="sudheera-product-card">
 
-                                <div class="product-image-wrap">
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
+                @if($product->category)
 
-                                        <img src="{{ asset('website') }}/images/product3.webp" alt="Banarasi Silk Saree">
-                                    </a>
+                    <div class="product-category">
 
-                                    <span class="product-badge">
-                                        Bestseller
-                                    </span>
+                        {{ $product->category->title }}
 
-                                    <button class="product-wishlist">
-                                        ♡
-                                    </button>
+                    </div>
 
-                                </div>
+                @endif
 
-                                <div class="product-info">
 
-                                    <div class="product-category">
-                                        Banarasi Silk
-                                    </div>
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
+                <a
+                    href="{{ route('productdetails', ['slug' => $product->slug]) }}"
+                    class="sudheera-product-card-link"
+                >
 
-                                        <h3 class="product-name">
-                                            Banarasi Silk Saree
-                                        </h3>
-                                    </a>
+                    <h3 class="product-name">
 
-                                    <div class="product-rating">
+                        {{ $product->title }}
 
-                                        <span class="stars">
-                                            ★★★★★
-                                        </span>
+                    </h3>
 
-                                        <span class="rating-count">
-                                            4.9 (418)
-                                        </span>
+                </a>
 
-                                    </div>
 
-                                    <div class="product-price">
+                <!-- Rating -->
 
-                                        <span class="price-current">
-                                            ₹6,299
-                                        </span>
+                <div class="product-rating">
 
-                                        <span class="price-old">
-                                            ₹9,999
-                                        </span>
+                    <span class="stars">
+                        ★★★★★
+                    </span>
 
-                                        <span class="price-off">
-                                            37% OFF
-                                        </span>
+                    <span class="rating-count">
 
-                                    </div>
+                        @if($product->orders > 0)
 
-                                    <button class="add-cart-btn">
-                                        ADD TO CART
-                                    </button>
+                            Bestselling
 
-                                </div>
+                        @else
 
-                            </div>
+                            Available
 
+                        @endif
 
-                            <!-- PRODUCT 4 -->
-                            <div class="sudheera-product-card">
+                    </span>
 
-                                <div class="product-image-wrap">
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
+                </div>
 
-                                        <img src="{{ asset('website') }}/images/product4.webp" alt="Chanderi Saree">
-                                    </a>
 
-                                    <button class="product-wishlist">
-                                        ♡
-                                    </button>
+                <!-- Price -->
 
-                                </div>
+                <div class="product-price">
 
-                                <div class="product-info">
+                    @if(is_numeric($sellingPrice))
 
-                                    <div class="product-category">
-                                        Chanderi
-                                    </div>
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
+                        <span class="price-current">
 
-                                        <h3 class="product-name">
-                                            Elegant Chanderi Saree
-                                        </h3>
-                                    </a>
+                            ₹{{ number_format((float) $sellingPrice, 0) }}
 
-                                    <div class="product-rating">
+                        </span>
 
-                                        <span class="stars">
-                                            ★★★★★
-                                        </span>
+                    @endif
 
-                                        <span class="rating-count">
-                                            4.7 (156)
-                                        </span>
 
-                                    </div>
+                    @if(
+                        is_numeric($actualPrice) &&
+                        is_numeric($sellingPrice) &&
+                        (float) $actualPrice > (float) $sellingPrice
+                    )
 
-                                    <div class="product-price">
+                        <span class="price-old">
 
-                                        <span class="price-current">
-                                            ₹2,499
-                                        </span>
+                            ₹{{ number_format((float) $actualPrice, 0) }}
 
-                                        <span class="price-old">
-                                            ₹3,999
-                                        </span>
+                        </span>
 
-                                        <span class="price-off">
-                                            37% OFF
-                                        </span>
+                    @endif
 
-                                    </div>
 
-                                    <button class="add-cart-btn">
-                                        ADD TO CART
-                                    </button>
+                    @if($discount > 0)
 
-                                </div>
+                        <span class="price-off">
 
-                            </div>
-                            </a>
+                            {{ $discount }}% OFF
 
+                        </span>
 
-                            <!-- PRODUCT 5 -->
-                            <div class="sudheera-product-card">
+                    @endif
 
-                                <div class="product-image-wrap">
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
+                </div>
 
-                                        <img src="{{ asset('website') }}/images/product5.webp"
-                                            alt="Designer Party Wear Saree">
-                                    </a>
 
-                                    <span class="product-badge">
-                                        Bestseller
-                                    </span>
+                <!-- Add To Cart -->
 
-                                    <button class="product-wishlist">
-                                        ♡
-                                    </button>
+                <button
+                    type="button"
+                    class="add-cart-btn"
+                    data-product-id="{{ $product->id }}"
+                    data-variant-id="{{ $variant?->id }}"
+                >
+                    ADD TO CART
+                </button>
 
-                                </div>
 
-                                <div class="product-info">
+            </div>
 
-                                    <div class="product-category">
-                                        Designer
-                                    </div>
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
+        </div>
 
-                                        <h3 class="product-name">
-                                            Designer Party Wear Saree
-                                        </h3>
-                                    </a>
 
-                                    <div class="product-rating">
+    @empty
 
-                                        <span class="stars">
-                                            ★★★★★
-                                        </span>
+        <div
+            style="
+                grid-column: 1 / -1;
+                text-align:center;
+                padding:60px 20px;
+                color:#777;
+            "
+        >
 
-                                        <span class="rating-count">
-                                            4.8 (209)
-                                        </span>
+            <h3>
+                No products found
+            </h3>
 
-                                    </div>
+            <p>
+                Try changing your filters or browse another category.
+            </p>
 
-                                    <div class="product-price">
+        </div>
 
-                                        <span class="price-current">
-                                            ₹3,999
-                                        </span>
+    @endforelse
 
-                                        <span class="price-old">
-                                            ₹6,499
-                                        </span>
-
-                                        <span class="price-off">
-                                            39% OFF
-                                        </span>
-
-                                    </div>
-
-                                    <button class="add-cart-btn">
-                                        ADD TO CART
-                                    </button>
-
-                                </div>
-
-                            </div>
-                            </a>
-
-
-                            <!-- PRODUCT 6 -->
-                            <div class="sudheera-product-card">
-
-                                <div class="product-image-wrap">
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <img src="{{ asset('website') }}/images/product6.webp" alt="Linen Saree">
-                                    </a>
-
-                                    <button class="product-wishlist">
-                                        ♡
-                                    </button>
-
-                                </div>
-
-                                <div class="product-info">
-
-                                    <div class="product-category">
-                                        Linen
-                                    </div>
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <h3 class="product-name">
-                                            Premium Linen Saree
-                                        </h3>
-                                    </a>
-
-                                    <div class="product-rating">
-
-                                        <span class="stars">
-                                            ★★★★★
-                                        </span>
-
-                                        <span class="rating-count">
-                                            4.8 (108)
-                                        </span>
-
-                                    </div>
-
-                                    <div class="product-price">
-
-                                        <span class="price-current">
-                                            ₹2,299
-                                        </span>
-
-                                        <span class="price-old">
-                                            ₹3,299
-                                        </span>
-
-                                        <span class="price-off">
-                                            30% OFF
-                                        </span>
-
-                                    </div>
-
-                                    <button class="add-cart-btn">
-                                        ADD TO CART
-                                    </button>
-
-                                </div>
-
-                            </div>
-                            </a>
-
-
-                            <!-- PRODUCT 7 -->
-                            <div class="sudheera-product-card">
-
-                                <div class="product-image-wrap">
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <img src="{{ asset('website') }}/images/product7.webp" alt="Handloom Cotton Saree">
-                                    </a>
-
-                                    <span class="product-badge new">
-                                        New
-                                    </span>
-
-                                    <button class="product-wishlist">
-                                        ♡
-                                    </button>
-
-                                </div>
-
-                                <div class="product-info">
-
-                                    <div class="product-category">
-                                        Cotton
-                                    </div>
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <h3 class="product-name">
-                                            Handloom Cotton Saree
-                                        </h3>
-                                    </a>
-
-                                    <div class="product-rating">
-
-                                        <span class="stars">
-                                            ★★★★★
-                                        </span>
-
-                                        <span class="rating-count">
-                                            4.8 (187)
-                                        </span>
-
-                                    </div>
-
-                                    <div class="product-price">
-
-                                        <span class="price-current">
-                                            ₹1,899
-                                        </span>
-
-                                        <span class="price-old">
-                                            ₹2,699
-                                        </span>
-
-                                        <span class="price-off">
-                                            30% OFF
-                                        </span>
-
-                                    </div>
-
-                                    <button class="add-cart-btn">
-                                        ADD TO CART
-                                    </button>
-
-                                </div>
-
-                            </div>
-                            </a>
-
-
-                            <!-- PRODUCT 8 -->
-                            <div class="sudheera-product-card">
-
-                                <div class="product-image-wrap">
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <img src="{{ asset('website') }}/images/product8.webp" alt="Purple Festive Saree">
-                                    </a>
-
-                                    <span class="product-badge">
-                                        Festive
-                                    </span>
-
-                                    <button class="product-wishlist">
-                                        ♡
-                                    </button>
-
-                                </div>
-
-                                <div class="product-info">
-
-                                    <div class="product-category">
-                                        Party Wear
-                                    </div>
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <h3 class="product-name">
-                                            Royal Purple Festive Saree
-                                        </h3>
-                                    </a>
-
-                                    <div class="product-rating">
-
-                                        <span class="stars">
-                                            ★★★★★
-                                        </span>
-
-                                        <span class="rating-count">
-                                            4.9 (265)
-                                        </span>
-
-                                    </div>
-
-                                    <div class="product-price">
-
-                                        <span class="price-current">
-                                            ₹4,299
-                                        </span>
-
-                                        <span class="price-old">
-                                            ₹6,299
-                                        </span>
-
-                                        <span class="price-off">
-                                            32% OFF
-                                        </span>
-
-                                    </div>
-
-                                    <button class="add-cart-btn">
-                                        ADD TO CART
-                                    </button>
-
-                                </div>
-
-                            </div>
-                            </a>
-
-
-                            <!-- PRODUCT 9 -->
-                            <div class="sudheera-product-card">
-
-                                <div class="product-image-wrap">
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <img src="{{ asset('website') }}/images/product9.webp" alt="Green Silk Saree">
-                                    </a>
-
-                                    <button class="product-wishlist">
-                                        ♡
-                                    </button>
-
-                                </div>
-
-                                <div class="product-info">
-
-                                    <div class="product-category">
-                                        Silk
-                                    </div>
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <h3 class="product-name">
-                                            Emerald Green Silk Saree
-                                        </h3>
-                                    </a>
-
-                                    <div class="product-rating">
-
-                                        <span class="stars">
-                                            ★★★★★
-                                        </span>
-
-                                        <span class="rating-count">
-                                            4.9 (198)
-                                        </span>
-
-                                    </div>
-
-                                    <div class="product-price">
-
-                                        <span class="price-current">
-                                            ₹5,499
-                                        </span>
-
-                                        <span class="price-old">
-                                            ₹7,999
-                                        </span>
-
-                                        <span class="price-off">
-                                            31% OFF
-                                        </span>
-
-                                    </div>
-
-                                    <button class="add-cart-btn">
-                                        ADD TO CART
-                                    </button>
-
-                                </div>
-
-                            </div>
-                            </a>
-
-
-                            <!-- PRODUCT 10 -->
-                            <div class="sudheera-product-card">
-
-                                <div class="product-image-wrap">
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <img src="{{ asset('website') }}/images/product10.jpg" alt="Pink Designer Saree">
-                                    </a>
-
-                                    <button class="product-wishlist">
-                                        ♡
-                                    </button>
-
-                                </div>
-
-                                <div class="product-info">
-
-                                    <div class="product-category">
-                                        Designer
-                                    </div>
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <h3 class="product-name">
-                                            Rose Pink Designer Saree
-                                        </h3>
-                                    </a>
-
-                                    <div class="product-rating">
-
-                                        <span class="stars">
-                                            ★★★★★
-                                        </span>
-
-                                        <span class="rating-count">
-                                            4.8 (176)
-                                        </span>
-
-                                    </div>
-
-                                    <div class="product-price">
-
-                                        <span class="price-current">
-                                            ₹3,499
-                                        </span>
-
-                                        <span class="price-old">
-                                            ₹5,499
-                                        </span>
-
-                                        <span class="price-off">
-                                            36% OFF
-                                        </span>
-
-                                    </div>
-
-                                    <button class="add-cart-btn">
-                                        ADD TO CART
-                                    </button>
-
-                                </div>
-
-                            </div>
-                            </a>
-
-
-                            <!-- PRODUCT 11 -->
-                            <div class="sudheera-product-card">
-
-                                <div class="product-image-wrap">
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <img src="{{ asset('website') }}/images/product1.webp" alt="Yellow Silk Saree">
-                                    </a>
-
-                                    <span class="product-badge new">
-                                        New
-                                    </span>
-
-                                    <button class="product-wishlist">
-                                        ♡
-                                    </button>
-
-                                </div>
-
-                                <div class="product-info">
-
-                                    <div class="product-category">
-                                        Silk
-                                    </div>
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <h3 class="product-name">
-                                            Mustard Yellow Silk Saree
-                                        </h3>
-                                    </a>
-
-                                    <div class="product-rating">
-
-                                        <span class="stars">
-                                            ★★★★★
-                                        </span>
-
-                                        <span class="rating-count">
-                                            4.7 (145)
-                                        </span>
-
-                                    </div>
-
-                                    <div class="product-price">
-
-                                        <span class="price-current">
-                                            ₹3,999
-                                        </span>
-
-                                        <span class="price-old">
-                                            ₹5,999
-                                        </span>
-
-                                        <span class="price-off">
-                                            33% OFF
-                                        </span>
-
-                                    </div>
-
-                                    <button class="add-cart-btn">
-                                        ADD TO CART
-                                    </button>
-
-                                </div>
-
-                            </div>
-                            </a>
-
-
-                            <!-- PRODUCT 12 -->
-                            <div class="sudheera-product-card">
-
-                                <div class="product-image-wrap">
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <img src="{{ asset('website') }}/images/product2.webp" alt="Peach Chanderi Saree">
-                                    </a>
-
-                                    <button class="product-wishlist">
-                                        ♡
-                                    </button>
-
-                                </div>
-
-                                <div class="product-info">
-
-                                    <div class="product-category">
-                                        Chanderi
-                                    </div>
-                                    <a href="{{ route('productdetails') }}" class="sudheera-product-card-link">
-
-                                        <h3 class="product-name">
-                                            Peach Traditional Saree
-                                        </h3>
-                                    </a>
-
-                                    <div class="product-rating">
-
-                                        <span class="stars">
-                                            ★★★★★
-                                        </span>
-
-                                        <span class="rating-count">
-                                            4.8 (132)
-                                        </span>
-
-                                    </div>
-
-                                    <div class="product-price">
-
-                                        <span class="price-current">
-                                            ₹2,699
-                                        </span>
-
-                                        <span class="price-old">
-                                            ₹3,999
-                                        </span>
-
-                                        <span class="price-off">
-                                            32% OFF
-                                        </span>
-
-                                    </div>
-
-                                    <button class="add-cart-btn">
-                                        ADD TO CART
-                                    </button>
-
-                                </div>
-
-                            </div>
-                            </a>
-
-
-                        </div>
+</div>
 
                     </div>
 
@@ -1781,38 +1184,219 @@
         </section>
 
     </div>
+    @if($products->hasPages())
+
+    <div class="shop-pagination">
+
+        {{ $products->links('pagination::bootstrap-5') }}
+
+    </div>
+
+@endif
 
 
-    <script>
+<script>
 
-        /* Category pill active state */
+    /*
+    |--------------------------------------------------------------------------
+    | Apply Category + Price Filters
+    |--------------------------------------------------------------------------
+    */
 
-        document.querySelectorAll('.category-pill').forEach(function (button) {
+    function applyFilters() {
 
-            button.addEventListener('click', function () {
+        const url = new URL(
+            "{{ route('shop') }}",
+            window.location.origin
+        );
 
-                document.querySelectorAll('.category-pill')
+        const selectedCategory =
+            document.querySelector('.category-filter:checked');
+
+        const minPrice =
+            document.getElementById('minPrice')?.value;
+
+        const maxPrice =
+            document.getElementById('maxPrice')?.value;
+
+
+        if (selectedCategory && selectedCategory.value) {
+
+            url.searchParams.set(
+                'category',
+                selectedCategory.value
+            );
+
+        }
+
+
+        if (minPrice) {
+
+            url.searchParams.set(
+                'min_price',
+                minPrice
+            );
+
+        }
+
+
+        if (maxPrice) {
+
+            url.searchParams.set(
+                'max_price',
+                maxPrice
+            );
+
+        }
+
+
+        window.location.href = url.toString();
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Category Filter
+    |--------------------------------------------------------------------------
+    */
+
+    document
+        .querySelectorAll('.category-filter')
+        .forEach(function (checkbox) {
+
+            checkbox.addEventListener('change', function () {
+
+                document
+                    .querySelectorAll('.category-filter')
                     .forEach(function (item) {
-                        item.classList.remove('active');
+
+                        if (item !== checkbox) {
+
+                            item.checked = false;
+
+                        }
+
                     });
 
-                this.classList.add('active');
+                applyFilters();
 
             });
 
         });
 
 
-        /* Wishlist */
+    /*
+    |--------------------------------------------------------------------------
+    | Sort Products
+    |--------------------------------------------------------------------------
+    */
 
-        document.querySelectorAll('.product-wishlist').forEach(function (button) {
+    function applySort(sortValue) {
 
-            button.addEventListener('click', function () {
+        const url = new URL(
+            "{{ route('shop') }}",
+            window.location.origin
+        );
+
+
+        const selectedCategory =
+            document.querySelector('.category-filter:checked');
+
+        const minPrice =
+            document.getElementById('minPrice')?.value;
+
+        const maxPrice =
+            document.getElementById('maxPrice')?.value;
+
+
+        if (selectedCategory && selectedCategory.value) {
+
+            url.searchParams.set(
+                'category',
+                selectedCategory.value
+            );
+
+        }
+
+
+        if (minPrice) {
+
+            url.searchParams.set(
+                'min_price',
+                minPrice
+            );
+
+        }
+
+
+        if (maxPrice) {
+
+            url.searchParams.set(
+                'max_price',
+                maxPrice
+            );
+
+        }
+
+
+        if (sortValue) {
+
+            url.searchParams.set(
+                'sort',
+                sortValue
+            );
+
+        }
+
+
+        window.location.href = url.toString();
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Clear All Filters
+    |--------------------------------------------------------------------------
+    */
+
+    document
+        .querySelector('.filter-clear')
+        ?.addEventListener('click', function (event) {
+
+            event.preventDefault();
+
+            window.location.href =
+                "{{ route('shop') }}";
+
+        });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Wishlist Visual State
+    |--------------------------------------------------------------------------
+    */
+
+    document
+        .querySelectorAll('.product-wishlist')
+        .forEach(function (button) {
+
+            button.addEventListener('click', function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
 
                 if (this.innerHTML.trim() === '♡') {
+
                     this.innerHTML = '♥';
+
                 } else {
+
                     this.innerHTML = '♡';
+
                 }
 
             });
@@ -1820,19 +1404,38 @@
         });
 
 
-        /* Add to cart visual state */
+    /*
+    |--------------------------------------------------------------------------
+    | Add To Cart Visual State
+    |--------------------------------------------------------------------------
+    */
 
-        document.querySelectorAll('.add-cart-btn').forEach(function (button) {
+    document
+        .querySelectorAll('.add-cart-btn')
+        .forEach(function (button) {
 
             button.addEventListener('click', function () {
 
-                const originalText = this.innerHTML;
+                const originalText =
+                    this.innerHTML;
 
-                this.innerHTML = 'ADDED ✓';
 
-                setTimeout(() => {
+                this.innerHTML =
+                    'ADDED ✓';
 
-                    this.innerHTML = originalText;
+                this.disabled = true;
+
+
+                const currentButton = this;
+
+
+                setTimeout(function () {
+
+                    currentButton.innerHTML =
+                        originalText;
+
+                    currentButton.disabled =
+                        false;
 
                 }, 1500);
 
@@ -1840,6 +1443,6 @@
 
         });
 
-    </script>
+</script>
 
 @endsection
