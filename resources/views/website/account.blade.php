@@ -545,7 +545,7 @@
                         </div>
 
 
-                        <a href="#" class="sudheera-nav-item active">
+                        <a href="{{ route('account') }}" class="sudheera-nav-item active">
 
                             <i class="icon icon-Dashboard"></i>
 
@@ -558,7 +558,7 @@
                         </a>
 
 
-                        <a href="#" class="sudheera-nav-item">
+                        <a href="{{ route('orders') }}" class="sudheera-nav-item">
 
                             <i class="icon icon-Box"></i>
 
