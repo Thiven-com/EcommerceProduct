@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\BlogCategory;
 use Illuminate\Support\Facades\Auth;
+use App\Models\WishlistItem;
+
 
 class PageControllers extends Controller
 {
@@ -30,9 +32,12 @@ class PageControllers extends Controller
             })
             ->orderBy('sort_order', 'asc')
             ->get();
+
         $categories = Category::where('status', 'show')
-            ->orderBy('id', 'asc')->take(8)
+            ->orderBy('id', 'asc')
+            ->take(8)
             ->get();
+
         $products = Product::with([
             'category',
             'variant',
@@ -42,7 +47,33 @@ class PageControllers extends Controller
             ->orderBy('orders', 'desc')
             ->take(10)
             ->get();
-        return view('website.home', compact('banners', 'categories', 'products'));
+
+        /*
+        |--------------------------------------------------------------------------
+        | Wishlist
+        |--------------------------------------------------------------------------
+        */
+
+        $wishlistVariantIds = [];
+
+        if (Auth::guard('customer')->check()) {
+
+            $userId = Auth::guard('customer')->id();
+
+            $wishlistVariantIds = WishlistItem::where('user_id', $userId)
+                ->pluck('product_variant_id')
+                ->toArray();
+        }
+
+        return view(
+            'website.home',
+            compact(
+                'banners',
+                'categories',
+                'products',
+                'wishlistVariantIds'
+            )
+        );
     }
 
     public function shop(Request $request)
@@ -227,6 +258,24 @@ class PageControllers extends Controller
 
 
         /*
+|--------------------------------------------------------------------------
+| Wishlist
+|--------------------------------------------------------------------------
+*/
+
+        $wishlistVariantIds = [];
+
+        if (Auth::guard('customer')->check()) {
+
+            $userId = Auth::guard('customer')->id();
+
+            $wishlistVariantIds = WishlistItem::where('user_id', $userId)
+                ->pluck('product_variant_id')
+                ->toArray();
+        }
+
+
+        /*
         |--------------------------------------------------------------------------
         | Return Shop Page
         |--------------------------------------------------------------------------
@@ -235,7 +284,8 @@ class PageControllers extends Controller
         return view('website.shop', compact(
             'products',
             'categories',
-            'categoryCounts'
+            'categoryCounts',
+            'wishlistVariantIds'
         ));
     }
     // public function product_details()
@@ -349,6 +399,27 @@ class PageControllers extends Controller
         }
 
         /*
+|--------------------------------------------------------------------------
+| Wishlist
+|--------------------------------------------------------------------------
+*/
+
+        $wishlistVariantIds = [];
+
+        if (Auth::guard('customer')->check()) {
+
+            $userId = Auth::guard('customer')->id();
+
+            $wishlistVariantIds = WishlistItem::where('user_id', $userId)
+                ->whereIn(
+                    'product_variant_id',
+                    $product->variants->pluck('id')
+                )
+                ->pluck('product_variant_id')
+                ->toArray();
+        }
+
+        /*
         |--------------------------------------------------------------------------
         | Return Product Details Page
         |--------------------------------------------------------------------------
@@ -361,7 +432,8 @@ class PageControllers extends Controller
             'actualPrice',
             'discount',
             'productImage',
-            'badge'
+            'badge',
+            'wishlistVariantIds'
         ));
     }
     public function blog()
@@ -481,7 +553,31 @@ class PageControllers extends Controller
     }
     public function wishlist()
     {
-        return view('website.wishlist');
+        if (!Auth::guard('customer')->check()) {
+            return redirect()->route('login');
+        }
+
+        $userId = Auth::guard('customer')->id();
+
+        $wishlistItems = WishlistItem::with([
+            'variant' => function ($query) {
+
+                $query->with([
+                    'product.category',
+                    'category',
+                    'media'
+                ]);
+
+            }
+        ])
+            ->where('user_id', $userId)
+            ->latest()
+            ->get();
+
+        return view(
+            'website.wishlist',
+            compact('wishlistItems')
+        );
     }
     public function contactus()
     {
