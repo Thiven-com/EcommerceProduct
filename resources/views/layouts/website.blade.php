@@ -1413,6 +1413,7 @@
                         Home
                     </a>
 
+
                     <div class="nav-dropdown">
 
                         <a href="javascript:void(0);" class="nav-link">
@@ -1425,31 +1426,17 @@
 
                         <div class="dropdown-menu">
 
-                            <a href="{{ route('shop') }}">Silk Sarees</a>
+                            @foreach($featuredProducts as $product)
 
-                            <a href="{{ route('shop') }}">Kanjivaram Sarees</a>
+                                <a href="{{ route('productdetails', ['slug' => $product->slug]) }}">
+                                    {{ $product->title }}
+                                </a>
 
-                            <a href="{{ route('shop') }}">Banarasi Sarees</a>
-
-                            <a href="{{ route('shop') }}">Cotton Sarees</a>
-
-                            <a href="{{ route('shop') }}">Organza Sarees</a>
+                            @endforeach
 
                         </div>
 
                     </div>
-
-                    <a href="{{ route('shop') }}" class="nav-link">
-                        New Arrivals
-                    </a>
-
-                    <a href="{{ route('shop') }}" class="nav-link">
-                        Wedding
-                    </a>
-
-                    <a href="{{ route('shop') }}" class="nav-link">
-                        Festive
-                    </a>
 
                     <a href="{{ route('shop') }}" class="nav-link">
                         Shop All
@@ -1495,68 +1482,60 @@
                     @endif
 
 
-<!-- Wishlist -->
-@if(Auth::guard('customer')->check())
+                    <!-- Wishlist -->
+                    @if(Auth::guard('customer')->check())
 
-    <a href="{{ route('wishlist') }}"
-       class="nav-icon wishlist-icon"
-       title="Wishlist">
+                        <a href="{{ route('wishlist') }}" class="nav-icon wishlist-icon" title="Wishlist">
 
-        <i class="fa-regular fa-heart"></i>
+                            <i class="fa-regular fa-heart"></i>
 
-        <span class="icon-count">
-            8
-        </span>
+                            <span class="icon-count">
+                                8
+                            </span>
 
-    </a>
+                        </a>
 
-@else
+                    @else
 
-    <a href="{{ route('login') }}"
-       class="nav-icon wishlist-icon"
-       title="Login">
+                        <a href="{{ route('login') }}" class="nav-icon wishlist-icon" title="Login">
 
-        <i class="fa-regular fa-heart"></i>
+                            <i class="fa-regular fa-heart"></i>
 
-        <span class="icon-count">
-            0
-        </span>
+                            <span class="icon-count">
+                                0
+                            </span>
 
-    </a>
+                        </a>
 
-@endif
+                    @endif
 
 
-<!-- Cart -->
-@if(Auth::guard('customer')->check())
+                    <!-- Cart -->
+                    @if(Auth::guard('customer')->check())
 
-    <a href="{{ route('cart') }}"
-       class="nav-icon cart-icon"
-       title="Cart">
+                        <a href="{{ route('cart') }}" class="nav-icon cart-icon" title="Cart">
 
-        <i class="fa-solid fa-cart-shopping"></i>
+                            <i class="fa-solid fa-cart-shopping"></i>
 
-        <span class="icon-count">
-            3
-        </span>
+                            <span class="icon-count">
+                                3
+                            </span>
 
-    </a>
+                        </a>
 
-@else
+                    @else
 
-    <a href="{{ route('login') }}"
-       class="nav-icon cart-icon"
-       title="Login">
+                        <a href="{{ route('login') }}" class="nav-icon cart-icon" title="Login">
 
-        <i class="fa-solid fa-cart-shopping"></i>
+                            <i class="fa-solid fa-cart-shopping"></i>
 
-        <span class="icon-count">
-            0
-        </span>
+                            <span class="icon-count">
+                                0
+                            </span>
 
-    </a>
+                        </a>
 
-@endif
+                    @endif
 
                 </div>
 

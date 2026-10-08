@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Product;
 use Illuminate\Support\ServiceProvider;
 use App\Models\SiteSetting;
 use Illuminate\Support\Facades\View;
@@ -22,15 +23,37 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
+
             $uriSlug = 0;
 
-            if (isset (\Request::route()->uri)) {
+            if (\Request::route()) {
                 $uriSlug = \Request::route()->uri;
-            } else {
-                $uriSlug = 0;
             }
+
             $site = SiteSetting::first();
-            $view->with(['site' => $site, 'uriSlug' => $uriSlug]);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Featured Products - Only 5
+            |--------------------------------------------------------------------------
+            */
+
+            $featuredProducts = Product::where('status', 'show')
+                ->where('is_feature', 'yes')
+                ->whereHas('variant')
+                ->with([
+                    'variant',
+                    'category',
+                ])
+                ->inRandomOrder()
+                ->take(5)
+                ->get();
+
+            $view->with([
+                'site' => $site,
+                'uriSlug' => $uriSlug,
+                'featuredProducts' => $featuredProducts,
+            ]);
         });
     }
 }

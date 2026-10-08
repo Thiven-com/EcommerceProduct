@@ -6,7 +6,8 @@ use App\Http\Controllers\Website\AccountController;
 
 Route::get('/', [PageControllers::class, 'home'])->name('home');
 Route::get('shop', [PageControllers::class, 'shop'])->name('shop');
-Route::get('productdetails', [PageControllers::class, 'product_details'])->name('productdetails');
+// Route::get('productdetails', [PageControllers::class, 'product_details'])->name('productdetails');
+Route::get('/product/{slug}', [PageControllers::class, 'product_details'])->name('productdetails');
 Route::get('blog', [PageControllers::class, 'blog'])->name('blog');
 Route::get('blogdetails', [PageControllers::class, 'blog_details'])->name('blogdetails');
 Route::get('aboutus', [PageControllers::class, 'aboutus'])->name('aboutus');
