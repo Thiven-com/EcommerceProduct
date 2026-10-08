@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Website;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\WishlistItem;
 use App\Services\WhatsAppService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -131,4 +132,43 @@ class AccountController extends Controller
 
         return $data;
     }
+
+
+
+   public function addToWishlist(Request $request)
+{
+    if (!Auth::guard('customer')->check()) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Please login first.'
+        ], 401);
+    }
+
+    $request->validate([
+        'product_variant_id' => 'required|exists:product_variants,id',
+    ]);
+
+    $customerId = Auth::guard('customer')->id();
+
+    $exists = WishlistItem::where('customer_id', $customerId)
+        ->where('product_variant_id', $request->product_variant_id)
+        ->exists();
+
+    if ($exists) {
+        return response()->json([
+            'status' => true,
+            'message' => 'Product already added to wishlist.'
+        ]);
+    }
+
+    WishlistItem::create([
+        'customer_id' => $customerId,
+        'product_variant_id' => $request->product_variant_id,
+    ]);
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Product added to wishlist.'
+    ]);
+}
 }

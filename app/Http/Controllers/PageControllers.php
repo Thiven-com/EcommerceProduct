@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\Blog;
+use App\Models\BlogCategory;
 
 
 class PageControllers extends Controller
@@ -240,11 +242,61 @@ class PageControllers extends Controller
     }
     public function blog()
     {
-        return view('website.blog');
+        $blogs = Blog::where('status', 'show')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $blogCategories = BlogCategory::orderBy('id', 'asc')
+            ->get()
+            ->keyBy('id');
+
+        return view('website.blog', compact('blogs', 'blogCategories'));
     }
-    public function blog_details()
+    public function blog_details($slug)
     {
-        return view('website.blogdetails');
+        $blog = Blog::where('slug', $slug)
+            ->where('status', 'show')
+            ->firstOrFail();
+
+        $blogCategory = BlogCategory::where('id', $blog->category_id)
+            ->first();
+
+        $relatedBlogs = Blog::where('status', 'show')
+            ->where('id', '!=', $blog->id)
+            ->where('category_id', $blog->category_id)
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
+
+        // If there are less than 3 blogs in the same category,
+        // get other latest blogs to complete the 3 cards.
+        if ($relatedBlogs->count() < 3) {
+
+            $remaining = 3 - $relatedBlogs->count();
+
+            $additionalBlogs = Blog::where('status', 'show')
+                ->where('id', '!=', $blog->id)
+                ->whereNotIn('id', $relatedBlogs->pluck('id'))
+                ->orderBy('created_at', 'desc')
+                ->take($remaining)
+                ->get();
+
+            $relatedBlogs = $relatedBlogs->concat($additionalBlogs);
+        }
+
+        $relatedCategories = BlogCategory::whereIn(
+            'id',
+            $relatedBlogs->pluck('category_id')->filter()->unique()
+        )
+            ->get()
+            ->keyBy('id');
+
+        return view('website.blogdetails', compact(
+            'blog',
+            'blogCategory',
+            'relatedBlogs',
+            'relatedCategories'
+        ));
     }
     public function aboutus()
     {

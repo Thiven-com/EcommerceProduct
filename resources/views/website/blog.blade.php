@@ -4,16 +4,16 @@
 
     <style>
         /* =========================================================
-           BLOG PAGE
-        ========================================================= */
+               BLOG PAGE
+            ========================================================= */
 
         .static-blog-section {
             padding: 20px 0 50px;
         }
 
         /* =========================================================
-           BREADCRUMB
-        ========================================================= */
+               BREADCRUMB
+            ========================================================= */
 
         .static-blog-breadcrumb {
             padding: 35px 0 20px;
@@ -43,8 +43,8 @@
         }
 
         /* =========================================================
-           HEADING
-        ========================================================= */
+               HEADING
+            ========================================================= */
 
         .static-blog-heading {
             text-align: center;
@@ -66,8 +66,8 @@
         }
 
         /* =========================================================
-           BLOG GRID
-        ========================================================= */
+               BLOG GRID
+            ========================================================= */
 
         .static-blog-grid {
             display: grid;
@@ -77,8 +77,8 @@
         }
 
         /* =========================================================
-           BLOG CARD
-        ========================================================= */
+               BLOG CARD
+            ========================================================= */
 
         .static-blog-card {
             width: 100%;
@@ -89,8 +89,8 @@
         }
 
         /* =========================================================
-           BLOG IMAGE
-        ========================================================= */
+               BLOG IMAGE
+            ========================================================= */
 
         .static-blog-image {
             position: relative;
@@ -108,8 +108,8 @@
             display: block;
 
             /*
-             * Keeps all images the same size
-             */
+                 * Keeps all images the same size
+                 */
             object-fit: fill;
             object-position: center;
 
@@ -121,8 +121,8 @@
         }
 
         /* =========================================================
-           DATE
-        ========================================================= */
+               DATE
+            ========================================================= */
 
         .static-blog-date {
             position: absolute;
@@ -142,8 +142,8 @@
         }
 
         /* =========================================================
-           BLOG CONTENT
-        ========================================================= */
+               BLOG CONTENT
+            ========================================================= */
 
         .static-blog-content {
             display: flex;
@@ -154,8 +154,8 @@
         }
 
         /* =========================================================
-           BLOG TAG
-        ========================================================= */
+               BLOG TAG
+            ========================================================= */
 
         .static-blog-tag {
             display: block;
@@ -176,8 +176,8 @@
         }
 
         /* =========================================================
-           BLOG TITLE
-        ========================================================= */
+               BLOG TITLE
+            ========================================================= */
 
         .static-blog-title {
             display: -webkit-box;
@@ -196,8 +196,8 @@
             text-decoration: none;
 
             /*
-             * All titles get same height
-             */
+                 * All titles get same height
+                 */
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
@@ -210,8 +210,8 @@
         }
 
         /* =========================================================
-           DESCRIPTION
-        ========================================================= */
+               DESCRIPTION
+            ========================================================= */
 
         .static-blog-description {
             display: -webkit-box;
@@ -232,8 +232,8 @@
         }
 
         /* =========================================================
-           READ ARTICLE
-        ========================================================= */
+               READ ARTICLE
+            ========================================================= */
 
         .static-blog-read {
             display: inline-flex;
@@ -268,8 +268,8 @@
         }
 
         /* =========================================================
-           TABLET
-        ========================================================= */
+               TABLET
+            ========================================================= */
 
         @media (max-width: 991px) {
 
@@ -289,8 +289,8 @@
         }
 
         /* =========================================================
-           MOBILE
-        ========================================================= */
+               MOBILE
+            ========================================================= */
 
         @media (max-width: 767px) {
 
@@ -316,8 +316,8 @@
             }
 
             /*
-             * 2 BLOGS PER ROW
-             */
+                 * 2 BLOGS PER ROW
+                 */
             .static-blog-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 25px 10px;
@@ -382,8 +382,8 @@
         }
 
         /* =========================================================
-           SMALL MOBILE
-        ========================================================= */
+               SMALL MOBILE
+            ========================================================= */
 
         @media (max-width: 480px) {
 
@@ -411,8 +411,8 @@
 
 
     <!-- =========================================================
-         BLOG PAGE
-    ========================================================= -->
+             BLOG PAGE
+        ========================================================= -->
 
     <section class="static-blog-section">
 
@@ -420,8 +420,8 @@
 
 
             <!-- =====================================================
-                 BREADCRUMB
-            ====================================================== -->
+                     BREADCRUMB
+                ====================================================== -->
 
             <div class="static-blog-breadcrumb">
 
@@ -447,8 +447,8 @@
 
 
             <!-- =====================================================
-                 HEADING
-            ====================================================== -->
+                     HEADING
+                ====================================================== -->
 
             <div class="static-blog-heading">
 
@@ -464,384 +464,68 @@
 
 
             <!-- =====================================================
-                 BLOG GRID
-            ====================================================== -->
+                     BLOG GRID
+                ====================================================== -->
 
             <div class="static-blog-grid">
 
+                @forelse($blogs as $blog)
 
-                <!-- =================================================
-                     BLOG 1
-                ================================================== -->
+                    <article class="static-blog-card">
 
-                <article class="static-blog-card">
+                        <a href="{{ route('blogdetails', $blog->slug) }}" class="static-blog-image">
 
-                    <a href="{{ route('blogdetails') }}" class="static-blog-image">
+                            <img loading="lazy" src="{{ asset($blog->image) }}" alt="{{ $blog->title }}">
 
-                        <img loading="lazy" src="{{ asset('website') }}/images/product1.webp"
-                            alt="How to Choose the Perfect Silk Saree">
+                            <span class="static-blog-date">
+                                {{ $blog->created_at->format('d M, Y') }}
+                            </span>
 
-                        <span class="static-blog-date">
-                            27 Aug, 2026
-                        </span>
-
-                    </a>
-
-                    <div class="static-blog-content">
-
-                        <a href="{{ route('blogdetails') }}" class="static-blog-tag">
-                            Saree Guide
                         </a>
 
-                        <a href="{{ route('blogdetails') }}" class="static-blog-title">
-                            How to Choose the Perfect Silk Saree for Every Occasion
-                        </a>
+                        <div class="static-blog-content">
 
-                        <p class="static-blog-description">
-                            Explore simple tips to choose the right silk saree
-                            based on occasion, colour, fabric and personal style.
+                            <a href="{{ route('blogdetails', $blog->slug) }}" class="static-blog-tag">
+
+                                {{ $blogCategories[$blog->category_id]->name ?? 'Blog' }}
+
+                            </a>
+
+                            <a href="{{ route('blogdetails', $blog->slug) }}" class="static-blog-title">
+
+                                {{ $blog->title }}
+
+                            </a>
+
+                            <p class="static-blog-description">
+
+                                {{ $blog->short_description }}
+
+                            </p>
+
+                            <a href="{{ route('blogdetails', $blog->slug) }}" class="static-blog-read">
+
+                                READ ARTICLE
+
+                                <i class="icon icon-ArrowRight"></i>
+
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                @empty
+
+                    <div class="static-blog-empty">
+
+                        <p>
+                            No blogs available at the moment.
                         </p>
-
-                        <a href="{{ route('blogdetails') }}" class="static-blog-read">
-                            READ ARTICLE
-                            <i class="icon icon-ArrowRight"></i>
-                        </a>
 
                     </div>
 
-                </article>
-
-
-                <!-- =================================================
-                     BLOG 2
-                ================================================== -->
-
-                <article class="static-blog-card">
-
-                    <a href="{{ route('blogdetails') }}" class="static-blog-image">
-
-                        <img loading="lazy" src="{{ asset('website') }}/images/product2.webp"
-                            alt="Banarasi Saree Styling Tips">
-
-                        <span class="static-blog-date">
-                            24 Aug, 2026
-                        </span>
-
-                    </a>
-
-                    <div class="static-blog-content">
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-tag">
-                            Styling
-                        </a>
-
-                        <a href="{{ route('blogdetails') }}" class="static-blog-title">
-                            7 Beautiful Ways to Style a Traditional Banarasi Saree
-                        </a>
-
-                        <p class="static-blog-description">
-                            Give your traditional wardrobe a modern touch with
-                            these elegant Banarasi saree styling ideas.
-                        </p>
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-read">
-                            READ ARTICLE
-                            <i class="icon icon-ArrowRight"></i>
-                        </a>
-
-                    </div>
-
-                </article>
-
-
-                <!-- =================================================
-                     BLOG 3
-                ================================================== -->
-
-                <article class="static-blog-card">
-
-                    <a href="{{ route('blogdetails') }}" class="static-blog-image">
-
-                        <img loading="lazy" src="{{ asset('website') }}/images/product3.webp" alt="Cotton Saree Fashion">
-
-                        <span class="static-blog-date">
-                            21 Aug, 2026
-                        </span>
-
-                    </a>
-
-                    <div class="static-blog-content">
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-tag">
-                            Fashion
-                        </a>
-
-                        <a href="{{ route('blogdetails') }}" class="static-blog-title">
-                            Why Cotton Sarees Are Perfect for Everyday Elegance
-                        </a>
-
-                        <p class="static-blog-description">
-                            Discover why lightweight cotton sarees remain a
-                            timeless choice for comfortable everyday dressing.
-                        </p>
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-read">
-                            READ ARTICLE
-                            <i class="icon icon-ArrowRight"></i>
-                        </a>
-
-                    </div>
-
-                </article>
-
-
-                <!-- =================================================
-                     BLOG 4
-                ================================================== -->
-
-                <article class="static-blog-card">
-
-                    <a href="{{ route('blogdetails') }}" class="static-blog-image">
-
-                        <img loading="lazy" src="{{ asset('website') }}/images/product4.webp" alt="Saree Care Guide">
-
-                        <span class="static-blog-date">
-                            18 Aug, 2026
-                        </span>
-
-                    </a>
-
-                    <div class="static-blog-content">
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-tag">
-                            Saree Care
-                        </a>
-
-                        <a href="{{ route('blogdetails') }}" class="static-blog-title">
-                            Easy Saree Care Tips to Keep Your Favourite Sarees Beautiful
-                        </a>
-
-                        <p class="static-blog-description">
-                            Learn the best ways to store, clean and maintain
-                            your sarees for years to come.
-                        </p>
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-read">
-                            READ ARTICLE
-                            <i class="icon icon-ArrowRight"></i>
-                        </a>
-
-                    </div>
-
-                </article>
-
-
-                <!-- =================================================
-                     BLOG 5
-                ================================================== -->
-
-                <article class="static-blog-card">
-
-                    <a href="{{ route('blogdetails') }}" class="static-blog-image">
-
-                        <img loading="lazy" src="{{ asset('website') }}/images/product5.webp" alt="Party Wear Sarees">
-
-                        <span class="static-blog-date">
-                            15 Aug, 2026
-                        </span>
-
-                    </a>
-
-                    <div class="static-blog-content">
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-tag">
-                            Party Wear
-                        </a>
-
-                        <a href="{{ route('blogdetails') }}" class="static-blog-title">
-                            Latest Party Wear Saree Trends for the Festive Season
-                        </a>
-
-                        <p class="static-blog-description">
-                            From elegant georgette to glamorous organza,
-                            explore saree styles perfect for special occasions.
-                        </p>
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-read">
-                            READ ARTICLE
-                            <i class="icon icon-ArrowRight"></i>
-                        </a>
-
-                    </div>
-
-                </article>
-
-
-                <!-- =================================================
-                     BLOG 6
-                ================================================== -->
-
-                <article class="static-blog-card">
-
-                    <a href="{{ route('blogdetails') }}" class="static-blog-image">
-
-                        <img loading="lazy" src="{{ asset('website') }}/images/product6.webp" alt="Wedding Saree Guide">
-
-                        <span class="static-blog-date">
-                            12 Aug, 2026
-                        </span>
-
-                    </a>
-
-                    <div class="static-blog-content">
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-tag">
-                            Wedding
-                        </a>
-
-                        <a href="{{ route('blogdetails') }}" class="static-blog-title">
-                            The Ultimate Guide to Choosing a Saree for Weddings
-                        </a>
-
-                        <p class="static-blog-description">
-                            Find the perfect wedding saree by exploring colours,
-                            fabrics, designs and traditional styling ideas.
-                        </p>
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-read">
-                            READ ARTICLE
-                            <i class="icon icon-ArrowRight"></i>
-                        </a>
-
-                    </div>
-
-                </article>
-
-
-                <!-- =================================================
-                     BLOG 7
-                ================================================== -->
-
-                <article class="static-blog-card">
-
-                    <a href="{{ route('blogdetails') }}" class="static-blog-image">
-
-                        <img loading="lazy" src="{{ asset('website') }}/images/product7.webp" alt="Designer Saree Trends">
-
-                        <span class="static-blog-date">
-                            09 Aug, 2026
-                        </span>
-
-                    </a>
-
-                    <div class="static-blog-content">
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-tag">
-                            Trends
-                        </a>
-
-                        <a href="{{ route('blogdetails') }}" class="static-blog-title">
-                            Designer Saree Trends That Are Taking Over Fashion
-                        </a>
-
-                        <p class="static-blog-description">
-                            Explore the latest designer saree trends and
-                            statement styles for the modern woman.
-                        </p>
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-read">
-                            READ ARTICLE
-                            <i class="icon icon-ArrowRight"></i>
-                        </a>
-
-                    </div>
-
-                </article>
-
-
-                <!-- =================================================
-                     BLOG 8
-                ================================================== -->
-
-                <article class="static-blog-card">
-
-                    <a href="{{ route('blogdetails') }}" class="static-blog-image">
-
-                        <img loading="lazy" src="{{ asset('website') }}/images/product8.webp"
-                            alt="Traditional Saree Styling">
-
-                        <span class="static-blog-date">
-                            06 Aug, 2026
-                        </span>
-
-                    </a>
-
-                    <div class="static-blog-content">
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-tag">
-                            Tradition
-                        </a>
-
-                        <a href="{{ route('blogdetails') }}" class="static-blog-title">
-                            Traditional Saree Styles That Never Go Out of Fashion
-                        </a>
-
-                        <p class="static-blog-description">
-                            Celebrate timeless Indian fashion with traditional
-                            saree styles that continue to inspire generations.
-                        </p>
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-read">
-                            READ ARTICLE
-                            <i class="icon icon-ArrowRight"></i>
-                        </a>
-
-                    </div>
-
-                </article>
-
-
-                <!-- =================================================
-                     BLOG 9
-                ================================================== -->
-
-                <article class="static-blog-card">
-
-                    <a href="{{ route('blogdetails') }}" class="static-blog-image">
-
-                        <img loading="lazy" src="{{ asset('website') }}/images/product9.webp"
-                            alt="Festive Saree Collection">
-
-                        <span class="static-blog-date">
-                            02 Aug, 2026
-                        </span>
-
-                    </a>
-
-                    <div class="static-blog-content">
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-tag">
-                            Festive
-                        </a>
-
-                        <a href="{{ route('blogdetails') }}" class="static-blog-title">
-                            Festive Saree Colours to Make a Statement This Season
-                        </a>
-
-                        <p class="static-blog-description">
-                            Discover beautiful festive colours and combinations
-                            that will make your traditional look stand out.
-                        </p>
-
-                       <a href="{{ route('blogdetails') }}" class="static-blog-read">
-                            READ ARTICLE
-                            <i class="icon icon-ArrowRight"></i>
-                        </a>
-
-                    </div>
-
-                </article>
-
+                @endforelse
 
             </div>
 
