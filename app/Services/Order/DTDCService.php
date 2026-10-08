@@ -7,10 +7,15 @@ use Illuminate\Support\Facades\Log;
 
 class DTDCService
 {
-    protected $tracking_token = "BO13369_trk_json:be1455d94140eefccc1bb16445751363";
+    // protected $tracking_token = "BO13369_trk_json:be1455d94140eefccc1bb16445751363";
+    protected $tracking_token = "bhgdvfg_thr_json:jdnfijnsdivjnsjnvjnvn";
 
-    protected $apiKey = "d63f14e780c2a49d5cd7f2af69700a";
-    protected $customerCode = "BO13369";
+    // protected $apiKey = "d63f14e780c2a49d5cd7f2af69700a";
+
+    protected $apiKey = "bysucsyg6q73rbfiu34if874fheufh";
+    // protected $customerCode = "BO13369";
+
+    protected $customerCode = "dbuf3i43";
 
     /*
     |--------------------------------------------------------------------------
