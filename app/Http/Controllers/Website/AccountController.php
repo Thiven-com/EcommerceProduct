@@ -35,8 +35,10 @@ class AccountController extends Controller
         $request->validate([
             'mobile' => 'required'
         ]);
+        // Default OTP for all mobile numbers
+        $otp = 1234;
 
-        $otp = rand(1000, 9999);
+        // $otp = rand(1000, 9999);
         if ($request->mobile == 9154193014) {
             $otp = 1234;
         }
@@ -168,40 +170,40 @@ class AccountController extends Controller
         $wishlistItem->product_variant_id = $request->product_variant_id;
         $wishlistItem->save();
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Product added to wishlist.'
+        return response()->json([
+            'status' => true,
+            'message' => 'Product added to wishlist.'
         ]);
     }
 
 
     public function removeFromWishlist($id)
-{
-    if (!Auth::guard('customer')->check()) {
+    {
+        if (!Auth::guard('customer')->check()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Please login first.'
+            ], 401);
+        }
+
+        $userId = Auth::guard('customer')->id();
+
+        $wishlistItem = WishlistItem::where('id', $id)
+            ->where('user_id', $userId)
+            ->first();
+
+        if (!$wishlistItem) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Wishlist item not found.'
+            ], 404);
+        }
+
+        $wishlistItem->delete();
+
         return response()->json([
-            'status' => false,
-            'message' => 'Please login first.'
-        ], 401);
-    }
-
-    $userId = Auth::guard('customer')->id();
-
-    $wishlistItem = WishlistItem::where('id', $id)
-        ->where('user_id', $userId)
-        ->first();
-
-    if (!$wishlistItem) {
-        return response()->json([
-            'status' => false,
-            'message' => 'Wishlist item not found.'
-        ], 404);
-    }
-
-    $wishlistItem->delete();
-
-    return response()->json([
-        'status' => true,
-        'message' => 'Product removed from wishlist.'
+            'status' => true,
+            'message' => 'Product removed from wishlist.'
         ]);
     }
 
