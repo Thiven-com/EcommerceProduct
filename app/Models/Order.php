@@ -41,12 +41,23 @@ class Order extends Model
     {
         return $this->hasMany(OrderStatusHistory::class);
     }
+    
 
     protected $fillable = [
+        'customer_id',
+        'order_id',
+        'invoice_id',
+        'subtotal',
+        'grand_total',
+        'status',
+        'payment_status',
+        'shipping_address',
+        'billing_address',
+
+        // Shipment fields
         'carrier',
         'awb',
         'courier_shipment_id',
-        'status',
         'shipment_status',
         'shipment_message',
         'shipment_response',

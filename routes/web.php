@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageControllers;
 use App\Http\Controllers\Website\AccountController;
+use App\Http\Controllers\website\OrderController;
 
 Route::get('/', [PageControllers::class, 'home'])->name('home');
 Route::get('shop', [PageControllers::class, 'shop'])->name('shop');
@@ -49,6 +50,17 @@ Route::get('account-settings', [PageControllers::class, 'account_settings'])->na
 Route::get('account', [PageControllers::class, 'account'])->name('account');
 Route::get('offers', [PageControllers::class, 'offers'])->name('offers');
 Route::get('checkout', [PageControllers::class, 'checkout'])->name('checkout');
+
+Route::middleware('auth:customer')->group(function () {
+    Route::post('/checkout/place-order', [OrderController::class, 'store'])
+        ->name('customer.order.store');
+
+    Route::post('/payment/success', [OrderController::class, 'paymentSuccess'])
+        ->name('customer.payment.success');
+
+    Route::get('/my-orders', [OrderController::class, 'orders'])
+        ->name('customer.orders');
+});
 
 Route::post('/cart/add', [AccountController::class, 'addToCart'])
     ->name('cart.add');

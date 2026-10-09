@@ -1485,12 +1485,19 @@
                     <!-- Wishlist -->
                     @if(Auth::guard('customer')->check())
 
+                        @php
+                            $customer = Auth::guard('customer')->user();
+
+                            $wishlistCount = \App\Models\WishlistItem::where('user_id', $customer->id)
+                                ->count();
+                        @endphp
+
                         <a href="{{ route('wishlist') }}" class="nav-icon wishlist-icon" title="Wishlist">
 
                             <i class="fa-regular fa-heart"></i>
 
                             <span class="icon-count">
-                                8
+                                {{ $wishlistCount }}
                             </span>
 
                         </a>
@@ -1501,9 +1508,7 @@
 
                             <i class="fa-regular fa-heart"></i>
 
-                            <span class="icon-count">
-                                0
-                            </span>
+                            <span class="icon-count">0</span>
 
                         </a>
 
@@ -1513,12 +1518,19 @@
                     <!-- Cart -->
                     @if(Auth::guard('customer')->check())
 
+                        @php
+                            $cartCount = \App\Models\CartItem::where(
+                                'user_id',
+                                Auth::guard('customer')->id()
+                            )->sum('quantity');
+                        @endphp
+
                         <a href="{{ route('cart') }}" class="nav-icon cart-icon" title="Cart">
 
                             <i class="fa-solid fa-cart-shopping"></i>
 
-                            <span class="icon-count">
-                                3
+                            <span class="icon-count" id="cart-count">
+                                {{ $cartCount }}
                             </span>
 
                         </a>
@@ -1529,9 +1541,7 @@
 
                             <i class="fa-solid fa-cart-shopping"></i>
 
-                            <span class="icon-count">
-                                0
-                            </span>
+                            <span class="icon-count" id="cart-count">0</span>
 
                         </a>
 
@@ -4353,6 +4363,7 @@
         });
 
     </script>
+
 </body>
 
 </html>

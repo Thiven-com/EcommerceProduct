@@ -4,8 +4,8 @@
 
     <style>
         /* =========================================================
-               SUDHEERA SAREES - WISHLIST
-               ========================================================= */
+                                                           SUDHEERA SAREES - WISHLIST
+                                                           ========================================================= */
 
         .sudheera-wishlist-page {
             background: #fff;
@@ -13,8 +13,8 @@
 
 
         /* =========================================================
-               BREADCRUMB
-               ========================================================= */
+                                                           BREADCRUMB
+                                                           ========================================================= */
 
         .sudheera-wishlist-breadcrumb {
             background: #faf8f4;
@@ -51,8 +51,8 @@
 
 
         /* =========================================================
-               WISHLIST SECTION
-               ========================================================= */
+                                                           WISHLIST SECTION
+                                                           ========================================================= */
 
         .sudheera-wishlist-section {
             padding: 45px 0 70px;
@@ -86,8 +86,8 @@
 
 
         /* =========================================================
-               PRODUCT GRID
-               ========================================================= */
+                                                           PRODUCT GRID
+                                                           ========================================================= */
 
         .sudheera-wishlist-grid {
             display: grid;
@@ -99,8 +99,8 @@
 
 
         /* =========================================================
-               PRODUCT CARD
-               ========================================================= */
+                                                           PRODUCT CARD
+                                                           ========================================================= */
 
         .sudheera-wishlist-card {
             position: relative;
@@ -114,8 +114,8 @@
 
 
         /* =========================================================
-               PRODUCT IMAGE
-               ========================================================= */
+                                                           PRODUCT IMAGE
+                                                           ========================================================= */
 
         .sudheera-wishlist-image {
             position: relative;
@@ -140,8 +140,8 @@
 
 
         /* =========================================================
-               SALE BADGE
-               ========================================================= */
+                                                           SALE BADGE
+                                                           ========================================================= */
 
         .sudheera-sale-badge {
             position: absolute;
@@ -159,8 +159,8 @@
 
 
         /* =========================================================
-               REMOVE WISHLIST
-               ========================================================= */
+                                                           REMOVE WISHLIST
+                                                           ========================================================= */
 
         .sudheera-wishlist-remove {
             position: absolute;
@@ -193,8 +193,8 @@
 
 
         /* =========================================================
-               QUICK VIEW
-               ========================================================= */
+                                                           QUICK VIEW
+                                                           ========================================================= */
 
         .sudheera-quick-view {
             position: absolute;
@@ -239,8 +239,8 @@
 
 
         /* =========================================================
-               ADD TO CART
-               ========================================================= */
+                                                           ADD TO CART
+                                                           ========================================================= */
 
         .sudheera-add-cart {
             position: absolute;
@@ -279,8 +279,8 @@
 
 
         /* =========================================================
-               PRODUCT INFO
-               ========================================================= */
+                                                           PRODUCT INFO
+                                                           ========================================================= */
 
         .sudheera-wishlist-info {
             padding: 17px 3px 0;
@@ -326,8 +326,8 @@
 
 
         /* =========================================================
-               EMPTY WISHLIST
-               ========================================================= */
+                                                           EMPTY WISHLIST
+                                                           ========================================================= */
 
         .sudheera-empty-wishlist {
             text-align: center;
@@ -335,6 +335,7 @@
             border: 1px solid #eee6dc;
             border-radius: 8px;
             background: #faf8f4;
+            justify-content: center;
         }
 
         .sudheera-empty-icon {
@@ -396,8 +397,8 @@
 
 
         /* =========================================================
-               TABLET
-               ========================================================= */
+                                                           TABLET
+                                                           ========================================================= */
 
         @media (max-width: 1199px) {
 
@@ -429,8 +430,8 @@
 
 
         /* =========================================================
-               MOBILE
-               ========================================================= */
+                                                           MOBILE
+                                                           ========================================================= */
 
         @media (max-width: 767px) {
 
@@ -513,8 +514,8 @@
 
 
         /* =========================================================
-               SMALL MOBILE
-               ========================================================= */
+                                                           SMALL MOBILE
+                                                           ========================================================= */
 
         @media (max-width: 480px) {
 
@@ -543,8 +544,8 @@
 
 
     <!-- =========================================================
-                 BREADCRUMB
-                 ========================================================= -->
+                                                             BREADCRUMB
+                                                             ========================================================= -->
 
     <section class="sudheera-wishlist-breadcrumb">
 
@@ -576,8 +577,8 @@
 
 
     <!-- =========================================================
-                 WISHLIST
-                 ========================================================= -->
+                                                             WISHLIST
+                                                             ========================================================= -->
 
     <section class="sudheera-wishlist-page">
 
@@ -603,8 +604,12 @@
 
 
                 <!-- =================================================
-                             PRODUCT GRID
-                             ================================================= -->
+                                                                         PRODUCT GRID
+                                                                         ================================================= -->
+
+                <div id="wishlist-cart-message" role="status" aria-live="polite" style="display:none; margin:0 20px 20px; padding:14px 18px;
+                                border-radius:5px; font-size:14px;">
+                </div>
 
                 <div class="sudheera-wishlist-grid">
 
@@ -672,8 +677,8 @@
 
 
                         <!-- =================================================
-                                                 PRODUCT CARD
-                                                 ================================================= -->
+                                                                                                                                         PRODUCT CARD
+                                                                                                                                         ================================================= -->
 
                         <div class="sudheera-wishlist-card" data-wishlist-id="{{ $wishlist->id }}"
                             data-variant-id="{{ $variant?->id }}">
@@ -707,10 +712,22 @@
 
                                 <!-- ADD TO CART -->
 
-                                <a href="#" class="sudheera-add-cart">
+                                <button type="button" class="sudheera-add-cart wishlist-add-to-cart"
+                                    data-variant-id="{{ $variant?->id }}" {{ !$variant ? 'disabled' : '' }}>
                                     ADD TO CART
-                                    <span>🛒</span>
-                                </a>
+                                </button>
+                                <style>
+                                    .sudheera-add-cart {
+                                        width: 100%;
+                                        font-family: inherit;
+                                        cursor: pointer;
+                                    }
+
+                                    .sudheera-add-cart:disabled {
+                                        opacity: 0.5;
+                                        cursor: not-allowed;
+                                    }
+                                </style>
 
                             </div>
 
@@ -797,6 +814,21 @@
                     @endforelse
 
                 </div>
+                <style>
+                    /* Center empty wishlist */
+                    .sudheera-empty-wishlist {
+                        grid-column: 1 / -1;
+                        width: 100%;
+                        min-height: 400px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                        padding: 40px 20px;
+                        box-sizing: border-box;
+                    }
+                </style>
 
             </div>
 
@@ -806,8 +838,8 @@
 
 
     <!-- =========================================================
-                 REMOVE WISHLIST JAVASCRIPT
-                 ========================================================= -->
+                                                             REMOVE WISHLIST JAVASCRIPT
+                                                             ========================================================= -->
 
     <script>
 
@@ -956,6 +988,108 @@
         });
 
     </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const messageBox = document.getElementById('wishlist-cart-message');
+
+            function showCartMessage(message, success) {
+                if (!messageBox) return;
+
+                messageBox.textContent = message;
+                messageBox.style.display = 'block';
+                messageBox.style.background = success ? '#edf7ed' : '#fff0f0';
+                messageBox.style.color = success ? '#236b35' : '#b42318';
+                messageBox.style.border = success
+                    ? '1px solid #c8e6cc'
+                    : '1px solid #f2c5c5';
+
+                messageBox.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+            }
+
+            document.querySelectorAll('.wishlist-add-to-cart').forEach(function (button) {
+                button.addEventListener('click', async function () {
+                    const variantId = this.dataset.variantId;
+                    const originalText = this.innerHTML;
+
+                    if (!variantId) {
+                        showCartMessage('Product variant not found.', false);
+                        return;
+                    }
+
+                    button.disabled = true;
+                    button.innerHTML = 'ADDING...';
+
+                    try {
+                        const response = await fetch(@json(route('cart.add')), {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': @json(csrf_token()),
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                product_variant_id: variantId,
+                                quantity: 1
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (response.status === 401) {
+                            window.location.href = @json(route('login'));
+                            return;
+                        }
+
+                        if (!response.ok || data.status === false) {
+                            throw new Error(
+                                data.message || 'Unable to add product to cart.'
+                            );
+                        }
+
+                        button.innerHTML = '<i class="fa-solid fa-check"></i> ADDED TO CART';
+                        button.style.background = '#edf7ed';
+                        button.style.color = '#236b35';
+                        button.style.borderColor = '#c8e6cc';
+                        setTimeout(function () {
+                            button.innerHTML = originalText;
+                            button.style.background = '';
+                            button.style.color = '';
+                            button.style.borderColor = '';
+                            button.disabled = false;
+                        }, 2000);
+
+                        // Update the cart badge when the API returns a count.
+                        if (data.cart_count !== undefined) {
+                            const cartCount = document.getElementById('cart-count');
+
+                            if (cartCount) {
+                                cartCount.textContent = data.cart_count;
+                            }
+                        }
+
+                    } catch (error) {
+                        console.error('Add to cart error:', error);
+                        showCartMessage(
+                            error.message || 'Something went wrong. Please try again.',
+                            false
+                        );
+                    } finally {
+                        setTimeout(function () {
+                            button.innerHTML = originalText;
+                            button.disabled = false;
+                        }, 1500);
+                    }
+                });
+            });
+        });
+    </script>
+
+
 
 
 @endsection

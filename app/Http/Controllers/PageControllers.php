@@ -10,6 +10,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\BlogCategory;
+use App\Models\CartItem;
+use App\Models\Coupon;
+use App\Models\FreightCharge;
+use App\Models\ShippingZone;
 use Illuminate\Support\Facades\Auth;
 use App\Models\WishlistItem;
 
@@ -636,6 +640,10 @@ class PageControllers extends Controller
     public function account()
     {
         $customer = Auth::guard('customer')->user();
+        if (!$customer) {
+            return redirect()->route('login');
+        }
+
         $address = Address::where('customer_id', $customer->id)
             ->latest()
             ->first();
@@ -645,9 +653,124 @@ class PageControllers extends Controller
     {
         return view('website.offers');
     }
-    public function checkout()
+    public function checkout(Request $request)
     {
-        return view('website.checkout');
+        // Change this guard if your website uses a different customer guard.
+        $user = auth('customer')->user();
+
+        if (!$user) {
+            return redirect()->route('login')
+                ->with('error', 'Please log in to continue checkout.');
+        }
+
+        $orderType = $request->query('order_type', 'order');
+
+        $cartItems = CartItem::with([
+            'variant.product',
+            'variant.media',
+            'variant.attributeValues.attribute',
+        ])
+            ->where('user_id', $user->id)
+            ->where('type', $orderType)
+            ->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->back()
+                ->with('error', 'Your cart is empty.');
+        }
+
+        $addresses = Address::where('customer_id', $user->id)
+            ->orderByDesc('default')
+            ->orderByDesc('id')
+            ->get();
+
+        $defaultAddress = $addresses->first();
+
+        // Calculate subtotal and weight from current cart data.
+        $subtotal = 0;
+        $totalWeight = 0;
+
+        foreach ($cartItems as $item) {
+            $variant = $item->variant;
+
+            $subtotal += (float) ($variant?->price ?? 0)
+                * (int) $item->quantity;
+
+            $totalWeight += (float) ($variant?->weight ?? 0)
+                * (int) $item->quantity;
+        }
+
+        // Calculate shipping using your existing shipping zone and freight tables.
+        $shipping = 0;
+
+        if ($defaultAddress && $defaultAddress->state) {
+            $zone = ShippingZone::whereJsonContains(
+                'regions',
+                $defaultAddress->state
+            )->first();
+
+            if ($zone && $zone->free_shipping !== 'yes') {
+                $charge = FreightCharge::where('shipping_zone_id', $zone->id)
+                    ->where('min_weight', '<=', $totalWeight)
+                    ->where('max_weight', '>=', $totalWeight)
+                    ->first();
+
+                if ($charge) {
+                    $shipping = (float) $charge->charge;
+                } else {
+                    $latestCharge = FreightCharge::where(
+                        'shipping_zone_id',
+                        $zone->id
+                    )->orderByDesc('id')->first();
+
+                    if ($latestCharge && $totalWeight > $latestCharge->max_weight) {
+                        $shipping = (float) $latestCharge->charge + 30;
+                    }
+                }
+            }
+        }
+
+        $shipping = round($shipping);
+
+        // Optional coupon from the URL, for example /checkout?code=SAVE10
+        $discount = 0;
+        $couponCode = trim((string) $request->query('code', ''));
+
+        if ($couponCode !== '') {
+            $coupon = Coupon::where('code', $couponCode)
+                ->where('status', 'active')
+                ->first();
+
+            if (
+                $coupon &&
+                (!$coupon->expiry_date ||
+                    Carbon::parse($coupon->expiry_date)->endOfDay()->isFuture()) &&
+                (!$coupon->minimum_purchase ||
+                    $subtotal >= $coupon->minimum_purchase)
+            ) {
+                if ($coupon->type === 'fixed') {
+                    $discount = min((float) $coupon->discount, $subtotal);
+                } else {
+                    $discount = round(
+                        ($subtotal * (float) $coupon->discount) / 100
+                    );
+                }
+            }
+        }
+
+        $total = max(0, $subtotal + $shipping - $discount);
+
+        return view('website.checkout', compact(
+            'cartItems',
+            'addresses',
+            'defaultAddress',
+            'subtotal',
+            'shipping',
+            'discount',
+            'total',
+            'couponCode',
+            'orderType'
+        ));
     }
 
 }
