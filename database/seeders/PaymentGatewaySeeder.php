@@ -15,8 +15,8 @@ class PaymentGatewaySeeder extends Seeder
             'image' => 'media/gateways/razorpay.png',
             'description' => 'Pay securely with Razorpay.',
             'config' => [
-                'key_id'    => 'rzp_test_RDC3eiwXGhVi7T',
-                'secret'    => 'zEFZXWvKcfyOCBdPf84SND6O',
+                'key_id'    => 'rzp_test_R9GdWcNAde0fOH',
+                'secret'    => 'EfDOgPQMM170Rv6ENjAaqsyM',
                 'test_mode' => true,
             ],
             'fee_percent' => 2.0,
