@@ -286,6 +286,24 @@
             flex-shrink: 0;
         }
 
+        .navbar-logo img {
+            width: 150px;
+            height: auto;
+            display: block;
+        }
+
+        @media (max-width: 767px) {
+            .navbar-logo {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .navbar-logo img {
+                width: 100px !important;
+            }
+        }
+
         .navbar-logo a {
             display: flex;
             align-items: center;
@@ -1460,14 +1478,41 @@
 
                     <!-- Search -->
                     <div class="search-box">
+                        <form action="{{ route('shop') }}" method="GET" class="search-form">
+                            <input type="text" name="search" placeholder="Search for Sarees, Fabrics..."
+                                value="{{ request('search') }}">
 
-                        <input type="text" placeholder="Search for Sarees, Fabrics...">
-
-                        <button type="button" class="search-btn">
-                            ⌕
-                        </button>
-
+                            <button type="submit" class="search-btn" aria-label="Search">
+                                ⌕
+                            </button>
+                        </form>
                     </div>
+                    <style>
+                        .search-box {
+                            width: 100%;
+                        }
+
+                        .search-form {
+                            display: flex;
+                            align-items: center;
+                            width: 100%;
+                        }
+
+                        .search-form input {
+                            flex: 1;
+                            min-width: 0;
+                            border: none;
+                            outline: none;
+                            background: transparent;
+                        }
+
+                        .search-form .search-btn {
+                            border: none;
+                            background: transparent;
+                            cursor: pointer;
+                            font-size: 22px;
+                        }
+                    </style>
 
 
                     <!-- Account -->
@@ -2986,7 +3031,7 @@
 
         {{-- <div class="footer-newsletter">
 
-           
+
 
             <!-- Newsletter Content -->
             <div class="newsletter-content" style="margin-left: 50px;">

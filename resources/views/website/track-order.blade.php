@@ -775,7 +775,7 @@
                     <div class="sudheera-track-btn-wrap">
 
                         <button
-                            type="submit"
+                            type="button"
                             class="sudheera-track-btn">
 
                             Track Order

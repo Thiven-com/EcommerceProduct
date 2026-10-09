@@ -112,6 +112,29 @@ class PageControllers extends Controller
 
         /*
         |--------------------------------------------------------------------------
+        | Search Filter
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('search')) {
+
+            $search = trim($request->search);
+
+            $productsQuery->where(function ($query) use ($search) {
+
+                $query->where('title', 'LIKE', "%{$search}%")
+                    ->orWhereHas('category', function ($categoryQuery) use ($search) {
+
+                        $categoryQuery->where('title', 'LIKE', "%{$search}%");
+
+                    });
+
+            });
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
         | Category Filter
         |--------------------------------------------------------------------------
         */
@@ -684,36 +707,36 @@ class PageControllers extends Controller
     }
 
 
-    
 
-public function offers()
-{
-    $products = Product::with([
-        'category',
-        'primaryMedia',
-        'variants.category',
-    ])
-        ->where('is_feature', 1)
-        ->inRandomOrder()
-        ->take(4)
-        ->get();
 
-    // Wishlist variant IDs for the logged-in customer
-    $wishlistVariantIds = [];
+    public function offers()
+    {
+        $products = Product::with([
+            'category',
+            'primaryMedia',
+            'variants.category',
+        ])
+            ->where('is_feature', 1)
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
 
-    if (Auth::guard('customer')->check()) {
-        $userId = Auth::guard('customer')->id();
+        // Wishlist variant IDs for the logged-in customer
+        $wishlistVariantIds = [];
 
-        $wishlistVariantIds = WishlistItem::where('user_id', $userId)
-            ->pluck('product_variant_id')
-            ->toArray();
+        if (Auth::guard('customer')->check()) {
+            $userId = Auth::guard('customer')->id();
+
+            $wishlistVariantIds = WishlistItem::where('user_id', $userId)
+                ->pluck('product_variant_id')
+                ->toArray();
+        }
+
+        return view('website.offers', compact(
+            'products',
+            'wishlistVariantIds'
+        ));
     }
-
-    return view('website.offers', compact(
-        'products',
-        'wishlistVariantIds'
-    ));
-}
 
 
 

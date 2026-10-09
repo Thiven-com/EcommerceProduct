@@ -4,8 +4,8 @@
 
     <style>
         /* =========================================================
-                                       SUDHEERA SHOP PAGE
-                                    ========================================================= */
+                                           SUDHEERA SHOP PAGE
+                                        ========================================================= */
 
         .sudheera-shop {
             background: #fffdf9;
@@ -89,8 +89,8 @@
         }
 
         /* =========================================================
-                                       SIDEBAR
-                                    ========================================================= */
+                                           SIDEBAR
+                                        ========================================================= */
 
         .shop-sidebar {
             background: #fff;
@@ -138,7 +138,7 @@
             font-size: 13px;
             font-weight: 700;
             color: #3b2025;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .filter-option {
@@ -179,7 +179,7 @@
 
         .filter-price input {
             width: 50%;
-            height: 38px;
+            height: 30px;
             border: 1px solid #ddd1cb;
             border-radius: 8px;
             padding: 0 10px;
@@ -189,7 +189,7 @@
 
         .filter-button {
             width: 100%;
-            height: 44px;
+            height: 35px;
             border: 0;
             border-radius: 8px;
             background: #650019;
@@ -201,8 +201,8 @@
         }
 
         /* =========================================================
-                                       TOOLBAR
-                                    ========================================================= */
+                                           TOOLBAR
+                                        ========================================================= */
 
         .shop-toolbar {
             min-height: 52px;
@@ -268,8 +268,8 @@
         }
 
         /* =========================================================
-                                       PRODUCT GRID
-                                    ========================================================= */
+                                           PRODUCT GRID
+                                        ========================================================= */
 
         .sudheera-product-grid {
             display: grid;
@@ -435,8 +435,8 @@
         }
 
         /* =========================================================
-                                       MOBILE FILTER
-                                    ========================================================= */
+                                           MOBILE FILTER
+                                        ========================================================= */
 
         .mobile-filter-panel {
             display: none;
@@ -448,8 +448,8 @@
         }
 
         /* =========================================================
-                                       RESPONSIVE
-                                    ========================================================= */
+                                           RESPONSIVE
+                                        ========================================================= */
 
         @media (max-width: 1199px) {
 
@@ -630,8 +630,8 @@
     <div class="sudheera-shop">
 
         <!-- =====================================================
-                                         BREADCRUMB
-                                    ====================================================== -->
+                                             BREADCRUMB
+                                        ====================================================== -->
 
         <section class="shop-breadcrumb">
             <div class="container">
@@ -653,8 +653,8 @@
 
 
         <!-- =====================================================
-                                         SHOP MAIN
-                                    ====================================================== -->
+                                             SHOP MAIN
+                                        ====================================================== -->
 
         <section class="shop-main">
 
@@ -664,8 +664,8 @@
 
 
                     <!-- =================================================
-                                                     SIDEBAR
-                                                ================================================== -->
+                                                         SIDEBAR
+                                                    ================================================== -->
 
                     <aside class="shop-sidebar">
 
@@ -684,102 +684,83 @@
 
                         <!-- Category -->
 
-<!-- Category -->
+                        <!-- Category -->
 
-<div class="filter-group">
+                        <div class="filter-group">
 
-    <div class="filter-group-title">
-        Shop By Category
-    </div>
+                            <div class="filter-group-title">
+                                Shop By Category
+                            </div>
 
-    @forelse($categories as $category)
+                            @forelse($categories as $category)
 
-        @php
-            $categoryCount = $categoryCounts[$category->id] ?? 0;
-        @endphp
+                                @php
+                                    $categoryCount = $categoryCounts[$category->id] ?? 0;
+                                @endphp
 
-        <label class="filter-option">
+                                <label class="filter-option">
 
-            <div class="filter-option-left">
+                                    <div class="filter-option-left">
 
-                <input
-                    type="checkbox"
-                    class="category-filter"
-                    value="{{ $category->slug }}"
-                    {{ request('category') == $category->slug ? 'checked' : '' }}
-                >
+                                        <input type="checkbox" class="category-filter" value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'checked' : '' }}>
 
-                <span>
-                    {{ $category->title }}
-                </span>
+                                        <span>
+                                            {{ $category->title }}
+                                        </span>
 
-            </div>
+                                    </div>
 
-            <span class="filter-number">
-                {{ str_pad($categoryCount, 2, '0', STR_PAD_LEFT) }}
-            </span>
+                                    <span class="filter-number">
+                                        {{ str_pad($categoryCount, 2, '0', STR_PAD_LEFT) }}
+                                    </span>
 
-        </label>
+                                </label>
 
-    @empty
+                            @empty
 
-        <span style="font-size:13px;color:#999;">
-            No categories available
-        </span>
+                                <span style="font-size:13px;color:#999;">
+                                    No categories available
+                                </span>
 
-    @endforelse
+                            @endforelse
 
-</div>
+                        </div>
 
 
 
 
                         <!-- Price -->
 
-<!-- Price -->
+                        <!-- Price -->
 
-<div class="filter-group">
+                        <div class="filter-group">
 
-    <div class="filter-group-title">
-        Price Range
-    </div>
+                            <div class="filter-group-title">
+                                Price Range
+                            </div>
 
-    <div class="filter-price">
+                            <div class="filter-price">
 
-        <input
-            type="number"
-            name="min_price"
-            id="minPrice"
-            placeholder="Min ₹"
-            value="{{ request('min_price') }}"
-        >
+                                <input type="number" name="min_price" id="minPrice" placeholder="Min ₹"
+                                    value="{{ request('min_price') }}">
 
-        <input
-            type="number"
-            name="max_price"
-            id="maxPrice"
-            placeholder="Max ₹"
-            value="{{ request('max_price') }}"
-        >
+                                <input type="number" name="max_price" id="maxPrice" placeholder="Max ₹"
+                                    value="{{ request('max_price') }}">
 
-    </div>
+                            </div>
 
-</div>
+                        </div>
 
-<button
-    type="button"
-    class="filter-button"
-    onclick="applyFilters()"
->
-    APPLY FILTER
-</button>
+                        <button type="button" class="filter-button" onclick="applyFilters()">
+                            APPLY FILTER
+                        </button>
 
                     </aside>
 
 
                     <!-- =================================================
-                                                     PRODUCTS
-                                                ================================================== -->
+                                                         PRODUCTS
+                                                    ================================================== -->
 
                     <div class="shop-products-area">
 
@@ -790,54 +771,290 @@
 
                             <div class="shop-toolbar-left">
 
-                                <button type="button" class="mobile-filter-btn"
-                                    onclick="document.querySelector('.mobile-filter-panel').classList.toggle('show')">
+                                <button type="button" class="mobile-filter-btn desktop-filter-btn" id="openFilterModal">
                                     ☰ FILTER
                                 </button>
+                                <style>
+                                    /* =========================================
+       FILTER MODAL
+    ========================================= */
+
+                                    .filter-modal-overlay {
+                                        position: fixed;
+                                        inset: 0;
+                                        z-index: 99999;
+                                        display: none;
+                                        align-items: center;
+                                        justify-content: center;
+                                        padding: 20px;
+                                        background: rgba(25, 10, 12, 0.60);
+                                    }
+
+                                    .filter-modal-overlay.active {
+                                        display: flex;
+                                        margin-top: 80px;
+                                    }
+
+                                    .filter-modal-box {
+                                        width: 100%;
+                                        max-width: 480px;
+                                        max-height: 85vh;
+                                        display: flex;
+                                        flex-direction: column;
+                                        overflow: hidden;
+                                        background: #fffdf9;
+                                        border-radius: 16px;
+                                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+                                        animation: filterModalOpen 0.25s ease;
+                                    }
+
+                                    @keyframes filterModalOpen {
+                                        from {
+                                            opacity: 0;
+                                            transform: translateY(15px);
+                                        }
+
+                                        to {
+                                            opacity: 1;
+                                            transform: translateY(0);
+                                        }
+                                    }
+
+                                    .filter-modal-header {
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: space-between;
+                                        padding: 20px 22px;
+                                        border-bottom: 1px solid #eee5df;
+                                    }
+
+                                    .filter-modal-header h5 {
+                                        margin: 0;
+                                        font-family: Georgia, serif;
+                                        font-size: 22px;
+                                        font-weight: 400;
+                                        color: #470018;
+                                    }
+
+                                    .filter-modal-close {
+                                        width: 36px;
+                                        height: 36px;
+                                        border: 0;
+                                        border-radius: 50%;
+                                        background: #f4e9e8;
+                                        color: #650019;
+                                        font-size: 28px;
+                                        line-height: 1;
+                                        cursor: pointer;
+                                    }
+
+                                    .filter-modal-body {
+                                        padding: 0 22px;
+                                        overflow-y: auto;
+                                        overscroll-behavior: contain;
+                                    }
+
+                                    .filter-modal-body .filter-group {
+                                        padding: 5px 0;
+                                    }
+
+                                    .filter-modal-body .filter-option {
+                                        justify-content: flex-start;
+                                        gap: 12px;
+                                    }
+
+                                    .filter-modal-body .filter-option-left {
+                                        flex: 1;
+                                    }
+
+                                    .filter-modal-body .filter-number {
+                                        margin-left: auto;
+                                    }
+
+                                    .filter-modal-footer {
+                                        display: flex;
+                                        gap: 12px;
+                                        padding: 16px 22px 20px;
+                                        border-top: 1px solid #eee5df;
+                                        background: #fffdf9;
+                                    }
+
+                                    .filter-modal-footer .filter-button {
+                                        flex: 1;
+                                        margin: 0;
+                                    }
+
+                                    .filter-reset-btn {
+                                        flex: 1;
+                                        min-height: 35px;
+                                        border: 1px solid #650019;
+                                        border-radius: 8px;
+                                        background: #fff;
+                                        color: #650019;
+                                        font-size: 12px;
+                                        font-weight: 600;
+                                        cursor: pointer;
+                                    }
+
+                                    .filter-reset-btn:hover {
+                                        background: #f7e9eb;
+                                    }
+
+                                    body.filter-modal-open {
+                                        overflow: hidden;
+                                    }
+
+                                    /* Keep the existing sidebar on desktop */
+                                    @media (min-width: 992px) {
+                                        .filter-modal-box {
+                                            max-width: 450px;
+                                        }
+                                    }
+
+                                    @media (max-width: 480px) {
+                                        .filter-modal-overlay {
+                                            padding: 12px;
+                                        }
+
+                                        .filter-modal-box {
+                                            max-height: 88vh;
+                                            border-radius: 13px;
+                                        }
+
+                                        .filter-modal-header {
+                                            padding: 16px;
+                                        }
+
+                                        .filter-modal-body {
+                                            padding: 0 16px;
+                                        }
+
+                                        .filter-modal-footer {
+                                            padding: 14px 16px 16px;
+                                        }
+                                    }
+                                </style>
+                                <!-- Filter Modal -->
+                                <div class="filter-modal-overlay" id="filterModal">
+
+                                    <div class="filter-modal-box">
+
+                                        <!-- Modal Header -->
+                                        <div class="filter-modal-header">
+                                            <h5>Filter Products</h5>
+
+                                            <button type="button" class="filter-modal-close" id="closeFilterModal"
+                                                aria-label="Close filters">
+                                                &times;
+                                            </button>
+                                        </div>
+
+                                        <!-- Modal Body -->
+                                        <div class="filter-modal-body">
+
+                                            <!-- Category Filter -->
+                                            <div class="filter-group">
+
+                                                <div class="filter-group-title">
+                                                    Shop By Category
+                                                </div>
+
+                                                @forelse($categories as $category)
+
+                                                    @php
+                                                        $categoryCount =
+                                                            $categoryCounts[$category->id] ?? 0;
+                                                    @endphp
+
+                                                    <label class="filter-option">
+
+                                                        <div class="filter-option-left">
+
+                                                            <input type="checkbox" class="category-filter"
+                                                                value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'checked' : '' }}>
+
+                                                            <span>{{ $category->title }}</span>
+
+                                                        </div>
+
+                                                        <span class="filter-number">
+                                                            {{ str_pad($categoryCount, 2, '0', STR_PAD_LEFT) }}
+                                                        </span>
+
+                                                    </label>
+
+                                                @empty
+
+                                                    <span style="font-size:13px;color:#999;">
+                                                        No categories available
+                                                    </span>
+
+                                                @endforelse
+
+                                            </div>
+
+                                            <!-- Price Filter -->
+                                            <div class="filter-group">
+
+                                                <div class="filter-group-title">
+                                                    Price Range
+                                                </div>
+
+                                                <div class="filter-price">
+
+                                                    <input type="number" id="modalMinPrice" placeholder="Min ₹" min="0"
+                                                        value="{{ request('min_price') }}">
+
+                                                    <input type="number" id="modalMaxPrice" placeholder="Max ₹" min="0"
+                                                        value="{{ request('max_price') }}">
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Modal Footer -->
+                                        <div class="filter-modal-footer">
+
+                                            <button type="button" class="filter-reset-btn" id="clearModalFilters">
+                                                CLEAR ALL
+                                            </button>
+
+                                            <button type="button" class="filter-button" id="applyModalFilters">
+                                                APPLY FILTER
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
 
 
-<select
-    class="sort-select"
-    id="sortProducts"
-    onchange="applySort(this.value)"
->
+                                <select class="sort-select" id="sortProducts" onchange="applySort(this.value)">
 
-    <option
-        value=""
-        {{ !request('sort') ? 'selected' : '' }}
-    >
-        Sort By: Featured
-    </option>
+                                    <option value="" {{ !request('sort') ? 'selected' : '' }}>
+                                        Sort By: Featured
+                                    </option>
 
-    <option
-        value="best-selling"
-        {{ request('sort') == 'best-selling' ? 'selected' : '' }}
-    >
-        Best Selling
-    </option>
+                                    <option value="best-selling" {{ request('sort') == 'best-selling' ? 'selected' : '' }}>
+                                        Best Selling
+                                    </option>
 
-    <option
-        value="price-low"
-        {{ request('sort') == 'price-low' ? 'selected' : '' }}
-    >
-        Price: Low to High
-    </option>
+                                    <option value="price-low" {{ request('sort') == 'price-low' ? 'selected' : '' }}>
+                                        Price: Low to High
+                                    </option>
 
-    <option
-        value="price-high"
-        {{ request('sort') == 'price-high' ? 'selected' : '' }}
-    >
-        Price: High to Low
-    </option>
+                                    <option value="price-high" {{ request('sort') == 'price-high' ? 'selected' : '' }}>
+                                        Price: High to Low
+                                    </option>
 
-    <option
-        value="new-arrivals"
-        {{ request('sort') == 'new-arrivals' ? 'selected' : '' }}
-    >
-        New Arrivals
-    </option>
+                                    <option value="new-arrivals" {{ request('sort') == 'new-arrivals' ? 'selected' : '' }}>
+                                        New Arrivals
+                                    </option>
 
-</select>
+                                </select>
 
                             </div>
 
@@ -855,332 +1072,307 @@
                                 Shop By Category
                             </div>
 
-                            <label class="filter-option">
+                            @forelse($categories as $category)
 
-                                <div class="filter-option-left">
-                                    <input type="checkbox">
-                                    <span>Silk Sarees</span>
-                                </div>
+                                @php
+                                    $categoryCount = $categoryCounts[$category->id] ?? 0;
+                                @endphp
 
-                            </label>
+                                <label class="filter-option">
 
-                            <label class="filter-option">
+                                    <div class="filter-option-left">
 
-                                <div class="filter-option-left">
-                                    <input type="checkbox">
-                                    <span>Cotton Sarees</span>
-                                </div>
+                                        <input type="checkbox" class="category-filter" value="{{ $category->slug }}" {{ request('category') == $category->slug ? 'checked' : '' }}>
 
-                            </label>
+                                        <span>
+                                            {{ $category->title }}
+                                        </span>
 
-                            <label class="filter-option">
+                                    </div>
 
-                                <div class="filter-option-left">
-                                    <input type="checkbox">
-                                    <span>Party Wear</span>
-                                </div>
+                                    <span class="filter-number">
+                                        {{ str_pad($categoryCount, 2, '0', STR_PAD_LEFT) }}
+                                    </span>
 
-                            </label>
+                                </label>
 
-                            <label class="filter-option">
+                            @empty
 
-                                <div class="filter-option-left">
-                                    <input type="checkbox">
-                                    <span>Designer Sarees</span>
-                                </div>
+                                <span style="font-size:13px;color:#999;">
+                                    No categories available
+                                </span>
 
-                            </label>
+                            @endforelse
 
                         </div>
 
-
                         <!-- =================================================
-                                                         PRODUCT GRID
-                                                    ================================================== -->
+                                                             PRODUCT GRID
+                                                        ================================================== -->
 
- 
-<div class="sudheera-product-grid">
 
-    @forelse($products as $product)
+                        <div class="sudheera-product-grid">
 
-        @php
+                            @forelse($products as $product)
 
-            $variant = $product->variant;
+                                @php
 
-            $sellingPrice = $variant?->price;
-            $actualPrice = $variant?->actual_price;
+                                    $variant = $product->variant;
 
-            /*
-            |--------------------------------------------------------------------------
-            | Discount
-            |--------------------------------------------------------------------------
-            */
+                                    $sellingPrice = $variant?->price;
+                                    $actualPrice = $variant?->actual_price;
 
-            $discount = 0;
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Discount
+                                    |--------------------------------------------------------------------------
+                                    */
 
-            if (
-                is_numeric($actualPrice) &&
-                is_numeric($sellingPrice) &&
-                (float) $actualPrice > 0 &&
-                (float) $actualPrice > (float) $sellingPrice
-            ) {
-                $discount = round(
-                    (
-                        ((float) $actualPrice - (float) $sellingPrice)
-                        / (float) $actualPrice
-                    ) * 100
-                );
-            }
+                                    $discount = 0;
 
-            /*
-            |--------------------------------------------------------------------------
-            | Product Image
-            |--------------------------------------------------------------------------
-            */
+                                    if (
+                                        is_numeric($actualPrice) &&
+                                        is_numeric($sellingPrice) &&
+                                        (float) $actualPrice > 0 &&
+                                        (float) $actualPrice > (float) $sellingPrice
+                                    ) {
+                                        $discount = round(
+                                            (
+                                                ((float) $actualPrice - (float) $sellingPrice)
+                                                / (float) $actualPrice
+                                            ) * 100
+                                        );
+                                    }
 
-            $productImage = null;
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Product Image
+                                    |--------------------------------------------------------------------------
+                                    */
 
-            if ($variant && !empty($variant->image)) {
+                                    $productImage = null;
 
-                $productImage = $variant->image;
+                                    if ($variant && !empty($variant->image)) {
 
-            } elseif (!empty($product->image)) {
+                                        $productImage = $variant->image;
 
-                $productImage = $product->image;
+                                    } elseif (!empty($product->image)) {
 
-            }
+                                        $productImage = $product->image;
 
-            /*
-            |--------------------------------------------------------------------------
-            | Product Badge
-            |--------------------------------------------------------------------------
-            */
+                                    }
 
-            $badge = null;
-            $badgeClass = '';
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Product Badge
+                                    |--------------------------------------------------------------------------
+                                    */
 
-            if (
-                $product->orders > 0 &&
-                $loop->iteration <= 2
-            ) {
+                                    $badge = null;
+                                    $badgeClass = '';
 
-                $badge = 'Bestseller';
+                                    if (
+                                        $product->orders > 0 &&
+                                        $loop->iteration <= 2
+                                    ) {
 
-            } elseif (
-                $product->created_at &&
-                $product->created_at->gt(now()->subDays(30))
-            ) {
+                                        $badge = 'Bestseller';
 
-                $badge = 'New';
-                $badgeClass = 'new';
+                                    } elseif (
+                                        $product->created_at &&
+                                        $product->created_at->gt(now()->subDays(30))
+                                    ) {
 
-            } elseif ($product->is_feature === 'yes') {
+                                        $badge = 'New';
+                                        $badgeClass = 'new';
 
-                $badge = 'Featured';
+                                    } elseif ($product->is_feature === 'yes') {
 
-            }
+                                        $badge = 'Featured';
 
-        @endphp
+                                    }
 
+                                @endphp
 
-        <div class="sudheera-product-card">
 
-            <!-- Product Image -->
+                                <div class="sudheera-product-card">
 
-            <div class="product-image-wrap">
+                                    <!-- Product Image -->
 
-                <a
-                    href="{{ route('productdetails', ['slug' => $product->slug]) }}"
-                    class="sudheera-product-card-link"
-                >
+                                    <div class="product-image-wrap">
 
-                    @if($productImage)
+                                        <a href="{{ route('productdetails', ['slug' => $product->slug]) }}"
+                                            class="sudheera-product-card-link">
 
-                        <img
-                            src="{{ asset($productImage) }}"
-                            alt="{{ $product->title }}"
-                            loading="lazy"
-                        >
+                                            @if($productImage)
 
-                    @else
+                                                <img src="{{ asset($productImage) }}" alt="{{ $product->title }}" loading="lazy">
 
-                        <img
-                            src="{{ asset('website/images/product-placeholder.png') }}"
-                            alt="{{ $product->title }}"
-                            loading="lazy"
-                        >
+                                            @else
 
-                    @endif
+                                                <img src="{{ asset('website/images/product-placeholder.png') }}"
+                                                    alt="{{ $product->title }}" loading="lazy">
 
-                </a>
+                                            @endif
 
+                                        </a>
 
-                @if($badge)
 
-                    <span class="product-badge {{ $badgeClass }}">
-                        {{ $badge }}
-                    </span>
+                                        @if($badge)
 
-                @endif
+                                            <span class="product-badge {{ $badgeClass }}">
+                                                {{ $badge }}
+                                            </span>
 
+                                        @endif
 
-                @php
-    $isWishlisted = in_array(
-        $variant?->id,
-        $wishlistVariantIds ?? []
-    );
-@endphp
 
-<button
-    type="button"
-    class="product-wishlist {{ $isWishlisted ? 'active' : '' }}"
-    data-variant-id="{{ $variant?->id }}"
->
-    {{ $isWishlisted ? '♥' : '♡' }}
-</button>
+                                        @php
+                                            $isWishlisted = in_array(
+                                                $variant?->id,
+                                                $wishlistVariantIds ?? []
+                                            );
+                                        @endphp
 
-            </div>
+                                        <button type="button" class="product-wishlist {{ $isWishlisted ? 'active' : '' }}"
+                                            data-variant-id="{{ $variant?->id }}">
+                                            {{ $isWishlisted ? '♥' : '♡' }}
+                                        </button>
 
+                                    </div>
 
-            <!-- Product Information -->
 
-            <div class="product-info">
+                                    <!-- Product Information -->
 
+                                    <div class="product-info">
 
-                @if($product->category)
 
-                    <div class="product-category">
+                                        @if($product->category)
 
-                        {{ $product->category->title }}
+                                            <div class="product-category">
 
-                    </div>
+                                                {{ $product->category->title }}
 
-                @endif
+                                            </div>
 
+                                        @endif
 
-                <a
-                    href="{{ route('productdetails', ['slug' => $product->slug]) }}"
-                    class="sudheera-product-card-link"
-                >
 
-                    <h3 class="product-name">
+                                        <a href="{{ route('productdetails', ['slug' => $product->slug]) }}"
+                                            class="sudheera-product-card-link">
 
-                        {{ $product->title }}
+                                            <h3 class="product-name">
 
-                    </h3>
+                                                {{ $product->title }}
 
-                </a>
+                                            </h3>
 
+                                        </a>
 
-                <!-- Rating -->
 
-                <div class="product-rating">
+                                        <!-- Rating -->
 
-                    <span class="stars">
-                        ★★★★★
-                    </span>
+                                        <div class="product-rating">
 
-                    <span class="rating-count">
+                                            <span class="stars">
+                                                ★★★★★
+                                            </span>
 
-                        @if($product->orders > 0)
+                                            <span class="rating-count">
 
-                            Bestselling
+                                                @if($product->orders > 0)
 
-                        @else
+                                                    Bestselling
 
-                            Available
+                                                @else
 
-                        @endif
+                                                    Available
 
-                    </span>
+                                                @endif
 
-                </div>
+                                            </span>
 
+                                        </div>
 
-                <!-- Price -->
 
-                <div class="product-price">
+                                        <!-- Price -->
 
-                    @if(is_numeric($sellingPrice))
+                                        <div class="product-price">
 
-                        <span class="price-current">
+                                            @if(is_numeric($sellingPrice))
 
-                            ₹{{ number_format((float) $sellingPrice, 0) }}
+                                                <span class="price-current">
 
-                        </span>
+                                                    ₹{{ number_format((float) $sellingPrice, 0) }}
 
-                    @endif
+                                                </span>
 
+                                            @endif
 
-                    @if(
-                        is_numeric($actualPrice) &&
-                        is_numeric($sellingPrice) &&
-                        (float) $actualPrice > (float) $sellingPrice
-                    )
 
-                        <span class="price-old">
+                                            @if(
+                                                    is_numeric($actualPrice) &&
+                                                    is_numeric($sellingPrice) &&
+                                                    (float) $actualPrice > (float) $sellingPrice
+                                                )
 
-                            ₹{{ number_format((float) $actualPrice, 0) }}
+                                                <span class="price-old">
 
-                        </span>
+                                                    ₹{{ number_format((float) $actualPrice, 0) }}
 
-                    @endif
+                                                </span>
 
+                                            @endif
 
-                    @if($discount > 0)
 
-                        <span class="price-off">
+                                            @if($discount > 0)
 
-                            {{ $discount }}% OFF
+                                                <span class="price-off">
 
-                        </span>
+                                                    {{ $discount }}% OFF
 
-                    @endif
+                                                </span>
 
-                </div>
+                                            @endif
 
+                                        </div>
 
-                <!-- Add To Cart -->
 
-<button
-    type="button"
-    class="add-cart-btn"
-    data-product-id="{{ $product->id }}"
-    data-variant-id="{{ $variant?->id }}"
->
-    ADD TO CART
-</button>
+                                        <!-- Add To Cart -->
 
+                                        <button type="button" class="add-cart-btn" data-product-id="{{ $product->id }}"
+                                            data-variant-id="{{ $variant?->id }}">
+                                            ADD TO CART
+                                        </button>
 
-            </div>
 
-        </div>
+                                    </div>
 
+                                </div>
 
-    @empty
 
-        <div
-            style="
-                grid-column: 1 / -1;
-                text-align:center;
-                padding:60px 20px;
-                color:#777;
-            "
-        >
+                            @empty
 
-            <h3>
-                No products found
-            </h3>
+                                            <div style="
+                                    grid-column: 1 / -1;
+                                    text-align:center;
+                                    padding:60px 20px;
+                                    color:#777;
+                                ">
 
-            <p>
-                Try changing your filters or browse another category.
-            </p>
+                                                <h3>
+                                                    No products found
+                                                </h3>
 
-        </div>
+                                                <p>
+                                                    Try changing your filters or browse another category.
+                                                </p>
 
-    @endforelse
+                                            </div>
 
-</div>
+                            @endforelse
+
+                        </div>
 
                     </div>
 
@@ -1193,387 +1385,639 @@
     </div>
     @if($products->hasPages())
 
-    <div class="shop-pagination">
+        <div class="shop-pagination">
 
-        {{ $products->links('pagination::bootstrap-5') }}
+            {{ $products->links('pagination::bootstrap-5') }}
 
-    </div>
+        </div>
 
-@endif
-
-
-<script>
-
-    /*
-    |--------------------------------------------------------------------------
-    | Apply Category + Price Filters
-    |--------------------------------------------------------------------------
-    */
-
-    function applyFilters() {
-
-        const url = new URL(
-            "{{ route('shop') }}",
-            window.location.origin
-        );
-
-        const selectedCategory =
-            document.querySelector('.category-filter:checked');
-
-        const minPrice =
-            document.getElementById('minPrice')?.value;
-
-        const maxPrice =
-            document.getElementById('maxPrice')?.value;
+    @endif
 
 
-        if (selectedCategory && selectedCategory.value) {
+    <script>
 
-            url.searchParams.set(
-                'category',
-                selectedCategory.value
+        /*
+        |--------------------------------------------------------------------------
+        | Apply Category + Price Filters
+        |--------------------------------------------------------------------------
+        */
+
+        function applyFilters() {
+
+            const url = new URL(
+                "{{ route('shop') }}",
+                window.location.origin
             );
+
+            const selectedCategory =
+                document.querySelector('.category-filter:checked');
+
+            const minPrice =
+                document.getElementById('minPrice')?.value;
+
+            const maxPrice =
+                document.getElementById('maxPrice')?.value;
+
+
+            if (selectedCategory && selectedCategory.value) {
+
+                url.searchParams.set(
+                    'category',
+                    selectedCategory.value
+                );
+
+            }
+
+
+            if (minPrice) {
+
+                url.searchParams.set(
+                    'min_price',
+                    minPrice
+                );
+
+            }
+
+
+            if (maxPrice) {
+
+                url.searchParams.set(
+                    'max_price',
+                    maxPrice
+                );
+
+            }
+
+
+            window.location.href = url.toString();
 
         }
 
 
-        if (minPrice) {
+        /*
+        |--------------------------------------------------------------------------
+        | Category Filter
+        |--------------------------------------------------------------------------
+        */
 
-            url.searchParams.set(
-                'min_price',
-                minPrice
-            );
+        document
+            .querySelectorAll('.category-filter')
+            .forEach(function (checkbox) {
 
-        }
+                checkbox.addEventListener('change', function () {
 
+                    document
+                        .querySelectorAll('.category-filter')
+                        .forEach(function (item) {
 
-        if (maxPrice) {
+                            if (item !== checkbox) {
 
-            url.searchParams.set(
-                'max_price',
-                maxPrice
-            );
+                                item.checked = false;
 
-        }
+                            }
 
+                        });
 
-        window.location.href = url.toString();
+                    applyFilters();
 
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Category Filter
-    |--------------------------------------------------------------------------
-    */
-
-    document
-        .querySelectorAll('.category-filter')
-        .forEach(function (checkbox) {
-
-            checkbox.addEventListener('change', function () {
-
-                document
-                    .querySelectorAll('.category-filter')
-                    .forEach(function (item) {
-
-                        if (item !== checkbox) {
-
-                            item.checked = false;
-
-                        }
-
-                    });
-
-                applyFilters();
+                });
 
             });
 
-        });
 
+        /*
+        |--------------------------------------------------------------------------
+        | Sort Products
+        |--------------------------------------------------------------------------
+        */
 
-    /*
-    |--------------------------------------------------------------------------
-    | Sort Products
-    |--------------------------------------------------------------------------
-    */
+        function applySort(sortValue) {
 
-    function applySort(sortValue) {
-
-        const url = new URL(
-            "{{ route('shop') }}",
-            window.location.origin
-        );
-
-
-        const selectedCategory =
-            document.querySelector('.category-filter:checked');
-
-        const minPrice =
-            document.getElementById('minPrice')?.value;
-
-        const maxPrice =
-            document.getElementById('maxPrice')?.value;
-
-
-        if (selectedCategory && selectedCategory.value) {
-
-            url.searchParams.set(
-                'category',
-                selectedCategory.value
+            const url = new URL(
+                "{{ route('shop') }}",
+                window.location.origin
             );
+
+
+            const selectedCategory =
+                document.querySelector('.category-filter:checked');
+
+            const minPrice =
+                document.getElementById('minPrice')?.value;
+
+            const maxPrice =
+                document.getElementById('maxPrice')?.value;
+
+
+            if (selectedCategory && selectedCategory.value) {
+
+                url.searchParams.set(
+                    'category',
+                    selectedCategory.value
+                );
+
+            }
+
+
+            if (minPrice) {
+
+                url.searchParams.set(
+                    'min_price',
+                    minPrice
+                );
+
+            }
+
+
+            if (maxPrice) {
+
+                url.searchParams.set(
+                    'max_price',
+                    maxPrice
+                );
+
+            }
+
+
+            if (sortValue) {
+
+                url.searchParams.set(
+                    'sort',
+                    sortValue
+                );
+
+            }
+
+
+            window.location.href = url.toString();
 
         }
 
 
-        if (minPrice) {
+        /*
+        |--------------------------------------------------------------------------
+        | Clear All Filters
+        |--------------------------------------------------------------------------
+        */
 
-            url.searchParams.set(
-                'min_price',
-                minPrice
-            );
-
-        }
-
-
-        if (maxPrice) {
-
-            url.searchParams.set(
-                'max_price',
-                maxPrice
-            );
-
-        }
-
-
-        if (sortValue) {
-
-            url.searchParams.set(
-                'sort',
-                sortValue
-            );
-
-        }
-
-
-        window.location.href = url.toString();
-
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Clear All Filters
-    |--------------------------------------------------------------------------
-    */
-
-    document
-        .querySelector('.filter-clear')
-        ?.addEventListener('click', function (event) {
-
-            event.preventDefault();
-
-            window.location.href =
-                "{{ route('shop') }}";
-
-        });
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Wishlist
-    |--------------------------------------------------------------------------
-    */
-
-    const wishlistVariantIds =
-        @json($wishlistVariantIds ?? []);
-
-
-    document
-        .querySelectorAll('.product-wishlist')
-        .forEach(function (button) {
-
-            button.addEventListener('click', function (event) {
+        document
+            .querySelector('.filter-clear')
+            ?.addEventListener('click', function (event) {
 
                 event.preventDefault();
-                event.stopPropagation();
+
+                window.location.href =
+                    "{{ route('shop') }}";
+
+            });
 
 
-                const variantId =
-                    this.getAttribute('data-variant-id');
+        /*
+        |--------------------------------------------------------------------------
+        | Wishlist
+        |--------------------------------------------------------------------------
+        */
+
+        const wishlistVariantIds =
+            @json($wishlistVariantIds ?? []);
 
 
-                /*
-                |--------------------------------------------------------------------------
-                | Variant Check
-                |--------------------------------------------------------------------------
-                */
+        document
+            .querySelectorAll('.product-wishlist')
+            .forEach(function (button) {
 
-                if (!variantId) {
+                button.addEventListener('click', function (event) {
 
-                    alert('Product variant not found.');
-
-                    return;
-
-                }
+                    event.preventDefault();
+                    event.stopPropagation();
 
 
-                const currentButton = this;
-
-
-                /*
-                |--------------------------------------------------------------------------
-                | Send Wishlist Request
-                |--------------------------------------------------------------------------
-                */
-
-                fetch('{{ route('wishlist.add') }}', {
-
-                    method: 'POST',
-
-                    headers: {
-
-                        'Content-Type':
-                            'application/json',
-
-                        'X-CSRF-TOKEN':
-                            '{{ csrf_token() }}',
-
-                        'Accept':
-                            'application/json'
-
-                    },
-
-                    body: JSON.stringify({
-
-                        product_variant_id:
-                            variantId
-
-                    })
-
-                })
-
-
-                .then(async function (response) {
-
-                    const data =
-                        await response.json();
+                    const variantId =
+                        this.getAttribute('data-variant-id');
 
 
                     /*
                     |--------------------------------------------------------------------------
-                    | Login Required
+                    | Variant Check
                     |--------------------------------------------------------------------------
                     */
 
-                    if (response.status === 401) {
+                    if (!variantId) {
 
-                        window.location.href =
-                            '{{ route('login') }}';
+                        alert('Product variant not found.');
 
                         return;
 
                     }
 
 
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Server Error
-                    |--------------------------------------------------------------------------
-                    */
-
-                    if (!response.ok) {
-
-                        throw new Error(
-
-                            data.message ||
-                            'Something went wrong.'
-
-                        );
-
-                    }
+                    const currentButton = this;
 
 
                     /*
                     |--------------------------------------------------------------------------
-                    | Wishlist Success
+                    | Send Wishlist Request
                     |--------------------------------------------------------------------------
                     */
 
-                    if (data.status) {
+                    fetch('{{ route('wishlist.add') }}', {
 
-                        const numericVariantId =
-                            Number(variantId);
+                        method: 'POST',
+
+                        headers: {
+
+                            'Content-Type':
+                                'application/json',
+
+                            'X-CSRF-TOKEN':
+                                '{{ csrf_token() }}',
+
+                            'Accept':
+                                'application/json'
+
+                        },
+
+                        body: JSON.stringify({
+
+                            product_variant_id:
+                                variantId
+
+                        })
+
+                    })
 
 
-                        /*
-                        |--------------------------------------------------------------------------
-                        | Update Local Wishlist State
-                        |--------------------------------------------------------------------------
-                        */
+                        .then(async function (response) {
 
-                        if (
-                            !wishlistVariantIds.includes(
-                                numericVariantId
-                            )
-                        ) {
+                            const data =
+                                await response.json();
 
-                            wishlistVariantIds.push(
-                                numericVariantId
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Login Required
+                            |--------------------------------------------------------------------------
+                            */
+
+                            if (response.status === 401) {
+
+                                window.location.href =
+                                    '{{ route('login') }}';
+
+                                return;
+
+                            }
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Server Error
+                            |--------------------------------------------------------------------------
+                            */
+
+                            if (!response.ok) {
+
+                                throw new Error(
+
+                                    data.message ||
+                                    'Something went wrong.'
+
+                                );
+
+                            }
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Wishlist Success
+                            |--------------------------------------------------------------------------
+                            */
+
+                            if (data.status) {
+
+                                const numericVariantId =
+                                    Number(variantId);
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | Update Local Wishlist State
+                                |--------------------------------------------------------------------------
+                                */
+
+                                if (
+                                    !wishlistVariantIds.includes(
+                                        numericVariantId
+                                    )
+                                ) {
+
+                                    wishlistVariantIds.push(
+                                        numericVariantId
+                                    );
+
+                                }
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | Change Heart
+                                |--------------------------------------------------------------------------
+                                */
+
+                                currentButton.innerHTML =
+                                    '♥';
+
+
+                                currentButton.classList.add(
+                                    'active'
+                                );
+
+
+                                alert(
+                                    data.message
+                                );
+
+
+                            } else {
+
+                                alert(
+
+                                    data.message ||
+                                    'Unable to add to wishlist.'
+
+                                );
+
+                            }
+
+                        })
+
+
+                        .catch(function (error) {
+
+                            console.error(
+                                'Wishlist Error:',
+                                error
                             );
 
-                        }
+
+                            alert(
+
+                                error.message ||
+                                'Something went wrong.'
+
+                            );
+
+                        });
+
+                });
+
+            });
 
 
-                        /*
-                        |--------------------------------------------------------------------------
-                        | Change Heart
-                        |--------------------------------------------------------------------------
-                        */
+        /*
+        |--------------------------------------------------------------------------
+        | Add To Cart Visual State
+        |--------------------------------------------------------------------------
+        */
+
+        document
+            .querySelectorAll('.add-cart-btn')
+            .forEach(function (button) {
+
+                button.addEventListener('click', function () {
+
+                    const originalText =
+                        this.innerHTML;
+
+
+                    this.innerHTML =
+                        'ADDED ✓';
+
+                    this.disabled = true;
+
+
+                    const currentButton = this;
+
+
+                    setTimeout(function () {
 
                         currentButton.innerHTML =
-                            '♥';
+                            originalText;
 
+                        currentButton.disabled =
+                            false;
 
-                        currentButton.classList.add(
-                            'active'
-                        );
+                    }, 1500);
 
+                });
 
-                        alert(
-                            data.message
-                        );
+            });
 
+    </script>
 
-                    } else {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
 
-                        alert(
+            document.querySelectorAll('.add-cart-btn').forEach(function (button) {
 
-                            data.message ||
-                            'Unable to add to wishlist.'
+                button.addEventListener('click', function () {
 
-                        );
+                    const variantId = this.dataset.variantId;
+                    const currentButton = this;
 
+                    if (!variantId) {
+                        alert('Product variant not available.');
+                        return;
                     }
 
-                })
+                    const originalText = currentButton.innerHTML;
 
+                    currentButton.disabled = true;
+                    currentButton.innerHTML = 'ADDING...';
 
-                .catch(function (error) {
+                    fetch("{{ route('cart.add') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            product_variant_id: variantId,
+                            quantity: 1
+                        })
+                    })
+                        .then(async response => {
 
-                    console.error(
-                        'Wishlist Error:',
-                        error
+                            const data = await response.json();
+
+                            if (response.status === 401) {
+                                alert(data.message || 'Please login first.');
+
+                                window.location.href = "{{ route('login') }}";
+                                return;
+                            }
+
+                            if (!response.ok) {
+                                throw new Error(data.message || 'Something went wrong.');
+                            }
+
+                            return data;
+                        })
+                        .then(data => {
+
+                            if (!data) {
+                                return;
+                            }
+
+                            if (data.status) {
+
+                                currentButton.innerHTML = 'ADDED ✓';
+
+                                // Update cart count if available
+                                document.querySelectorAll('.cart-count').forEach(function (element) {
+                                    element.textContent = data.cart_count;
+                                });
+
+                                setTimeout(function () {
+                                    currentButton.innerHTML = originalText;
+                                    currentButton.disabled = false;
+                                }, 1500);
+
+                            } else {
+
+                                currentButton.innerHTML = originalText;
+                                currentButton.disabled = false;
+
+                                alert(data.message || 'Unable to add product to cart.');
+                            }
+                        })
+                        .catch(function (error) {
+
+                            console.error('Add to cart error:', error);
+
+                            currentButton.innerHTML = originalText;
+                            currentButton.disabled = false;
+
+                            alert(error.message || 'Something went wrong. Please try again.');
+                        });
+
+                });
+
+            });
+
+        });
+    </script>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const modal = document.getElementById('filterModal');
+            const openBtn = document.getElementById('openFilterModal');
+            const closeBtn = document.getElementById('closeFilterModal');
+            const applyBtn = document.getElementById('applyModalFilters');
+            const clearBtn = document.getElementById('clearModalFilters');
+
+            if (!modal) return;
+
+            function openFilterModal() {
+                modal.classList.add('active');
+                document.body.classList.add('filter-modal-open');
+            }
+
+            function closeFilterModal() {
+                modal.classList.remove('active');
+                document.body.classList.remove('filter-modal-open');
+            }
+
+            if (openBtn) {
+                openBtn.addEventListener('click', openFilterModal);
+            }
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeFilterModal);
+            }
+
+            // Close when clicking the dark overlay
+            modal.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    closeFilterModal();
+                }
+            });
+
+            // Close with Escape key
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape' && modal.classList.contains('active')) {
+                    closeFilterModal();
+                }
+            });
+
+            // Apply category and price filters
+            if (applyBtn) {
+                applyBtn.addEventListener('click', function () {
+
+                    const url = new URL(
+                        "{{ route('shop') }}",
+                        window.location.origin
                     );
 
+                    const selectedCategory =
+                        modal.querySelector('.category-filter:checked');
 
-                    alert(
+                    const minPrice =
+                        document.getElementById('modalMinPrice').value;
 
-                        error.message ||
-                        'Something went wrong.'
+                    const maxPrice =
+                        document.getElementById('modalMaxPrice').value;
 
-                    );
+                    if (selectedCategory) {
+                        url.searchParams.set(
+                            'category',
+                            selectedCategory.value
+                        );
+                    }
+
+                    if (minPrice !== '') {
+                        url.searchParams.set('min_price', minPrice);
+                    }
+
+                    if (maxPrice !== '') {
+                        url.searchParams.set('max_price', maxPrice);
+                    }
+
+                    // Preserve the selected sort option
+                    const sortSelect = document.getElementById('sortProducts');
+
+                    if (sortSelect && sortSelect.value) {
+                        url.searchParams.set('sort', sortSelect.value);
+                    }
+
+                    window.location.href = url.toString();
+                });
+            }
+
+            // Clear all filters
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function () {
+                    window.location.href = "{{ route('shop') }}";
+                });
+            }
+
+            // Allow only one category to be selected
+            modal.querySelectorAll('.category-filter').forEach(function (checkbox) {
+
+                checkbox.addEventListener('change', function () {
+
+                    if (this.checked) {
+                        modal.querySelectorAll('.category-filter').forEach(
+                            function (otherCheckbox) {
+                                if (otherCheckbox !== checkbox) {
+                                    otherCheckbox.checked = false;
+                                }
+                            }
+                        );
+                    }
 
                 });
 
@@ -1581,140 +2025,6 @@
 
         });
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Add To Cart Visual State
-    |--------------------------------------------------------------------------
-    */
-
-    document
-        .querySelectorAll('.add-cart-btn')
-        .forEach(function (button) {
-
-            button.addEventListener('click', function () {
-
-                const originalText =
-                    this.innerHTML;
-
-
-                this.innerHTML =
-                    'ADDED ✓';
-
-                this.disabled = true;
-
-
-                const currentButton = this;
-
-
-                setTimeout(function () {
-
-                    currentButton.innerHTML =
-                        originalText;
-
-                    currentButton.disabled =
-                        false;
-
-                }, 1500);
-
-            });
-
-        });
-
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-
-    document.querySelectorAll('.add-cart-btn').forEach(function (button) {
-
-        button.addEventListener('click', function () {
-
-            const variantId = this.dataset.variantId;
-            const currentButton = this;
-
-            if (!variantId) {
-                alert('Product variant not available.');
-                return;
-            }
-
-            const originalText = currentButton.innerHTML;
-
-            currentButton.disabled = true;
-            currentButton.innerHTML = 'ADDING...';
-
-            fetch("{{ route('cart.add') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                },
-                body: JSON.stringify({
-                    product_variant_id: variantId,
-                    quantity: 1
-                })
-            })
-            .then(async response => {
-
-                const data = await response.json();
-
-                if (response.status === 401) {
-                    alert(data.message || 'Please login first.');
-
-                    window.location.href = "{{ route('login') }}";
-                    return;
-                }
-
-                if (!response.ok) {
-                    throw new Error(data.message || 'Something went wrong.');
-                }
-
-                return data;
-            })
-            .then(data => {
-
-                if (!data) {
-                    return;
-                }
-
-                if (data.status) {
-
-                    currentButton.innerHTML = 'ADDED ✓';
-
-                    // Update cart count if available
-                    document.querySelectorAll('.cart-count').forEach(function (element) {
-                        element.textContent = data.cart_count;
-                    });
-
-                    setTimeout(function () {
-                        currentButton.innerHTML = originalText;
-                        currentButton.disabled = false;
-                    }, 1500);
-
-                } else {
-
-                    currentButton.innerHTML = originalText;
-                    currentButton.disabled = false;
-
-                    alert(data.message || 'Unable to add product to cart.');
-                }
-            })
-            .catch(function (error) {
-
-                console.error('Add to cart error:', error);
-
-                currentButton.innerHTML = originalText;
-                currentButton.disabled = false;
-
-                alert(error.message || 'Something went wrong. Please try again.');
-            });
-
-        });
-
-    });
-
-});
-</script>
+    </script>
 
 @endsection
