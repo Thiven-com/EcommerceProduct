@@ -524,7 +524,7 @@
             }
 
             .sudheera-wishlist-image {
-                height: 235px;
+                height: 190px;
             }
 
             .sudheera-product-name {

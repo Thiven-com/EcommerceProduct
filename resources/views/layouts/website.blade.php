@@ -669,7 +669,7 @@
 
             .mobile-menu-btn {
                 display: block;
-                margin-left: auto;
+                /* margin-left: auto; */
             }
 
             .logo-name {
@@ -1469,6 +1469,11 @@
                     <a href="{{ route('offers') }}" class="nav-link">
                         Offers
                     </a>
+                    <!-- Mobile Wishlist Icon -->
+                    <a href="{{ route('wishlist') }}" class="nav-link" title="Wishlist" aria-label="Wishlist"
+                        style="display:none;" onload="this.style.display = window.innerWidth <= 991 ? 'flex' : 'none';">
+                        Wishlist
+                    </a>
 
                 </nav>
 
@@ -1599,6 +1604,111 @@
                 <button class="mobile-menu-btn" type="button">
                     <i class="fa-solid fa-bars"></i>
                 </button>
+                <!-- Mobile Search and Account Icons -->
+                <div class="mobile-right-icons"
+                    style="display:none; align-items:center; justify-content:center; gap:1px; margin-left:auto;">
+
+                    <!-- Search Icon -->
+
+                    <button type="button" aria-label="Search"
+                        onclick="document.getElementById('mobileSearchModal').style.display='flex'; document.body.style.overflow='hidden';"
+                        style="transform:scaleX(-1);display:flex;align-items:center;justify-content:center;width:30px;height:38px;padding:0;border:none;background:transparent;color:#650019;font-size:30px;cursor:pointer;margin-bottom:5px;">
+                        ⌕
+                    </button>
+
+                    <!-- Mobile Search Modal -->
+                    <div id="mobileSearchModal"
+                        style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:999999; align-items:flex-start; justify-content:center; padding:100px 15px 20px;">
+
+                        <div
+                            style="position:relative; width:100%; max-width:500px; background:#fff; padding:25px 18px; border-radius:10px; box-shadow:0 5px 25px rgba(0,0,0,0.2);">
+
+                            <!-- Close Button -->
+                            <button type="button" aria-label="Close search" onclick="closeMobileSearchModal()"
+                                style="position:absolute; right:12px; top:8px; border:none; background:transparent; font-size:28px; color:#650019; cursor:pointer;">
+                                &times;
+                            </button>
+
+                            <!-- Title -->
+                            <h3 style="margin:0 0 18px; color:#650019; font-size:18px;">
+                                Search Products
+                            </h3>
+
+                            <!-- Search Form -->
+                            <form action="{{ route('shop') }}" method="GET" style="display:flex; gap:8px;">
+
+                                <input type="search" name="search" placeholder="Search products..."
+                                    aria-label="Search products" required autofocus
+                                    style="flex:1; min-width:0; height:44px; padding:0 12px; border:1px solid #ddd; border-radius:5px; font-size:14px; outline:none;">
+
+                                <button type="submit" aria-label="Search"
+                                    style="height:44px; padding:0 16px; border:none; border-radius:5px; background:#650019; color:#fff; font-size:16px; cursor:pointer;">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Account Icon -->
+                    @if(Auth::guard('customer')->check())
+                        <a href="{{ route('account') }}" title="My Account" aria-label="My Account"
+                            style="display:flex; align-items:center; justify-content:center; width:30px; height:38px; color:#650019; font-size:19px; text-decoration:none;">
+                            <i class="fa-regular fa-user"></i>
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" title="Login" aria-label="Login"
+                            style="display:flex; align-items:center; justify-content:center; width:30px; height:38px; color:#650019; font-size:19px; text-decoration:none;">
+                            <i class="fa-regular fa-user"></i>
+                        </a>
+                    @endif
+
+                    <!-- Mobile Cart Icon -->
+                    @if(Auth::guard('customer')->check())
+
+                        @php
+                            $cartCount = \App\Models\CartItem::where(
+                                'user_id',
+                                Auth::guard('customer')->id()
+                            )->sum('quantity');
+                        @endphp
+
+                        <a href="{{ route('cart') }}" title="My Cart" aria-label="My Cart"
+                            style="display:flex; align-items:center; justify-content:center; width:30px; height:38px; color:#650019; font-size:19px; text-decoration:none; position:relative;">
+
+                            <i class="fa-solid fa-cart-shopping"></i>
+
+                            <span id="mobile-cart-count"
+                                style="position:absolute; top:0; right:-5px; min-width:15px; height:15px; padding:0 3px; display:flex; align-items:center; justify-content:center; background:#650019; color:#fff; border-radius:50%; font-size:10px; line-height:15px;">
+                                {{ $cartCount }}
+                            </span>
+
+                        </a>
+
+                    @else
+
+                        <a href="{{ route('login') }}" title="Login" aria-label="Login"
+                            style="display:flex; align-items:center; justify-content:center; width:30px; height:38px; color:#650019; font-size:19px; text-decoration:none; position:relative;">
+
+                            <i class="fa-solid fa-cart-shopping"></i>
+
+                            <span id="mobile-cart-count"
+                                style="position:absolute; top:0; right:-5px; min-width:15px; height:15px; padding:0 3px; display:flex; align-items:center; justify-content:center; background:#650019; color:#fff; border-radius:50%; font-size:10px; line-height:15px;">
+                                0
+                            </span>
+
+                        </a>
+
+                    @endif
+
+                </div>
+                <style>
+                    @media (max-width: 991px) {
+                        .mobile-right-icons {
+                            display: flex !important;
+                        }
+                    }
+                </style>
                 <style>
                     /* =========================================================
    NAVBAR MENU
@@ -1986,7 +2096,7 @@
 
                             justify-content: center;
 
-                            margin-left: auto;
+                            /* margin-left: auto; */
 
                             border: 1px solid rgba(101, 16, 39, 0.15);
 
@@ -4405,6 +4515,43 @@
 
         });
 
+    </script>
+    <script>
+        function openMobileSearchModal() {
+            document.getElementById('mobileSearchModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(function () {
+                document.querySelector('#mobileSearchModal input[name="search"]').focus();
+            }, 100);
+        }
+
+        function closeMobileSearchModal() {
+            document.getElementById('mobileSearchModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('mobileSearchModal').addEventListener('click', function (event) {
+            if (event.target === this) {
+                closeMobileSearchModal();
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeMobileSearchModal();
+            }
+        });
+    </script>
+    <script>
+        function toggleMobileWishlist() {
+            document.querySelectorAll('a[aria-label="Wishlist"]').forEach(function (link) {
+                link.style.display = window.innerWidth <= 991 ? 'flex' : 'none';
+            });
+        }
+
+        toggleMobileWishlist();
+        window.addEventListener('resize', toggleMobileWishlist);
     </script>
 
 </body>

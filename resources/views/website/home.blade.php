@@ -1527,8 +1527,8 @@
                 transform: translateY(-50%);
                 z-index: 10;
 
-                width: 38px;
-                height: 38px;
+                width: 30px;
+                height: 30px;
 
                 align-items: center;
                 justify-content: center;
@@ -1539,7 +1539,7 @@
                 background: rgba(255, 255, 255, 0.42);
                 color: #30000e;
 
-                font-size: 28px;
+                font-size: 20px;
                 line-height: 1;
 
                 cursor: pointer;
