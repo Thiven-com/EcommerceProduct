@@ -4,8 +4,8 @@
 
     <style>
         /* =========================================================
-                                               SUDHEERA SAREES - OFFERS PAGE
-                                            ========================================================= */
+                                                           SUDHEERA SAREES - OFFERS PAGE
+                                                        ========================================================= */
 
         .offers-page {
             background: #fbf7f1;
@@ -521,54 +521,84 @@
 
 
 
-        
-/* Product image container */
-.offer-product .product-image {
-    position: relative;
-}
 
-/* Wishlist button */
-.offer-product .product-wishlist {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 5;
+        /* Product image container */
+        .offer-product .product-image {
+            position: relative;
+        }
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        /* Wishlist button */
+        .offer-product .product-wishlist {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 5;
 
-    width: 44px;
-    height: 44px;
-    border: none;
-    border-radius: 50%;
-    background: #fff;
-    color: #650019;
-    font-size: 24px;
-    cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.25s ease, visibility 0.25s ease;
-}
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: #fff;
+            color: #650019;
+            font-size: 24px;
+            cursor: pointer;
 
-/* Show wishlist when hovering over the card */
-.offer-product:hover .product-wishlist,
-.offer-product .product-wishlist.active {
-    opacity: 1;
-    visibility: visible;
-}
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
 
-/* Filled heart */
-.offer-product .product-wishlist.active {
-    color: #a92d0f;
-}
+        /* Show wishlist when hovering over the card */
+        .offer-product:hover .product-wishlist,
+        .offer-product .product-wishlist.active {
+            opacity: 1;
+            visibility: visible;
+        }
 
-/* Keep button visible while hovering over it */
-.offer-product .product-wishlist:hover {
-    transform: scale(1.08);
-}
+        /* Filled heart */
+        .offer-product .product-wishlist.active {
+            color: #a92d0f;
+        }
 
+        /* Keep button visible while hovering over it */
+        .offer-product .product-wishlist:hover {
+            transform: scale(1.08);
+        }
+    </style>
+    <style>
+        .add-cart-btn {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #650019;
+            background: #650019;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            transition: .25s ease;
+        }
+
+        .add-cart-btn:hover {
+            background: #fff;
+            color: #650019;
+        }
+
+        @media (max-width: 767px) {
+            .add-cart-btn {
+                height: 38px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .add-cart-btn {
+                height: 36px;
+                font-size: 10px;
+            }
+        }
     </style>
 
 
@@ -801,11 +831,10 @@
 
                             </div>
 
-                            <a href="{{ route('shop') }}" style="text-decoration: none;">
-                                <button type="button" class="shop-offer-btn">
-                                    ADD TO CART
-                                </button>
-                            </a>
+                            <button type="button" class="add-cart-btn" data-product-id="{{ $product->id }}"
+                                data-variant-id="{{ $variant?->id }}">
+                                ADD TO CART
+                            </button>
 
                         </div>
 
@@ -924,6 +953,99 @@
             } finally {
                 button.disabled = false;
             }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            document.querySelectorAll('.add-cart-btn').forEach(function (button) {
+
+                button.addEventListener('click', function () {
+
+                    const variantId = this.dataset.variantId;
+                    const currentButton = this;
+
+                    if (!variantId) {
+                        alert('Product variant not available.');
+                        return;
+                    }
+
+                    const originalText = currentButton.innerHTML;
+
+                    currentButton.disabled = true;
+                    currentButton.innerHTML = 'ADDING...';
+
+                    fetch("{{ route('cart.add') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            product_variant_id: variantId,
+                            quantity: 1
+                        })
+                    })
+                        .then(async response => {
+
+                            const data = await response.json();
+
+                            if (response.status === 401) {
+                                alert(data.message || 'Please login first.');
+
+                                window.location.href = "{{ route('login') }}";
+                                return;
+                            }
+
+                            if (!response.ok) {
+                                throw new Error(data.message || 'Something went wrong.');
+                            }
+
+                            return data;
+                        })
+                        .then(data => {
+
+                            if (!data) {
+                                return;
+                            }
+
+                            if (data.status) {
+
+                                currentButton.innerHTML = 'ADDED ✓';
+
+                                // Update cart count if available
+                                document.querySelectorAll('.cart-count').forEach(function (element) {
+                                    element.textContent = data.cart_count;
+                                });
+
+                                setTimeout(function () {
+                                    currentButton.innerHTML = originalText;
+                                    currentButton.disabled = false;
+                                }, 1500);
+
+                            } else {
+
+                                currentButton.innerHTML = originalText;
+                                currentButton.disabled = false;
+
+                                alert(data.message || 'Unable to add product to cart.');
+                            }
+                        })
+                        .catch(function (error) {
+
+                            console.error('Add to cart error:', error);
+
+                            currentButton.innerHTML = originalText;
+                            currentButton.disabled = false;
+
+                            alert(error.message || 'Something went wrong. Please try again.');
+                        });
+
+                });
+
+            });
+
         });
     </script>
 

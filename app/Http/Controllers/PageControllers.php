@@ -718,7 +718,7 @@ public function offers()
 
 
 
-    public function checkout()
+    public function checkout(Request $request)
     {
         // Change this guard if your website uses a different customer guard.
         $user = auth('customer')->user();
