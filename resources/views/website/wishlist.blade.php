@@ -718,7 +718,7 @@
                                 </button>
                                 <style>
                                     .sudheera-add-cart {
-                                        width: 100%;
+                                        width: 90%;
                                         font-family: inherit;
                                         cursor: pointer;
                                     }
