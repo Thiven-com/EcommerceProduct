@@ -2984,12 +2984,9 @@
 
     <footer class="sudheera-footer">
 
-        <div class="footer-newsletter">
+        {{-- <div class="footer-newsletter">
 
-            {{-- <!-- Decorative lotus -->
-            <div class="footer-lotus">
-                <img src="{{ asset('website') }}/images/llll.png" alt="" style="width: 100px;">
-            </div> --}}
+           
 
             <!-- Newsletter Content -->
             <div class="newsletter-content" style="margin-left: 50px;">
@@ -3075,7 +3072,7 @@
             <!-- Decorative saree -->
             <div class="footer-saree-decoration"></div>
 
-        </div>
+        </div> --}}
 
 
         <!-- =========================================================
@@ -3793,6 +3790,7 @@
                 grid-template-columns: 1.7fr 1fr 1.2fr 1.2fr 1.5fr;
                 gap: 45px;
                 padding-bottom: 10px;
+                padding-top: 20px;
                 margin-left: 20px;
                 margin-right: 20px;
             }
