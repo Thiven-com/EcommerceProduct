@@ -1657,10 +1657,10 @@
                         @endif
 
                         {{-- Secondary Button --}}
-                        <a href="{{ url('/collections') }}" class="hero-btn hero-btn-secondary">
+                        {{-- <a href="{{ url('/collections') }}" class="hero-btn hero-btn-secondary">
                             EXPLORE COLLECTIONS
                             <span>→</span>
-                        </a>
+                        </a> --}}
 
                     </div>
 
