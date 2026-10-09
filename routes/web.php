@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageControllers;
 use App\Http\Controllers\Website\AccountController;
-use App\Http\Controllers\website\OrderController;
+use App\Http\Controllers\Website\OrderController;
 
 Route::get('/', [PageControllers::class, 'home'])->name('home');
 Route::get('shop', [PageControllers::class, 'shop'])->name('shop');
