@@ -4,8 +4,8 @@
 
     <style>
         /* =========================================================
-           SUDHEERA SAREES - OFFERS PAGE
-        ========================================================= */
+                                               SUDHEERA SAREES - OFFERS PAGE
+                                            ========================================================= */
 
         .offers-page {
             background: #fbf7f1;
@@ -251,7 +251,7 @@
         .product-image img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            /* object-fit: cover; */
             transition: .5s ease;
         }
 
@@ -518,6 +518,57 @@
                 text-align: center;
             }
         }
+
+
+
+        
+/* Product image container */
+.offer-product .product-image {
+    position: relative;
+}
+
+/* Wishlist button */
+.offer-product .product-wishlist {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: #fff;
+    color: #650019;
+    font-size: 24px;
+    cursor: pointer;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+/* Show wishlist when hovering over the card */
+.offer-product:hover .product-wishlist,
+.offer-product .product-wishlist.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Filled heart */
+.offer-product .product-wishlist.active {
+    color: #a92d0f;
+}
+
+/* Keep button visible while hovering over it */
+.offer-product .product-wishlist:hover {
+    transform: scale(1.08);
+}
+
     </style>
 
 
@@ -648,8 +699,8 @@
 
             <!-- ================= PRODUCTS ================= -->
 
-            <div class="section-heading">
 
+            <div class="section-heading">
                 <div class="mini-title">
                     Limited Time Deals
                 </div>
@@ -657,204 +708,119 @@
                 <h2>
                     Sarees On Offer
                 </h2>
-
             </div>
 
 
             <div class="offer-products">
 
-                <!-- Product 1 -->
+                @forelse ($products as $product)
 
-                <div class="offer-product">
+                    @php
+                        $variant = $product->variants->first();
 
-                    <div class="product-image">
+                        // Product image: variant first, then primary media
+                        $productImage = $variant?->image
+                            ?: $product->primaryMedia?->url
+                            ?: $product->image
+                            ?: null;
 
-                        <span class="discount-badge">
-                            40% OFF
-                        </span>
+                        $productName = $product->name
+                            ?? $product->title
+                            ?? 'Saree';
 
-                        <button class="product-wishlist">
-                            ♡
-                        </button>
+                        // Category from product or variant
+                        $categoryName = $product->category?->name
+                            ?? $variant?->category?->name
+                            ?? 'Saree Collection';
 
-                        <img src="{{ asset('website') }}/images/silk.png" alt="Silk Saree">
+                        // Prices from ProductVariant
+                        $salePrice = (float) ($variant?->price ?? 0);
+
+                        $oldPrice = (float) ($variant?->actual_price ?? $salePrice);
+
+                        // Discount percentage
+                        $discount = ($oldPrice > $salePrice && $oldPrice > 0)
+                            ? round((($oldPrice - $salePrice) / $oldPrice) * 100)
+                            : 0;
+
+                        // Resolve image URL
+                        $imageUrl = $productImage
+                            ? (
+                                preg_match('/^https?:\/\//i', $productImage)
+                                ? $productImage
+                                : asset($productImage)
+                            )
+                            : asset('website/images/silk.png');
+
+                        $isWishlisted = $variant
+                            && in_array($variant->id, $wishlistVariantIds ?? []);
+                    @endphp
+
+                    <div class="offer-product">
+
+                        <div class="product-image">
+
+                            @if ($discount > 0)
+                                <span class="discount-badge">
+                                    {{ $discount }}% OFF
+                                </span>
+                            @endif
+
+                            <button type="button" class="wishlist product-wishlist {{ $isWishlisted ? 'active' : '' }}"
+                                data-variant-id="{{ $variant?->id }}" aria-label="Add to wishlist">
+                                <span class="wishlist-icon">
+                                    {{ $isWishlisted ? '♥' : '♡' }}
+                                </span>
+                            </button>
+
+                            <img src="{{ $imageUrl }}" alt="{{ $productName }}" loading="lazy">
+
+                        </div>
+
+                        <div class="product-info">
+
+                            <div class="product-category">
+                                {{ $categoryName }}
+                            </div>
+
+                            <h3>
+                                {{ $productName }}
+                            </h3>
+
+                            <div class="price-row">
+
+                                <span class="sale-price">
+                                    ₹{{ number_format($salePrice, 0) }}
+                                </span>
+
+                                @if ($oldPrice > $salePrice)
+                                    <span class="old-price">
+                                        ₹{{ number_format($oldPrice, 0) }}
+                                    </span>
+                                @endif
+
+                            </div>
+
+                            <a href="{{ route('shop') }}" style="text-decoration: none;">
+                                <button type="button" class="shop-offer-btn">
+                                    ADD TO CART
+                                </button>
+                            </a>
+
+                        </div>
 
                     </div>
 
-                    <div class="product-info">
+                @empty
 
-                        <div class="product-category">
-                            Silk Collection
-                        </div>
+                    <p>No featured offers available right now.</p>
 
-                        <h3>
-                            Royal Kanjivaram Silk Saree
-                        </h3>
-
-                        <div class="price-row">
-                            <span class="sale-price">
-                                ₹3,599
-                            </span>
-
-                            <span class="old-price">
-                                ₹5,999
-                            </span>
-                        </div>
-                        <a href="{{ route('shop') }}" style="text-decoration: none;">
-                        <button class="shop-offer-btn">
-                            SHOP NOW
-                        </button>
-                        </a>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Product 2 -->
-
-                <div class="offer-product">
-
-                    <div class="product-image">
-
-                        <span class="discount-badge">
-                            30% OFF
-                        </span>
-
-                        <button class="product-wishlist">
-                            ♡
-                        </button>
-
-                        <img src="{{ asset('website') }}/images/organza.png" alt="Designer Saree">
-
-                    </div>
-
-                    <div class="product-info">
-
-                        <div class="product-category">
-                            Designer Collection
-                        </div>
-
-                        <h3>
-                            Elegant Designer Saree
-                        </h3>
-
-                        <div class="price-row">
-                            <span class="sale-price">
-                                ₹2,799
-                            </span>
-
-                            <span class="old-price">
-                                ₹3,999
-                            </span>
-                        </div>
-                        <a href="{{ route('shop') }}" style="text-decoration: none;">
-                        <button class="shop-offer-btn">
-                            SHOP NOW
-                        </button>
-                        </a>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Product 3 -->
-
-                <div class="offer-product">
-
-                    <div class="product-image">
-
-                        <span class="discount-badge">
-                            25% OFF
-                        </span>
-
-                        <button class="product-wishlist">
-                            ♡
-                        </button>
-
-                        <img src="{{ asset('website') }}/images/cotton.png" alt="Cotton Saree">
-
-                    </div>
-
-                    <div class="product-info">
-
-                        <div class="product-category">
-                            Cotton Collection
-                        </div>
-
-                        <h3>
-                            Traditional Cotton Saree
-                        </h3>
-
-                        <div class="price-row">
-                            <span class="sale-price">
-                                ₹1,499
-                            </span>
-
-                            <span class="old-price">
-                                ₹1,999
-                            </span>
-                        </div>
-                        <a href="{{ route('shop') }}" style="text-decoration: none;">
-                        <button class="shop-offer-btn">
-                            SHOP NOW
-                        </button>
-                        </a>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Product 4 -->
-
-                <div class="offer-product">
-
-                    <div class="product-image">
-
-                        <span class="discount-badge">
-                            50% OFF
-                        </span>
-
-                        <button class="product-wishlist">
-                            ♡
-                        </button>
-
-                        <img src="{{ asset('website') }}/images/linen.png" alt="Festive Saree">
-
-                    </div>
-
-                    <div class="product-info">
-
-                        <div class="product-category">
-                            Festive Collection
-                        </div>
-
-                        <h3>
-                            Festive Handloom Saree
-                        </h3>
-
-                        <div class="price-row">
-                            <span class="sale-price">
-                                ₹1,999
-                            </span>
-
-                            <span class="old-price">
-                                ₹3,999
-                            </span>
-                        </div>
-                        <a href="{{ route('shop') }}" style="text-decoration: none;">
-                        <button class="shop-offer-btn">
-                            SHOP NOW
-                        </button>
-                        </a>
-
-                    </div>
-
-                </div>
+                @endforelse
 
             </div>
+
+
+
 
 
             <!-- ================= COUPON BANNER ================= -->
@@ -895,5 +861,72 @@
         </div>
 
     </div>
+
+
+
+
+    <script>
+        document.addEventListener('click', async function (event) {
+            const button = event.target.closest('.wishlist');
+
+            if (!button) return;
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            const variantId = button.dataset.variantId;
+
+            if (!variantId) {
+                alert('Product variant not found.');
+                return;
+            }
+
+            if (button.disabled) return;
+
+            button.disabled = true;
+
+            try {
+                const response = await fetch(@json(route('wishlist.add')), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': @json(csrf_token()),
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        product_variant_id: variantId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.status === 401) {
+                    window.location.href = @json(route('login'));
+                    return;
+                }
+
+                if (!response.ok || !data.status) {
+                    throw new Error(data.message || 'Unable to update wishlist.');
+                }
+
+                button.classList.add('active');
+
+                const icon = button.querySelector('.wishlist-icon');
+
+                if (icon) {
+                    icon.textContent = '♥';
+                }
+
+                alert(data.message || 'Added to wishlist.');
+            } catch (error) {
+                console.error('Wishlist error:', error);
+                alert(error.message || 'Something went wrong.');
+            } finally {
+                button.disabled = false;
+            }
+        });
+    </script>
+
+
 
 @endsection

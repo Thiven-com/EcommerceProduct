@@ -845,21 +845,89 @@
 </style>
 
 
-<main class="sudheera-order-page">
 
+<main class="sudheera-order-page">
     <div class="container">
 
-        <!-- PAGE HEADER -->
+        @php
+            $status = strtolower(str_replace(
+                ['_', '-'],
+                ' ',
+                $order->status ?? 'pending'
+            ));
 
+            $statusLabel = ucwords($status);
+
+            if (in_array($status, ['delivered', 'completed'])) {
+                $statusClass = 'sudheera-status-success';
+                $statusIcon = 'fa-check-circle';
+            } elseif (in_array($status, ['shipped', 'in transit', 'out for delivery'])) {
+                $statusClass = 'sudheera-status-shipped';
+                $statusIcon = 'fa-truck';
+            } elseif (in_array($status, ['cancelled', 'canceled', 'failed'])) {
+                $statusClass = 'sudheera-status-danger';
+                $statusIcon = 'fa-times-circle';
+            } else {
+                $statusClass = 'sudheera-status-pending';
+                $statusIcon = 'fa-clock';
+            }
+
+            $subtotal = (float) ($order->subtotal ?? 0);
+            $shipping = (float) ($order->delivery_total ?? 0);
+            $discount = (float) ($order->discount_total ?? 0);
+            $total = (float) ($order->grand_total ?? ($subtotal + $shipping - $discount));
+
+            $itemCount = $order->items->sum(
+                fn ($item) => (int) ($item->quantity ?? 1)
+            );
+
+            $orderNumber = $order->invoice_id
+                ?: 'SDR-' . $order->created_at->format('Y')
+                    . '-' . str_pad($order->id, 5, '0', STR_PAD_LEFT);
+
+            $payment = $order->payments->sortByDesc('created_at')->first();
+
+            $paymentMethod = $order->payment_method
+                ?: ($payment->payment_method ?? 'Not specified');
+
+            $paymentStatus = strtolower(str_replace(
+                ['_', '-'],
+                ' ',
+                $order->payment_status ?? ($payment->status ?? 'pending')
+            ));
+
+            $paymentStatusClass = in_array($paymentStatus, ['paid', 'success', 'completed'])
+                ? 'sudheera-status-success'
+                : (in_array($paymentStatus, ['failed', 'refunded', 'cancelled'])
+                    ? 'sudheera-status-danger'
+                    : 'sudheera-status-pending');
+
+            $shippingAddress = $order->shipping_address ?? [];
+            $addressName = data_get($shippingAddress, 'name')
+                ?? data_get($shippingAddress, 'full_name')
+                ?? data_get($shippingAddress, 'customer_name')
+                ?? 'Customer';
+
+            $addressLine = data_get($shippingAddress, 'address')
+                ?? data_get($shippingAddress, 'address_line')
+                ?? data_get($shippingAddress, 'address_line_1');
+
+            $city = data_get($shippingAddress, 'city');
+            $state = data_get($shippingAddress, 'state');
+            $postcode = data_get($shippingAddress, 'postcode')
+                ?? data_get($shippingAddress, 'postal_code')
+                ?? data_get($shippingAddress, 'pincode');
+
+            $country = data_get($shippingAddress, 'country');
+            $phone = data_get($shippingAddress, 'phone')
+                ?? data_get($shippingAddress, 'mobile');
+        @endphp
+
+        {{-- PAGE HEADER --}}
         <div class="sudheera-page-header">
+            <div class="sudheera-page-eyebrow">SUDHEERA SAREES</div>
 
-            <div class="sudheera-page-eyebrow">
-                SUDHEERA SAREES
-            </div>
-
-            <h1 class="sudheera-page-title">
-                Order Details
-            </h1>
+            <h1 class="sudheera-page-title">Order Details</h1>
 
             <p class="sudheera-page-subtitle">
                 Thank you for choosing Sudheera Sarees.
@@ -868,666 +936,399 @@
             </p>
 
             <div class="sudheera-breadcrumb">
-
-                <a href="#">
-                    Home
-                </a>
-
+                <a href="{{ url('/') }}">Home</a>
                 <span>/</span>
-
-                <a href="#">
-                    My Orders
-                </a>
-
+                <a href="{{ route('orders') }}">My Orders</a>
                 <span>/</span>
-
-                <span class="active">
-                    Order Details
-                </span>
-
+                <span class="active">Order Details</span>
             </div>
 
             <div class="sudheera-header-line"></div>
-
         </div>
 
-
-        <!-- TOP ACTIONS -->
-
+        {{-- TOP ACTIONS --}}
         <div class="sudheera-top-actions">
+            <a href="#" onclick="window.print(); return false;"
+               class="sudheera-action-btn">
+                <i class="fa fa-print"></i>
+                Print Invoice
+            </a>
 
             <a href="#"
                onclick="window.print(); return false;"
-               class="sudheera-action-btn">
-
-                <i class="fa fa-print"></i>
-
-                Print Invoice
-
-            </a>
-
-            <a href="#"
                class="sudheera-action-btn sudheera-download-btn">
-
                 <i class="fa fa-download"></i>
-
-                Download Invoice
-
+                Download / Save Invoice
             </a>
-
         </div>
 
-
-        <!-- MAIN GRID -->
-
+        {{-- MAIN GRID --}}
         <div class="row g-4">
 
-
-            <!-- LEFT SIDE -->
-
+            {{-- LEFT SIDE --}}
             <div class="col-lg-8">
 
-
-                <!-- ORDER SUMMARY -->
-
+                {{-- ORDER SUMMARY --}}
                 <div class="sudheera-detail-card">
-
                     <div class="row g-4 align-items-start">
 
-
-                        <!-- ORDER ID -->
-
                         <div class="col-md-4">
-
-                            <div class="sudheera-label">
-                                Order ID
-                            </div>
+                            <div class="sudheera-label">Order ID</div>
 
                             <div class="sudheera-order-id">
-                                #SDH-2026-00125
+                                #{{ $orderNumber }}
                             </div>
 
-                            <span class="sudheera-status sudheera-status-pending">
-
-                                <i class="fa fa-clock"></i>
-
-                                Processing
-
+                            <span class="sudheera-status {{ $statusClass }}">
+                                <i class="fa {{ $statusIcon }}"></i>
+                                {{ $statusLabel }}
                             </span>
-
                         </div>
-
-
-                        <!-- ORDER DATE -->
 
                         <div class="col-md-4">
-
-                            <div class="sudheera-label">
-                                Order Date
-                            </div>
+                            <div class="sudheera-label">Order Date</div>
 
                             <div class="sudheera-value">
-
                                 <i class="fa fa-calendar"
                                    style="color:#a47724; margin-right:7px;"></i>
-
-                                28 Aug 2026, 10:30 AM
-
+                                {{ optional($order->created_at)->format('d M Y, h:i A') }}
                             </div>
-
                         </div>
 
-
-                        <!-- TOTAL -->
-
                         <div class="col-md-4 text-md-end">
-
-                            <div class="sudheera-label">
-                                Total Amount
-                            </div>
+                            <div class="sudheera-label">Total Amount</div>
 
                             <div class="sudheera-total">
-                                ₹4,250.00
+                                ₹{{ number_format($total, 2) }}
                             </div>
 
                             <span class="sudheera-item-count">
-                                3 Items
+                                {{ $itemCount }}
+                                {{ $itemCount == 1 ? 'Item' : 'Items' }}
                             </span>
-
                         </div>
-
                     </div>
-
 
                     <hr class="sudheera-divider">
 
+                    {{-- ORDER ITEMS --}}
+                    <h5 class="sudheera-section-title">Order Items</h5>
 
-                    <!-- ORDER ITEMS -->
+                    @forelse ($order->items as $item)
+                        @php
+                            $product = $item->productVariant->product ?? null;
 
-                    <h5 class="sudheera-section-title">
-                        Order Items
-                    </h5>
+                            $productName = $item->product_title
+                                ?? $product->name
+                                ?? $product->title
+                                ?? 'Saree Product';
 
+                            $quantity = (int) ($item->quantity ?? 1);
+                            $unitPrice = (float) ($item->unit_price ?? 0);
 
-                    <!-- ITEM 1 -->
+                            $lineTotal = (float) (
+                                $item->subtotal ?? ($unitPrice * $quantity)
+                            );
 
-                    <div class="sudheera-product-row">
+                            // Adjust this image field if your product model uses another name.
+                            $imagePath = $product->image
+                                ?? $product->image_path
+                                ?? null;
+                        @endphp
 
-                        <div class="sudheera-product-left">
+                        <div class="sudheera-product-row">
+                            <div class="sudheera-product-left">
 
-                            <img
-                                src="{{ asset('website/images/product/product-1.jpg') }}"
-                                class="sudheera-product-image"
-                                alt="Kanchipuram Silk Saree">
+                                @if ($imagePath)
+                                    <img
+                                        src="{{ asset($imagePath) }}"
+                                        class="sudheera-product-image"
+                                        alt="{{ $productName }}">
+                                @else
+                                    <img
+                                        src="{{ asset('website/images/product/product-1.jpg') }}"
+                                        class="sudheera-product-image"
+                                        alt="{{ $productName }}">
+                                @endif
 
-                            <div class="sudheera-product-info">
+                                <div class="sudheera-product-info">
+                                    <div class="sudheera-product-name">
+                                        {{ $productName }}
+                                    </div>
 
-                                <div class="sudheera-product-name">
-                                    Traditional Kanchipuram Silk Saree
+                                    <div class="sudheera-product-meta">
+                                        Quantity: {{ $quantity }}
+                                    </div>
+
+                                    <div class="sudheera-product-meta">
+                                        Unit Price: ₹{{ number_format($unitPrice, 2) }}
+                                    </div>
                                 </div>
-
-                                <div class="sudheera-product-meta">
-                                    Quantity: 1
-                                </div>
-
-                                <button
-                                    type="button"
-                                    class="sudheera-review-btn"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#reviewModal1">
-
-                                    <i class="fa fa-star"></i>
-
-                                    Write Review
-
-                                </button>
-
                             </div>
 
+                            <strong class="sudheera-product-price">
+                                ₹{{ number_format($lineTotal, 2) }}
+                            </strong>
                         </div>
-
-                        <strong class="sudheera-product-price">
-                            ₹2,450.00
-                        </strong>
-
-                    </div>
-
-
-                    <!-- ITEM 2 -->
-
-                    <div class="sudheera-product-row">
-
-                        <div class="sudheera-product-left">
-
-                            <img
-                                src="{{ asset('website/images/product/product-2.jpg') }}"
-                                class="sudheera-product-image"
-                                alt="Banarasi Silk Saree">
-
-                            <div class="sudheera-product-info">
-
-                                <div class="sudheera-product-name">
-                                    Premium Banarasi Silk Saree
-                                </div>
-
-                                <div class="sudheera-product-meta">
-                                    Quantity: 1
-                                </div>
-
-                                <button
-                                    type="button"
-                                    class="sudheera-review-btn"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#reviewModal2">
-
-                                    <i class="fa fa-star"></i>
-
-                                    Write Review
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                        <strong class="sudheera-product-price">
-                            ₹1,350.00
-                        </strong>
-
-                    </div>
-
-
-                    <!-- ITEM 3 -->
-
-                    <div class="sudheera-product-row">
-
-                        <div class="sudheera-product-left">
-
-                            <img
-                                src="{{ asset('website/images/product/product-3.jpg') }}"
-                                class="sudheera-product-image"
-                                alt="Designer Cotton Saree">
-
-                            <div class="sudheera-product-info">
-
-                                <div class="sudheera-product-name">
-                                    Elegant Designer Cotton Saree
-                                </div>
-
-                                <div class="sudheera-product-meta">
-                                    Quantity: 1
-                                </div>
-
-                                <button
-                                    type="button"
-                                    class="sudheera-review-btn"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#reviewModal3">
-
-                                    <i class="fa fa-star"></i>
-
-                                    Write Review
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                        <strong class="sudheera-product-price">
-                            ₹450.00
-                        </strong>
-
-                    </div>
-
+                    @empty
+                        <p>No items were found for this order.</p>
+                    @endforelse
 
                     <hr class="sudheera-divider">
 
-
-                    <!-- PRICE SUMMARY -->
-
+                    {{-- PRICE SUMMARY --}}
                     <div class="sudheera-summary">
-
                         <div class="sudheera-summary-row">
-
-                            <span>
-                                Subtotal
-                            </span>
-
-                            <span>
-                                ₹4,250.00
-                            </span>
-
+                            <span>Subtotal</span>
+                            <span>₹{{ number_format($subtotal, 2) }}</span>
                         </div>
 
-
                         <div class="sudheera-summary-row">
-
+                            <span>Shipping</span>
                             <span>
-                                Shipping
+                                {{ $shipping <= 0 ? 'Free' : '₹' . number_format($shipping, 2) }}
                             </span>
-
-                            <span>
-                                ₹0.00
-                            </span>
-
                         </div>
 
-
                         <div class="sudheera-summary-row">
-
-                            <span>
-                                Discount
-                            </span>
-
+                            <span>Discount</span>
                             <span class="sudheera-discount">
-                                − ₹0.00
+                                − ₹{{ number_format($discount, 2) }}
                             </span>
-
                         </div>
-
 
                         <div class="sudheera-summary-row sudheera-summary-total">
-
-                            <strong>
-                                Total Amount
-                            </strong>
-
-                            <strong>
-                                ₹4,250.00
-                            </strong>
-
+                            <strong>Total Amount</strong>
+                            <strong>₹{{ number_format($total, 2) }}</strong>
                         </div>
-
                     </div>
 
-
-                    <!-- ORDER MESSAGE -->
-
+                    {{-- ORDER MESSAGE --}}
                     <div class="sudheera-order-message">
-
-                        <i class="fa fa-info-circle"></i>
-
+                        <i class="fa {{ $statusIcon }}"></i>
                         <span>
-
                             Your order is currently
-                            <strong>Processing</strong>.
-
-                            You will receive an update once your order
-                            is confirmed and ready for dispatch.
-
+                            <strong>{{ $statusLabel }}</strong>.
+                            @if (in_array($status, ['cancelled', 'canceled']))
+                                This order has been cancelled.
+                            @elseif (in_array($status, ['delivered', 'completed']))
+                                Your order has been delivered. Thank you for shopping with us.
+                            @elseif (in_array($status, ['shipped', 'in transit', 'out for delivery']))
+                                Your order is on its way to you.
+                            @else
+                                You will receive an update as your order progresses.
+                            @endif
                         </span>
-
                     </div>
-
                 </div>
 
-
-                <!-- PAYMENT DETAILS -->
-
+                {{-- PAYMENT DETAILS --}}
                 <div class="sudheera-detail-card mt-4">
-
-                    <h5 class="sudheera-section-title">
-                        Payment Details
-                    </h5>
-
+                    <h5 class="sudheera-section-title">Payment Details</h5>
 
                     <div class="sudheera-payment-box">
-
-
-                        <!-- PAYMENT METHOD -->
-
                         <div class="sudheera-payment-column">
-
-                            <div class="sudheera-label">
-                                Payment Method
-                            </div>
+                            <div class="sudheera-label">Payment Method</div>
 
                             <div class="sudheera-payment-value">
-                                Cash on Delivery
+                                {{ ucwords(str_replace(['_', '-'], ' ', $paymentMethod)) }}
                             </div>
 
-
-                            <div class="sudheera-label mt-4">
-                                Amount Paid
-                            </div>
+                            <div class="sudheera-label mt-4">Amount Paid</div>
 
                             <div class="sudheera-paid-amount">
-                                ₹0.00
+                                ₹{{ number_format(
+                                    in_array($paymentStatus, ['paid', 'success', 'completed'])
+                                        ? $total
+                                        : 0,
+                                    2
+                                ) }}
                             </div>
-
                         </div>
-
-
-                        <!-- PAYMENT STATUS -->
 
                         <div class="sudheera-payment-column">
+                            <div class="sudheera-label">Payment Status</div>
 
-                            <div class="sudheera-label">
-                                Payment Status
-                            </div>
-
-                            <span class="sudheera-status sudheera-status-pending">
-
-                                <i class="fa fa-clock"></i>
-
-                                Pending
-
+                            <span class="sudheera-status {{ $paymentStatusClass }}">
+                                {{ ucwords($paymentStatus) }}
                             </span>
-
                         </div>
-
-
-                        <!-- AMOUNT DUE -->
 
                         <div class="sudheera-payment-column text-md-end">
-
-                            <div class="sudheera-label">
-                                Amount to be Paid
-                            </div>
+                            <div class="sudheera-label">Amount to be Paid</div>
 
                             <div class="sudheera-amount-due">
-                                ₹4,250.00
+                                ₹{{ number_format(
+                                    in_array($paymentStatus, ['paid', 'success', 'completed'])
+                                        ? 0
+                                        : $total,
+                                    2
+                                ) }}
                             </div>
 
-                            <div class="sudheera-warning-note">
-
-                                <i class="fa fa-exclamation-circle"></i>
-
-                                Please keep the exact amount ready
-                                for Cash on Delivery.
-
-                            </div>
-
+                            @if (str_contains(strtolower($paymentMethod), 'cash') &&
+                                !in_array($paymentStatus, ['paid', 'success', 'completed']))
+                                <div class="sudheera-warning-note">
+                                    <i class="fa fa-exclamation-circle"></i>
+                                    Please keep the exact amount ready for Cash on Delivery.
+                                </div>
+                            @endif
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
 
-
-            <!-- RIGHT SIDE -->
-
+            {{-- RIGHT SIDE --}}
             <div class="col-lg-4">
 
-
-                <!-- ORDER TRACKING -->
-
+                {{-- ORDER TRACKING --}}
                 <div class="sudheera-detail-card">
+                    <h5 class="sudheera-section-title">Order Tracking</h5>
 
-                    <h5 class="sudheera-section-title">
-                        Order Tracking
-                    </h5>
+                    @php
+                        $trackingSteps = [
+                            'placed' => [
+                                'title' => 'Order Placed',
+                                'done' => true,
+                            ],
+                            'confirmed' => [
+                                'title' => 'Order Confirmed',
+                                'done' => in_array($status, [
+                                    'confirmed', 'processing', 'shipped',
+                                    'in transit', 'out for delivery',
+                                    'delivered', 'completed'
+                                ]),
+                            ],
+                            'shipped' => [
+                                'title' => 'Shipped',
+                                'done' => in_array($status, [
+                                    'shipped', 'in transit', 'out for delivery',
+                                    'delivered', 'completed'
+                                ]),
+                            ],
+                            'delivered' => [
+                                'title' => 'Delivered',
+                                'done' => in_array($status, ['delivered', 'completed']),
+                            ],
+                        ];
+                    @endphp
 
+                    @foreach ($trackingSteps as $key => $step)
+                        @php
+                            $isDone = $step['done'];
 
-                    <!-- PLACED -->
+                            $isCurrent = !$isDone && (
+                                ($key === 'confirmed' && $status === 'pending') ||
+                                ($key === 'shipped' && in_array($status, ['confirmed', 'processing'])) ||
+                                ($key === 'delivered' && in_array($status, ['shipped', 'in transit', 'out for delivery']))
+                            );
 
-                    <div class="sudheera-tracking-item sudheera-tracking-completed">
+                            $trackingClass = $isDone
+                                ? 'sudheera-tracking-completed'
+                                : ($isCurrent
+                                    ? 'sudheera-tracking-active'
+                                    : 'sudheera-tracking-inactive');
+                        @endphp
 
-                        <div class="sudheera-tracking-icon">
-                            ✓
-                        </div>
-
-                        <div class="sudheera-tracking-content">
-
-                            <div class="sudheera-tracking-title">
-                                Order Placed
+                        <div class="sudheera-tracking-item {{ $trackingClass }}">
+                            <div class="sudheera-tracking-icon">
+                                {{ $isDone ? '✓' : $loop->iteration }}
                             </div>
 
-                            <div class="sudheera-tracking-date">
-                                28 Aug 2026, 10:30 AM
+                            <div class="sudheera-tracking-content">
+                                <div class="sudheera-tracking-title">
+                                    {{ $step['title'] }}
+                                </div>
+
+                                <div class="sudheera-tracking-date">
+                                    @if ($key === 'placed')
+                                        {{ optional($order->created_at)->format('d M Y, h:i A') }}
+                                    @elseif ($isDone)
+                                        Updated
+                                    @elseif ($isCurrent)
+                                        In progress
+                                    @else
+                                        Awaiting update
+                                    @endif
+                                </div>
                             </div>
 
+                            <span class="sudheera-track-badge {{ $isDone ? 'sudheera-track-completed' : ($isCurrent ? 'sudheera-track-pending' : 'sudheera-track-inactive') }}">
+                                {{ $isDone ? 'Completed' : ($isCurrent ? 'In Progress' : 'Pending') }}
+                            </span>
                         </div>
-
-                        <span class="sudheera-track-badge sudheera-track-completed">
-                            Completed
-                        </span>
-
-                    </div>
-
-
-                    <!-- CONFIRMED -->
-
-                    <div class="sudheera-tracking-item sudheera-tracking-active">
-
-                        <div class="sudheera-tracking-icon">
-                            2
-                        </div>
-
-                        <div class="sudheera-tracking-content">
-
-                            <div class="sudheera-tracking-title">
-                                Order Confirmed
-                            </div>
-
-                            <div class="sudheera-tracking-date">
-                                Awaiting confirmation
-                            </div>
-
-                        </div>
-
-                        <span class="sudheera-track-badge sudheera-track-pending">
-                            Pending
-                        </span>
-
-                    </div>
-
-
-                    <!-- SHIPPED -->
-
-                    <div class="sudheera-tracking-item sudheera-tracking-inactive">
-
-                        <div class="sudheera-tracking-icon">
-                            3
-                        </div>
-
-                        <div class="sudheera-tracking-content">
-
-                            <div class="sudheera-tracking-title">
-                                Shipped
-                            </div>
-
-                            <div class="sudheera-tracking-date">
-                                —
-                            </div>
-
-                        </div>
-
-                        <span class="sudheera-track-badge sudheera-track-inactive">
-                            Pending
-                        </span>
-
-                    </div>
-
-
-                    <!-- DELIVERED -->
-
-                    <div class="sudheera-tracking-item sudheera-tracking-inactive">
-
-                        <div class="sudheera-tracking-icon">
-                            4
-                        </div>
-
-                        <div class="sudheera-tracking-content">
-
-                            <div class="sudheera-tracking-title">
-                                Delivered
-                            </div>
-
-                            <div class="sudheera-tracking-date">
-                                —
-                            </div>
-
-                        </div>
-
-                        <span class="sudheera-track-badge sudheera-track-inactive">
-                            Pending
-                        </span>
-
-                    </div>
-
-
-                    <!-- DELIVERY -->
+                    @endforeach
 
                     <div class="sudheera-delivery-box">
-
                         <i class="fa fa-calendar"></i>
-
-                        <strong>
-                            Expected Delivery:
-                        </strong>
-
-                        31 Aug 2026 - 02 Sep 2026
-
+                        <strong>Delivery Status:</strong>
+                        {{ $statusLabel }}
                     </div>
-
                 </div>
 
-
-                <!-- SHIPPING ADDRESS -->
-
+                {{-- SHIPPING ADDRESS --}}
                 <div class="sudheera-detail-card mt-4">
-
-                    <h5 class="sudheera-section-title">
-                        Shipping Address
-                    </h5>
-
+                    <h5 class="sudheera-section-title">Shipping Address</h5>
 
                     <div class="sudheera-address-box">
-
-                        <strong>
-                            Vasanth Kumar
-                        </strong>
-
+                        <strong>{{ $addressName }}</strong>
                         <br>
 
-                        24, Main Road,
-                        Near City Market
+                        @if ($addressLine)
+                            {{ $addressLine }}<br>
+                        @endif
 
-                        <br>
+                        @if ($city)
+                            {{ $city }}
+                        @endif
 
-                        Bengaluru,
-                        Karnataka
-                        -
-                        560001
+                        @if ($state)
+                            {{ $city ? ', ' : '' }}{{ $state }}
+                        @endif
 
-                        <br>
+                        @if ($postcode)
+                            - {{ $postcode }}
+                        @endif
 
-                        India
+                        @if ($city || $state || $postcode)
+                            <br>
+                        @endif
 
-                        <br><br>
+                        @if ($country)
+                            {{ $country }}<br>
+                        @endif
 
-                        <strong>
-                            Mobile:
-                        </strong>
-
-                        +91 98765 43210
-
+                        @if ($phone)
+                            <br>
+                            <strong>Mobile:</strong> {{ $phone }}
+                        @endif
                     </div>
-
                 </div>
 
-
-                <!-- PAYMENT METHOD -->
-
+                {{-- PAYMENT METHOD --}}
                 <div class="sudheera-detail-card mt-4">
-
                     <div class="sudheera-side-payment">
-
                         <div>
-
                             <h5 class="sudheera-section-title mb-1">
                                 Payment Method
                             </h5>
 
                             <div class="sudheera-payment-value">
-                                Cash on Delivery
+                                {{ ucwords(str_replace(['_', '-'], ' ', $paymentMethod)) }}
                             </div>
-
                         </div>
 
-                        <span class="sudheera-status sudheera-status-pending">
-
-                            <i class="fa fa-clock"></i>
-
-                            Pending
-
+                        <span class="sudheera-status {{ $paymentStatusClass }}">
+                            {{ ucwords($paymentStatus) }}
                         </span>
-
                     </div>
-
                 </div>
 
             </div>
-
         </div>
-
     </div>
-
 </main>
+
 
 
 <!-- =========================================================

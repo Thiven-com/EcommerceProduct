@@ -576,23 +576,17 @@
 </style>
 
 
-<main class="sudheera-orders-page">
 
+<main class="sudheera-orders-page">
     <div class="container">
 
-        <!-- =====================================================
-             PAGE HEADER
-        ====================================================== -->
-
+        {{-- PAGE HEADER --}}
         <div class="sudheera-page-header">
-
             <div class="sudheera-page-eyebrow">
                 SUDHEERA SAREES
             </div>
 
-            <h1 class="sudheera-page-title">
-                My Orders
-            </h1>
+            <h1 class="sudheera-page-title">My Orders</h1>
 
             <p class="sudheera-page-subtitle">
                 View your recent purchases and keep track of your
@@ -600,658 +594,288 @@
             </p>
 
             <div class="sudheera-breadcrumb">
-                <a href="/">Home</a>
+                <a href="{{ url('/') }}">Home</a>
                 <span>/</span>
                 <span class="active">My Orders</span>
             </div>
 
             <div class="sudheera-header-line"></div>
-
         </div>
 
-
-        <!-- =====================================================
-             2 COLUMN ORDER GRID
-        ====================================================== -->
-
+        {{-- TWO COLUMN ORDER GRID --}}
         <div class="sudheera-orders-grid">
 
+            @forelse ($orders as $order)
 
-            <!-- =================================================
-                 ORDER 1
-            ================================================== -->
+                @php
+                    $rawStatus = strtolower(str_replace(
+                        ['_', '-'],
+                        ' ',
+                        $order->status ?? 'pending'
+                    ));
 
-            <div class="sudheera-order-item">
+                    $statusText = ucwords($rawStatus);
 
-                <div class="sudheera-order-card">
+                    // Order status badge
+                    if (in_array($rawStatus, [
+                        'delivered',
+                        'completed',
+                        'confirmed',
+                        'success'
+                    ])) {
+                        $statusClass = 'sudheera-status-success';
+                        $statusIcon = 'fa-check-circle';
+                    } elseif (in_array($rawStatus, [
+                        'shipped',
+                        'in transit',
+                        'out for delivery'
+                    ])) {
+                        $statusClass = 'sudheera-status-shipped';
+                        $statusIcon = 'fa-truck';
+                    } elseif (in_array($rawStatus, [
+                        'cancelled',
+                        'canceled',
+                        'failed',
+                        'refunded'
+                    ])) {
+                        $statusClass = 'sudheera-status-danger';
+                        $statusIcon = 'fa-times-circle';
+                    } else {
+                        $statusClass = 'sudheera-status-warning';
+                        $statusIcon = 'fa-clock';
+                    }
 
-                    <div class="sudheera-card-line"></div>
+                    // Order totals
+                    $subtotal = (float) ($order->subtotal ?? 0);
+                    $shipping = (float) ($order->delivery_total ?? 0);
+                    $discount = (float) ($order->discount_total ?? 0);
+                    $total = (float) ($order->grand_total ?? (
+                        $subtotal + $shipping - $discount
+                    ));
 
-                    <div class="sudheera-order-content">
+                    // Total quantity across all order items
+                    $itemCount = $order->items->sum(
+                        fn ($item) => (int) ($item->quantity ?? 1)
+                    );
 
-                        <div class="sudheera-order-top">
+                    // Order number
+                    $orderNumber = $order->invoice_id
+                        ?: 'SDR-' . $order->created_at->format('Y')
+                            . '-' . str_pad($order->id, 5, '0', STR_PAD_LEFT);
 
-                            <div>
+                    // Payment details
+                    $payment = $order->payments
+                        ->sortByDesc('created_at')
+                        ->first();
 
-                                <div class="sudheera-label">
-                                    Order Number
+                    $paymentMethod = $order->payment_method
+                        ?: ($payment->payment_method ?? 'Not specified');
+
+                    $paymentStatus = strtolower(str_replace(
+                        ['_', '-'],
+                        ' ',
+                        $order->payment_status
+                            ?? ($payment->status ?? 'pending')
+                    ));
+
+                    $paymentStatusText = ucwords($paymentStatus);
+
+                    if (in_array($paymentStatus, [
+                        'paid', 'success', 'completed'
+                    ])) {
+                        $paymentStatusClass = 'sudheera-status-success';
+                    } elseif (in_array($paymentStatus, [
+                        'refunded', 'failed', 'cancelled', 'canceled'
+                    ])) {
+                        $paymentStatusClass = 'sudheera-status-danger';
+                    } else {
+                        $paymentStatusClass = 'sudheera-status-warning';
+                    }
+
+                    // Status message and icon
+                    if (in_array($rawStatus, ['cancelled', 'canceled'])) {
+                        $messageIcon = 'fa-times-circle';
+                        $message = 'This order has been cancelled. If payment was completed, any applicable refund will be processed according to our refund policy.';
+                    } elseif (in_array($rawStatus, ['delivered', 'completed'])) {
+                        $messageIcon = 'fa-check-circle';
+                        $message = 'Your order has been delivered. Thank you for shopping with Sudheera Sarees.';
+                    } elseif (in_array($rawStatus, ['shipped', 'in transit'])) {
+                        $messageIcon = 'fa-truck';
+                        $message = 'Your saree order has been shipped and is on its way to you.';
+                    } elseif (in_array($rawStatus, ['confirmed', 'processing'])) {
+                        $messageIcon = 'fa-info-circle';
+                        $message = 'Your order has been confirmed and is being prepared for dispatch.';
+                    } else {
+                        $messageIcon = 'fa-clock';
+                        $message = 'Your order has been received and is awaiting confirmation.';
+                    }
+                @endphp
+
+                <div class="sudheera-order-item">
+                    <div class="sudheera-order-card">
+
+                        <div class="sudheera-card-line"></div>
+
+                        <div class="sudheera-order-content">
+
+                            {{-- ORDER HEADER --}}
+                            <div class="sudheera-order-top">
+                                <div>
+                                    <div class="sudheera-label">
+                                        Order Number
+                                    </div>
+
+                                    <h4 class="sudheera-order-number">
+                                        <a href="{{ route('order-details', ['order_id' => $order->id]) }}">
+                                            {{ $orderNumber }}
+                                        </a>
+                                    </h4>
+
+                                    <span class="sudheera-status {{ $statusClass }}">
+                                        <i class="fa {{ $statusIcon }}"></i>
+                                        {{ $statusText }}
+                                    </span>
                                 </div>
 
-                                <h4 class="sudheera-order-number">
-                                    <a href="#">
-                                        SDR-2026-00125
-                                    </a>
-                                </h4>
+                                <div class="sudheera-total-box">
+                                    <div class="sudheera-label">
+                                        Total
+                                    </div>
 
-                                <span class="sudheera-status sudheera-status-success">
-                                    <i class="fa fa-check-circle"></i>
-                                    Confirmed
+                                    <div class="sudheera-total">
+                                        ₹{{ number_format($total, 2) }}
+                                    </div>
+
+                                    <span class="sudheera-item-count">
+                                        {{ $itemCount }}
+                                        {{ $itemCount == 1 ? 'Item' : 'Items' }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {{-- ORDER DATE --}}
+                            <div class="sudheera-order-date">
+                                <i class="fa fa-calendar"></i>
+
+                                <span>
+                                    {{ $order->created_at
+                                        ? $order->created_at->format('d M Y, h:i A')
+                                        : 'Date unavailable' }}
                                 </span>
-
                             </div>
 
-                            <div class="sudheera-total-box">
+                            {{-- ORDER SUMMARY --}}
+                            <div class="sudheera-summary">
 
-                                <div class="sudheera-label">
-                                    Total
+                                <div class="sudheera-summary-row">
+                                    <span>Subtotal</span>
+                                    <span>₹{{ number_format($subtotal, 2) }}</span>
                                 </div>
 
-                                <div class="sudheera-total">
-                                    ₹4,850
+                                <div class="sudheera-summary-row">
+                                    <span>Shipping</span>
+                                    <span>
+                                        {{ $shipping <= 0
+                                            ? 'Free'
+                                            : '₹' . number_format($shipping, 2) }}
+                                    </span>
                                 </div>
 
-                                <span class="sudheera-item-count">
-                                    2 Items
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- DATE -->
-
-                        <div class="sudheera-order-date">
-
-                            <i class="fa fa-calendar"></i>
-
-                            <span>
-                                28 Aug 2026, 10:30 AM
-                            </span>
-
-                        </div>
-
-
-                        <!-- SUMMARY -->
-
-                        <div class="sudheera-summary">
-
-                            <div class="sudheera-summary-row">
-                                <span>Subtotal</span>
-                                <span>₹4,700</span>
-                            </div>
-
-                            <div class="sudheera-summary-row">
-                                <span>Shipping</span>
-                                <span>₹150</span>
-                            </div>
-
-                            <div class="sudheera-summary-row">
-                                <span>Discount</span>
-                                <span>− ₹0</span>
-                            </div>
-
-                            <div class="sudheera-summary-row sudheera-summary-total">
-
-                                <strong>Total Amount</strong>
-
-                                <strong>
-                                    ₹4,850
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- MESSAGE -->
-
-                        <div class="sudheera-order-message">
-
-                            <i class="fa fa-info-circle"></i>
-
-                            <span>
-                                Your order has been confirmed and is
-                                currently being prepared for dispatch.
-                            </span>
-
-                        </div>
-
-
-                        <!-- PAYMENT -->
-
-                        <div class="sudheera-payment">
-
-                            <div>
-
-                                <div class="sudheera-label">
-                                    Payment Method
+                                <div class="sudheera-summary-row">
+                                    <span>Discount</span>
+                                    <span>
+                                        − ₹{{ number_format($discount, 2) }}
+                                    </span>
                                 </div>
 
-                                <div class="sudheera-payment-value">
-                                    Online Payment
+                                <div class="sudheera-summary-row sudheera-summary-total">
+                                    <strong>Total Amount</strong>
+
+                                    <strong>
+                                        ₹{{ number_format($total, 2) }}
+                                    </strong>
                                 </div>
 
                             </div>
 
-                            <div class="sudheera-payment-status">
+                            {{-- ORDER MESSAGE --}}
+                            <div class="sudheera-order-message">
+                                <i class="fa {{ $messageIcon }}"></i>
 
-                                <div class="sudheera-label">
-                                    Payment Status
-                                </div>
-
-                                <span class="sudheera-status sudheera-status-success">
-                                    Paid
-                                </span>
-
+                                <span>{{ $message }}</span>
                             </div>
 
+                            {{-- PAYMENT DETAILS --}}
+                            <div class="sudheera-payment">
+                                <div>
+                                    <div class="sudheera-label">
+                                        Payment Method
+                                    </div>
+
+                                    <div class="sudheera-payment-value">
+                                        {{ ucwords(str_replace(
+                                            ['_', '-'],
+                                            ' ',
+                                            $paymentMethod
+                                        )) }}
+                                    </div>
+                                </div>
+
+                                <div class="sudheera-payment-status">
+                                    <div class="sudheera-label">
+                                        Payment Status
+                                    </div>
+
+                                    <span class="sudheera-status {{ $paymentStatusClass }}">
+                                        {{ $paymentStatusText }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {{-- VIEW ORDER DETAILS --}}
+                            <a
+                                href="{{ route('order-details', ['order_id' => $order->id]) }}"
+                                class="sudheera-view-btn"
+                            >
+                                <i class="fa fa-eye"></i>
+                                View Order Details
+                            </a>
+
                         </div>
-
-
-                        <!-- BUTTON -->
-
-                        <a href="#" class="sudheera-view-btn">
-
-                            <i class="fa fa-eye"></i>
-
-                            View Order Details
-
-                        </a>
-
                     </div>
-
                 </div>
 
-            </div>
+            @empty
 
+                <div class="sudheera-order-item">
+                    <div class="sudheera-order-card">
+                        <div class="sudheera-card-line"></div>
 
-            <!-- =================================================
-                 ORDER 2
-            ================================================== -->
+                        <div class="sudheera-order-content">
+                            <h4 class="sudheera-order-number">
+                                No Orders Found
+                            </h4>
 
-            <div class="sudheera-order-item">
+                            <p class="sudheera-page-subtitle">
+                                You haven't placed any orders yet.
+                                Explore our beautiful saree collection
+                                and place your first order.
+                            </p>
 
-                <div class="sudheera-order-card">
-
-                    <div class="sudheera-card-line"></div>
-
-                    <div class="sudheera-order-content">
-
-                        <div class="sudheera-order-top">
-
-                            <div>
-
-                                <div class="sudheera-label">
-                                    Order Number
-                                </div>
-
-                                <h4 class="sudheera-order-number">
-                                    <a href="#">
-                                        SDR-2026-00118
-                                    </a>
-                                </h4>
-
-                                <span class="sudheera-status sudheera-status-shipped">
-                                    <i class="fa fa-truck"></i>
-                                    Shipped
-                                </span>
-
-                            </div>
-
-                            <div class="sudheera-total-box">
-
-                                <div class="sudheera-label">
-                                    Total
-                                </div>
-
-                                <div class="sudheera-total">
-                                    ₹3,250
-                                </div>
-
-                                <span class="sudheera-item-count">
-                                    1 Item
-                                </span>
-
-                            </div>
-
+                            <a href="{{ route('shop') }}"
+                               class="sudheera-view-btn">
+                                <i class="fa fa-shopping-bag"></i>
+                                Continue Shopping
+                            </a>
                         </div>
-
-
-                        <!-- DATE -->
-
-                        <div class="sudheera-order-date">
-
-                            <i class="fa fa-calendar"></i>
-
-                            <span>
-                                25 Aug 2026, 04:15 PM
-                            </span>
-
-                        </div>
-
-
-                        <!-- SUMMARY -->
-
-                        <div class="sudheera-summary">
-
-                            <div class="sudheera-summary-row">
-                                <span>Subtotal</span>
-                                <span>₹3,150</span>
-                            </div>
-
-                            <div class="sudheera-summary-row">
-                                <span>Shipping</span>
-                                <span>₹100</span>
-                            </div>
-
-                            <div class="sudheera-summary-row">
-                                <span>Discount</span>
-                                <span>− ₹0</span>
-                            </div>
-
-                            <div class="sudheera-summary-row sudheera-summary-total">
-
-                                <strong>Total Amount</strong>
-
-                                <strong>
-                                    ₹3,250
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- MESSAGE -->
-
-                        <div class="sudheera-order-message">
-
-                            <i class="fa fa-truck"></i>
-
-                            <span>
-                                Your saree order has been shipped and
-                                is currently on its way to you.
-                            </span>
-
-                        </div>
-
-
-                        <!-- PAYMENT -->
-
-                        <div class="sudheera-payment">
-
-                            <div>
-
-                                <div class="sudheera-label">
-                                    Payment Method
-                                </div>
-
-                                <div class="sudheera-payment-value">
-                                    Online Payment
-                                </div>
-
-                            </div>
-
-                            <div class="sudheera-payment-status">
-
-                                <div class="sudheera-label">
-                                    Payment Status
-                                </div>
-
-                                <span class="sudheera-status sudheera-status-success">
-                                    Paid
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- BUTTON -->
-
-                        <a href="#" class="sudheera-view-btn">
-
-                            <i class="fa fa-eye"></i>
-
-                            View Order Details
-
-                        </a>
-
                     </div>
-
                 </div>
 
-            </div>
-
-
-            <!-- =================================================
-                 ORDER 3
-            ================================================== -->
-
-            <div class="sudheera-order-item">
-
-                <div class="sudheera-order-card">
-
-                    <div class="sudheera-card-line"></div>
-
-                    <div class="sudheera-order-content">
-
-                        <div class="sudheera-order-top">
-
-                            <div>
-
-                                <div class="sudheera-label">
-                                    Order Number
-                                </div>
-
-                                <h4 class="sudheera-order-number">
-                                    <a href="#">
-                                        SDR-2026-00105
-                                    </a>
-                                </h4>
-
-                                <span class="sudheera-status sudheera-status-warning">
-                                    <i class="fa fa-clock"></i>
-                                    Pending
-                                </span>
-
-                            </div>
-
-                            <div class="sudheera-total-box">
-
-                                <div class="sudheera-label">
-                                    Total
-                                </div>
-
-                                <div class="sudheera-total">
-                                    ₹2,750
-                                </div>
-
-                                <span class="sudheera-item-count">
-                                    1 Item
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- DATE -->
-
-                        <div class="sudheera-order-date">
-
-                            <i class="fa fa-calendar"></i>
-
-                            <span>
-                                22 Aug 2026, 11:45 AM
-                            </span>
-
-                        </div>
-
-
-                        <!-- SUMMARY -->
-
-                        <div class="sudheera-summary">
-
-                            <div class="sudheera-summary-row">
-                                <span>Subtotal</span>
-                                <span>₹2,750</span>
-                            </div>
-
-                            <div class="sudheera-summary-row">
-                                <span>Shipping</span>
-                                <span>Free</span>
-                            </div>
-
-                            <div class="sudheera-summary-row sudheera-summary-total">
-
-                                <strong>Total Amount</strong>
-
-                                <strong>
-                                    ₹2,750
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- MESSAGE -->
-
-                        <div class="sudheera-order-message">
-
-                            <i class="fa fa-clock"></i>
-
-                            <span>
-                                Your order has been received and is
-                                awaiting confirmation.
-                            </span>
-
-                        </div>
-
-
-                        <!-- PAYMENT -->
-
-                        <div class="sudheera-payment">
-
-                            <div>
-
-                                <div class="sudheera-label">
-                                    Payment Method
-                                </div>
-
-                                <div class="sudheera-payment-value">
-                                    Online Payment
-                                </div>
-
-                            </div>
-
-                            <div class="sudheera-payment-status">
-
-                                <div class="sudheera-label">
-                                    Payment Status
-                                </div>
-
-                                <span class="sudheera-status sudheera-status-warning">
-                                    Pending
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- BUTTON -->
-
-                        <a href="#" class="sudheera-view-btn">
-
-                            <i class="fa fa-eye"></i>
-
-                            View Order Details
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================================
-                 ORDER 4
-            ================================================== -->
-
-            <div class="sudheera-order-item">
-
-                <div class="sudheera-order-card">
-
-                    <div class="sudheera-card-line"></div>
-
-                    <div class="sudheera-order-content">
-
-                        <div class="sudheera-order-top">
-
-                            <div>
-
-                                <div class="sudheera-label">
-                                    Order Number
-                                </div>
-
-                                <h4 class="sudheera-order-number">
-                                    <a href="#">
-                                        SDR-2026-00098
-                                    </a>
-                                </h4>
-
-                                <span class="sudheera-status sudheera-status-danger">
-                                    <i class="fa fa-times-circle"></i>
-                                    Cancelled
-                                </span>
-
-                            </div>
-
-                            <div class="sudheera-total-box">
-
-                                <div class="sudheera-label">
-                                    Total
-                                </div>
-
-                                <div class="sudheera-total">
-                                    ₹5,200
-                                </div>
-
-                                <span class="sudheera-item-count">
-                                    2 Items
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- DATE -->
-
-                        <div class="sudheera-order-date">
-
-                            <i class="fa fa-calendar"></i>
-
-                            <span>
-                                18 Aug 2026, 02:20 PM
-                            </span>
-
-                        </div>
-
-
-                        <!-- SUMMARY -->
-
-                        <div class="sudheera-summary">
-
-                            <div class="sudheera-summary-row">
-                                <span>Subtotal</span>
-                                <span>₹5,200</span>
-                            </div>
-
-                            <div class="sudheera-summary-row">
-                                <span>Shipping</span>
-                                <span>Free</span>
-                            </div>
-
-                            <div class="sudheera-summary-row">
-                                <span>Discount</span>
-                                <span>− ₹0</span>
-                            </div>
-
-                            <div class="sudheera-summary-row sudheera-summary-total">
-
-                                <strong>Total Amount</strong>
-
-                                <strong>
-                                    ₹5,200
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- MESSAGE -->
-
-                        <div class="sudheera-order-message">
-
-                            <i class="fa fa-times-circle"></i>
-
-                            <span>
-                                This order has been cancelled. If payment
-                                was completed, the refund will be processed
-                                according to our refund policy.
-                            </span>
-
-                        </div>
-
-
-                        <!-- PAYMENT -->
-
-                        <div class="sudheera-payment">
-
-                            <div>
-
-                                <div class="sudheera-label">
-                                    Payment Method
-                                </div>
-
-                                <div class="sudheera-payment-value">
-                                    Online Payment
-                                </div>
-
-                            </div>
-
-                            <div class="sudheera-payment-status">
-
-                                <div class="sudheera-label">
-                                    Payment Status
-                                </div>
-
-                                <span class="sudheera-status sudheera-status-danger">
-                                    Refunded
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- BUTTON -->
-
-                        <a href="#" class="sudheera-view-btn">
-
-                            <i class="fa fa-eye"></i>
-
-                            View Order Details
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
+            @endforelse
 
         </div>
-
     </div>
-
 </main>
+
 
 @endsection

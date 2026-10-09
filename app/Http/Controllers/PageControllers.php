@@ -16,6 +16,7 @@ use App\Models\FreightCharge;
 use App\Models\ShippingZone;
 use Illuminate\Support\Facades\Auth;
 use App\Models\WishlistItem;
+use App\Models\Order;
 
 
 class PageControllers extends Controller
@@ -611,13 +612,45 @@ class PageControllers extends Controller
     {
         return view('website.track-order');
     }
+
     public function orders()
     {
-        return view('website.orders');
+        if (!Auth::guard('customer')->check()) {
+            return redirect()
+                ->route('login')
+                ->with('error', 'Please login first.');
+        }
+
+        $customerId = Auth::guard('customer')->id();
+
+        $orders = Order::with(['items', 'payments', 'shipments'])
+            ->where('customer_id', $customerId)
+            ->latest('created_at')
+            ->get();
+
+        return view('website.orders', compact('orders'));
     }
-    public function order_details()
+
+    public function order_details(Request $request)
     {
-        return view('website.order-details');
+        if (!Auth::guard('customer')->check()) {
+            return redirect()
+                ->route('login')
+                ->with('error', 'Please login first.');
+        }
+
+        $orderId = $request->query('order_id');
+
+        $order = Order::with([
+            'items',
+            'payments',
+            'shipments',
+        ])
+            ->where('customer_id', Auth::guard('customer')->id())
+            ->where('id', $orderId)
+            ->firstOrFail();
+
+        return view('website.order-details', compact('order'));
     }
     public function addresses()
     {
@@ -649,11 +682,43 @@ class PageControllers extends Controller
             ->first();
         return view('website.account', compact('customer', 'address'));
     }
-    public function offers()
-    {
-        return view('website.offers');
+
+
+    
+
+public function offers()
+{
+    $products = Product::with([
+        'category',
+        'primaryMedia',
+        'variants.category',
+    ])
+        ->where('is_feature', 1)
+        ->inRandomOrder()
+        ->take(4)
+        ->get();
+
+    // Wishlist variant IDs for the logged-in customer
+    $wishlistVariantIds = [];
+
+    if (Auth::guard('customer')->check()) {
+        $userId = Auth::guard('customer')->id();
+
+        $wishlistVariantIds = WishlistItem::where('user_id', $userId)
+            ->pluck('product_variant_id')
+            ->toArray();
     }
-    public function checkout(Request $request)
+
+    return view('website.offers', compact(
+        'products',
+        'wishlistVariantIds'
+    ));
+}
+
+
+
+
+    public function checkout()
     {
         // Change this guard if your website uses a different customer guard.
         $user = auth('customer')->user();
