@@ -41,13 +41,15 @@ class Order extends Model
     {
         return $this->hasMany(OrderStatusHistory::class);
     }
-    
+
 
     protected $fillable = [
         'customer_id',
         'order_id',
         'invoice_id',
         'subtotal',
+        'delivery_total',
+        'discount_total',
         'grand_total',
         'status',
         'payment_status',

@@ -8,12 +8,12 @@
                     <form action="{{ route('admin.loginAction') }}" method="POST">
                         @csrf
                         <div class="login-userset">
-                            <div class="final-logo logo-normal">
+                            {{-- <div class="final-logo logo-normal">
                                 <a href="{{ url('admin/dashboard') }}" class="logo logo-normal d-flex align-items-center">
                                     <img src="{{ asset('website') }}/images/thirdeye.png" alt="Logo"
                                       style="width:400px; margin-left: 30px; ">
                                 </a>
-                            </div>
+                            </div> --}}
                             {{-- <a href="{{url('index')}}" class="login-logo logo-white">
                                 <a href="{{ url('admin/dashboard') }}" class="logo logo-normal d-flex align-items-center">
                                     <img src="{{ asset('website/images/logo.png') }}" alt="Logo"
@@ -104,7 +104,7 @@
             </div>
             <div class="col-lg-6 p-0">
                 <div class="login-img">
-                    <img src="{{ asset('website') }}/images/thirdlog.png" alt="img">
+                    <img src="{{ asset('website') }}/images/log (3).png" alt="img">
                 </div>
             </div>
         </div>

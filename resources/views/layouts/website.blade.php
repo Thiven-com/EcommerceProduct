@@ -4299,15 +4299,15 @@
 
                 <div class="footer-links">
 
-                    <a href="#">
+                    <a href="{{ route('privacypolicy') }}">
                         Privacy Policy
                     </a>
 
-                    <a href="#">
+                    <a href="{{ route('terms') }}">
                         Terms & Conditions
                     </a>
 
-                    <a href="#">
+                    <a href="{{ route('contactus') }}">
                         Contact Us
                     </a>
 

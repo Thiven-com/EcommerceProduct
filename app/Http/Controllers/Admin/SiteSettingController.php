@@ -60,12 +60,12 @@ class SiteSettingController extends Controller
     public function edit($id)
     {
         $data = SiteSetting::find($id);
-        return view('admin.site_settings.all',compact('data'));
+        return view('admin.site_settings.all', compact('data'));
     }
     public function site()
     {
         $site = SiteSetting::first();
-        return view('admin.settings.site.company',compact('site'));
+        return view('admin.settings.site.company', compact('site'));
     }
     /**
      * Update the specified resource in storage.
@@ -74,41 +74,108 @@ class SiteSettingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
+
     public function company_setting_update(Request $request)
     {
+        $validated = $request->validate([
+            'site_name' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'short_description' => 'nullable|string',
+            'admin_logo' => 'nullable|string|max:255',
+            'address' => 'nullable|string',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:30',
+            'customer_care_no' => 'nullable|string|max:30',
+            'help_line_no' => 'nullable|string|max:30',
+            'gst' => 'nullable|string|max:100',
+            'company' => 'nullable|string|max:255',
+            'site_url' => 'nullable|string|max:255',
+            'facebook' => 'nullable|string|max:255',
+            'linkedin' => 'nullable|string|max:255',
+            'youtube' => 'nullable|string|max:255',
+            'pinterest' => 'nullable|string|max:255',
+            'instagram' => 'nullable|string|max:255',
+            'twitter' => 'nullable|string|max:255',
 
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'site_logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'favicon' => 'nullable|mimes:jpg,jpeg,png,ico,webp|max:1024',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
 
-        $site = SiteSetting::first();
+        $site = SiteSetting::first() ?? new SiteSetting();
 
+        $textFields = [
+            'site_name',
+            'description',
+            'short_description',
+            'admin_logo',
+            'address',
+            'email',
+            'phone',
+            'customer_care_no',
+            'help_line_no',
+            'gst',
+            'company',
+            'site_url',
+            'facebook',
+            'linkedin',
+            'youtube',
+            'pinterest',
+            'instagram',
+            'twitter',
+        ];
 
-        $site = $site->fill($request->input());
-        // dd($site);
+        $site->fill(collect($validated)->only($textFields)->all());
 
-        if($request->hasFile('logo'))
-        {
-            $site->logo = $request->logo->store('site');
+        // Company Logo
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $fileName = time() . '_logo.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('site/'), $fileName);
+
+            $site->logo = 'site/' . $fileName;
         }
-        if($request->hasFile('site_logo'))
-        {
-            $site->site_logo ?? ' ' = $request->site_logo->store('site');
+
+        // Site Logo
+        if ($request->hasFile('site_logo')) {
+            $file = $request->file('site_logo');
+            $fileName = time() . '_site_logo.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('site/'), $fileName);
+
+            $site->site_logo = 'site/' . $fileName;
         }
-        if($request->hasFile('favicon'))
-        {
-            $site->favicon ?? ' ' = $request->favicon->store('site');
+
+        // Favicon
+        if ($request->hasFile('favicon')) {
+            $file = $request->file('favicon');
+            $fileName = time() . '_favicon.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('site/'), $fileName);
+
+            $site->favicon = 'site/' . $fileName;
         }
-        if($request->hasFile('admin_logo'))
-        {
-            $site->admin_logo = $request->admin_logo->store('site');
-        }
-        if($request->hasFile('image'))
-        {
-            $site->image = $request->image->store('site');
+
+        // Company Image
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $fileName = time() . '_image.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('site/'), $fileName);
+
+            $site->image = 'site/' . $fileName;
         }
 
         $site->save();
-        Alert::success('Updated','Successfully');
-        return redirect()->back();
 
+
+        Alert::success('Updated', 'Company settings saved successfully.');
+
+        return redirect()->back();
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\TestimonialController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageControllers;
 use App\Http\Controllers\Website\AccountController;
@@ -76,6 +77,10 @@ Route::delete('/cart/remove/{id}', [AccountController::class, 'removeFromCart'])
 Route::put('/cart/update/{id}', [AccountController::class, 'updateCartQuantity'])
     ->middleware('auth:customer')
     ->name('cart.update');
+
+Route::post('testimonials/store', [TestimonialController::class, 'store'])->name('website.testimonials.store');
+
+Route::get('orders/{id}/pdf', [PageControllers::class, 'order_invoice'])->name('orderInvoice');
 
 
 

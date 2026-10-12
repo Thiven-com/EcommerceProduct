@@ -67,7 +67,8 @@
                                                 </li>
                                                 <li class="{{ Request::is('admin/manualorders') ? 'active' : '' }}"><a
                                                                 href="{{route('admin.sku.report')}}"><i
-                                                                        class="ti ti-box fs-16 me-2"></i>SKU Order Reports</a>
+                                                                        class="ti ti-box fs-16 me-2"></i>SKU Order
+                                                                Reports</a>
                                                 </li>
 
                                                 <li class="{{ Request::is('admin/abandonedCart') ? 'active' : '' }}"><a
@@ -184,6 +185,10 @@
                                                         <li class="{{ Request::is('admin/faqs') ? 'active' : '' }}"><a
                                                                         href="{{route('admin.faqs.index')}}"><i
                                                                                 class="ti ti-folder fs-16 me-2"></i><span>Faq's</span></a>
+                                                        </li>
+                                                        <li class="{{ Request::is('admin/testimonials') ? 'active' : '' }}"><a
+                                                                        href="{{route('admin.testimonials.index')}}"><i
+                                                                                class="ti ti-folder fs-16 me-2"></i><span>Testimonials</span></a>
                                                         </li>
                                                 </ul>
                                         </li>

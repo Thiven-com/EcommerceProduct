@@ -541,6 +541,38 @@
 
         }
     </style>
+    <style>
+        .sudheera-add-address-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 45px;
+            padding: 10px 20px;
+            background: #420916;
+            border: 1px solid #420916;
+            border-radius: 10px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all .3s ease;
+        }
+
+        .sudheera-add-address-btn i {
+            color: #c88618;
+        }
+
+        .sudheera-add-address-btn:hover {
+            background: linear-gradient(135deg,
+                    #420916,
+                    #76001f,
+                    #a85c17);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(66, 9, 22, .15);
+        }
+    </style>
 
 
     <div class="sudheera-checkout">
@@ -606,6 +638,13 @@
         class="checkout-left"
     >
         @csrf
+        <input type="hidden"
+       name="coupon_code"
+       value="{{ ($couponApplied ?? false) ? ($couponCode ?? '') : '' }}">
+
+<input type="hidden"
+       name="order_type"
+       value="{{ $orderType ?? 'order' }}">
 
 
                     <!-- =================================================
@@ -699,9 +738,18 @@
                                     </label>
                                 @endforeach
                             @else
-                                <p>No saved delivery address found. Please add an address to your account before placing an
-                                    order.
-                                </p>
+                               <div style="text-align:center; padding:20px; color:#650019;">
+        <i class="fa fa-map-marker-alt" style="font-size:32px; margin-bottom:10px;"></i>
+
+        <p style="font-size:15px; margin:10px 0;">
+            No address found. Please add your delivery address.
+        </p>
+
+        <a href="{{ route('addresses') }}" class="sudheera-add-address-btn">
+            <i class="fa fa-plus"></i>
+            Add New Address
+        </a>
+    </div>
                             @endif
                         </div>
 
@@ -831,16 +879,35 @@
                         </div>
 
 
-                        <!-- COUPON -->
-                        <div class="coupon">
-                            <form action="{{ route('checkout') }}" method="GET" class="coupon-box">
-                                <input type="hidden" name="order_type" value="{{ $orderType }}">
 
-                                <input type="text" name="code" value="{{ $couponCode }}" placeholder="Discount code">
+<!-- COUPON -->
+<div class="coupon">
 
-                                <button type="submit">APPLY</button>
-                            </form>
-                        </div>
+    <form action="{{ route('checkout') }}" method="GET" class="coupon-box">
+        <input type="hidden" name="order_type" value="{{ $orderType }}">
+
+        <input
+            type="text"
+            name="code"
+            value="{{ $couponCode }}"
+            placeholder="Enter coupon code"
+            style="text-transform: uppercase;"
+        >
+
+        <button type="submit">APPLY</button>
+    </form>
+
+    @if(!empty($couponMessage))
+        <p style="
+            margin:10px 0 0;
+            font-size:12px;
+            color:{{ str_contains(strtolower($couponMessage), 'successfully') ? '#278342' : '#c62828' }};
+        ">
+            {{ $couponMessage }}
+        </p>
+    @endif
+
+</div>
 
                         <!-- TOTAL -->
                         <div class="summary-total">
@@ -857,14 +924,25 @@
                             </div>
 
                             <div class="total-row discount-row">
-                                <span>Discount</span>
-                                <strong>- ₹{{ number_format($discount, 2) }}</strong>
-                            </div>
+    <span>
+        Discount
+        @if($discount > 0 && !empty($couponCode))
+            <small style="display:block;font-size:10px;">
+                Code: {{ $couponCode }}
+            </small>
+        @endif
+    </span>
 
-                            <div class="grand-total">
-                                <span>Total</span>
-                                <strong>₹{{ number_format($total, 2) }}</strong>
-                            </div>
+    <strong>
+        - ₹{{ number_format($discount, 2) }}
+    </strong>
+</div>
+
+<div class="grand-total">
+    <span>Total</span>
+    <strong>₹{{ number_format($total, 2) }}</strong>
+</div>
+
 
                             <button
     type="submit"

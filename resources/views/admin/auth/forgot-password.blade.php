@@ -45,7 +45,7 @@
             </div>
             <div class="col-lg-6 p-0">
                 <div class="login-img">
-                    <img src="{{ asset('website') }}/images/thirdlog.png" alt="img">
+                    <img src="{{ asset('website') }}/images/log (3).png" alt="img">
                 </div>
             </div>
         </div>

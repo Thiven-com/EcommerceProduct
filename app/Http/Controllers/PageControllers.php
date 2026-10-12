@@ -17,7 +17,9 @@ use App\Models\ShippingZone;
 use Illuminate\Support\Facades\Auth;
 use App\Models\WishlistItem;
 use App\Models\Order;
-
+use App\Models\SiteSetting;
+use App\Models\Testimonial;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PageControllers extends Controller
 {
@@ -69,6 +71,9 @@ class PageControllers extends Controller
                 ->pluck('product_variant_id')
                 ->toArray();
         }
+        $testimonials = Testimonial::where('rating', 5)->where('status', 'approved')
+            ->latest()->take(6)
+            ->get();
 
         return view(
             'website.home',
@@ -76,6 +81,7 @@ class PageControllers extends Controller
                 'banners',
                 'categories',
                 'products',
+                'testimonials',
                 'wishlistVariantIds'
             )
         );
@@ -688,10 +694,15 @@ class PageControllers extends Controller
     {
         $customer = Auth::guard('customer')->user();
 
+        $hasSubmittedTestimonial = Testimonial::where(
+            'customer_id',
+            $customer->id
+        )->exists();
+
         $address = Address::where('customer_id', $customer->id)
             ->latest()
             ->first();
-        return view('website.account-settings', compact('customer', 'address'));
+        return view('website.account-settings', compact('customer', 'address', 'hasSubmittedTestimonial'));
     }
     public function account()
     {
@@ -731,10 +742,19 @@ class PageControllers extends Controller
                 ->pluck('product_variant_id')
                 ->toArray();
         }
+        $coupons = Coupon::where('status', 'active')
+            ->where(function ($query) {
+                $query->whereNull('expiry_date')
+                    ->orWhereDate('expiry_date', '>=', now()->toDateString());
+            })
+            ->latest()
+            ->get();
+
 
         return view('website.offers', compact(
             'products',
-            'wishlistVariantIds'
+            'wishlistVariantIds',
+            'coupons'
         ));
     }
 
@@ -743,7 +763,6 @@ class PageControllers extends Controller
 
     public function checkout(Request $request)
     {
-        // Change this guard if your website uses a different customer guard.
         $user = auth('customer')->user();
 
         if (!$user) {
@@ -774,21 +793,32 @@ class PageControllers extends Controller
 
         $defaultAddress = $addresses->first();
 
-        // Calculate subtotal and weight from current cart data.
+        /*
+        |--------------------------------------------------------------------------
+        | Calculate Subtotal and Weight
+        |--------------------------------------------------------------------------
+        */
+
         $subtotal = 0;
         $totalWeight = 0;
 
         foreach ($cartItems as $item) {
             $variant = $item->variant;
+            $quantity = (int) $item->quantity;
 
-            $subtotal += (float) ($variant?->price ?? 0)
-                * (int) $item->quantity;
+            $subtotal += (float) ($variant?->price ?? 0) * $quantity;
 
-            $totalWeight += (float) ($variant?->weight ?? 0)
-                * (int) $item->quantity;
+            $totalWeight += (float) ($variant?->weight ?? 0) * $quantity;
         }
 
-        // Calculate shipping using your existing shipping zone and freight tables.
+        $subtotal = round($subtotal, 2);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Calculate Shipping
+        |--------------------------------------------------------------------------
+        */
+
         $shipping = 0;
 
         if ($defaultAddress && $defaultAddress->state) {
@@ -811,42 +841,77 @@ class PageControllers extends Controller
                         $zone->id
                     )->orderByDesc('id')->first();
 
-                    if ($latestCharge && $totalWeight > $latestCharge->max_weight) {
+                    if (
+                        $latestCharge &&
+                        $totalWeight > (float) $latestCharge->max_weight
+                    ) {
                         $shipping = (float) $latestCharge->charge + 30;
                     }
                 }
             }
         }
 
-        $shipping = round($shipping);
+        $shipping = round($shipping, 2);
 
-        // Optional coupon from the URL, for example /checkout?code=SAVE10
+        /*
+        |--------------------------------------------------------------------------
+        | Apply Coupon
+        |--------------------------------------------------------------------------
+        */
+
         $discount = 0;
-        $couponCode = trim((string) $request->query('code', ''));
+        $couponCode = strtoupper(trim((string) $request->query('code', '')));
+        $couponMessage = null;
+        $couponApplied = false;
 
         if ($couponCode !== '') {
-            $coupon = Coupon::where('code', $couponCode)
+            // Uses the coupon fields from your existing checkout code.
+            $coupon = Coupon::whereRaw('UPPER(code) = ?', [$couponCode])
                 ->where('status', 'active')
                 ->first();
 
-            if (
-                $coupon &&
-                (!$coupon->expiry_date ||
-                    Carbon::parse($coupon->expiry_date)->endOfDay()->isFuture()) &&
-                (!$coupon->minimum_purchase ||
-                    $subtotal >= $coupon->minimum_purchase)
+            if (!$coupon) {
+                $couponMessage = 'Invalid or inactive coupon code.';
+            } elseif (
+                $coupon->expiry_date &&
+                Carbon::parse($coupon->expiry_date)->endOfDay()->isPast()
             ) {
-                if ($coupon->type === 'fixed') {
-                    $discount = min((float) $coupon->discount, $subtotal);
+                $couponMessage = 'This coupon has expired.';
+            } elseif (
+                (float) ($coupon->minimum_purchase ?? 0) > $subtotal
+            ) {
+                $couponMessage = 'Minimum purchase amount is ₹'
+                    . number_format((float) $coupon->minimum_purchase, 2)
+                    . ' to use this coupon.';
+            } else {
+                $type = strtolower(trim((string) $coupon->type));
+                $value = (float) $coupon->discount;
+
+                if (in_array($type, ['fixed', 'flat', 'amount'])) {
+                    $discount = $value;
+                } elseif (in_array($type, ['percentage', 'percent', '%'])) {
+                    $discount = round(($subtotal * $value) / 100, 2);
+                }
+
+                // Discount cannot exceed the subtotal.
+                $discount = min($subtotal, max(0, $discount));
+
+                if ($discount > 0) {
+                    $couponApplied = true;
+                    $couponMessage = 'Coupon applied successfully!';
                 } else {
-                    $discount = round(
-                        ($subtotal * (float) $coupon->discount) / 100
-                    );
+                    $couponMessage = 'This coupon does not provide a valid discount.';
                 }
             }
         }
 
-        $total = max(0, $subtotal + $shipping - $discount);
+        /*
+        |--------------------------------------------------------------------------
+        | Calculate Final Total
+        |--------------------------------------------------------------------------
+        */
+
+        $total = max(0, round($subtotal + $shipping - $discount, 2));
 
         return view('website.checkout', compact(
             'cartItems',
@@ -857,8 +922,38 @@ class PageControllers extends Controller
             'discount',
             'total',
             'couponCode',
+            'couponMessage',
+            'couponApplied',
             'orderType'
         ));
+    }
+
+    public function order_invoice($id)
+    {
+        $order = Order::with([
+            'items.variant.product',
+            'payments',
+        ])->findOrFail($id);
+
+        $site = SiteSetting::first();
+
+        // Print the invoice Blade file in the browser.
+        if (request()->boolean('print')) {
+            return response()
+                ->view('website.invoice', compact('order', 'site'));
+        }
+
+        // Download the invoice as a PDF.
+        $pdf = Pdf::loadView(
+            'website.invoice',
+            compact('order', 'site')
+        );
+
+        $pdf->setPaper('A4', 'portrait');
+
+        return $pdf->download(
+            'Sudheera-Sarees-Invoice-' . $order->invoice_id . '.pdf'
+        );
     }
 
 }

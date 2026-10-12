@@ -38,9 +38,42 @@
                                     </div>
 
                                     <div class="d-flex justify-content-between mb-2">
-                                        <span>Amount</span>
-                                        <strong class="text-success">
-                                            ₹{{ number_format($grandTotal, 2) }}
+                                        <span>Subtotal</span>
+                                        <strong>₹{{ number_format($subtotal ?? 0, 2) }}</strong>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Shipping</span>
+                                        <strong>
+                                            @if(($shipping ?? 0) <= 0)
+                                                FREE
+                                            @else
+                                                ₹{{ number_format($shipping, 2) }}
+                                            @endif
+                                        </strong>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <span>
+                                            Discount
+                                            @if(($discount ?? 0) > 0)
+                                                <small class="d-block text-muted">
+                                                    Coupon applied
+                                                </small>
+                                            @endif
+                                        </span>
+
+                                        <strong style="color: #278342;">
+                                            - ₹{{ number_format($discount ?? 0, 2) }}
+                                        </strong>
+                                    </div>
+
+                                    <hr>
+
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <strong>Total</strong>
+                                        <strong>
+                                            ₹{{ number_format($grandTotal ?? 0, 2) }}
                                         </strong>
                                     </div>
 
@@ -100,12 +133,16 @@
             order_id: "{{ $razorpayOrder['id'] }}",
 
             handler: function (response) {
-
                 let form = document.createElement('form');
                 form.method = 'POST';
                 form.action = "{{ route('customer.payment.success') }}";
 
-                form.innerHTML = `@csrf<input type="hidden" name="razorpay_payment_id" value="${response.razorpay_payment_id}"><input type="hidden" name="razorpay_order_id" value="${response.razorpay_order_id}"><input type="hidden" name="razorpay_signature" value="${response.razorpay_signature}">`;
+                form.innerHTML = `
+            @csrf
+            <input type="hidden" name="razorpay_payment_id" value="${response.razorpay_payment_id}">
+            <input type="hidden" name="razorpay_order_id" value="${response.razorpay_order_id}">
+            <input type="hidden" name="razorpay_signature" value="${response.razorpay_signature}">
+        `;
 
                 document.body.appendChild(form);
                 form.submit();

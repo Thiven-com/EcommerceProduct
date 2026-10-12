@@ -4,8 +4,8 @@
 
     <style>
         /* =========================================================
-                                                           SUDHEERA SAREES - OFFERS PAGE
-                                                        ========================================================= */
+                                                                                       SUDHEERA SAREES - OFFERS PAGE
+                                                                                    ========================================================= */
 
         .offers-page {
             background: #fbf7f1;
@@ -152,7 +152,7 @@
             position: relative;
             overflow: hidden;
             min-height: 270px;
-            padding: 38px 30px;
+            padding: 20px 30px;
             border-radius: 18px;
             color: #fff;
             background: linear-gradient(135deg, #4b0012, #850d27);
@@ -607,11 +607,10 @@
         <!-- ================= HERO ================= -->
 
         <section class="offers-hero">
-
             <div class="offers-hero-content">
 
                 <div class="offers-small-title">
-                    Sudheera Sarees
+                    {{ $brand->name ?? 'Sudheera Sarees' }}
                 </div>
 
                 <h1>
@@ -624,14 +623,31 @@
                     with exclusive discounts crafted just for you.
                 </p>
 
+                @php
+                    $activeCoupons = collect($coupons ?? []);
+
+                    $percentageCoupons = $activeCoupons->filter(function ($coupon) {
+                        return in_array(
+                            strtolower($coupon->discount_type ?? ''),
+                            ['percentage', 'percent', '%']
+                        );
+                    });
+
+                    $highestDiscount = $percentageCoupons->max('discount_value');
+                @endphp
+
                 <div class="hero-offer-badge">
-                    ✦ UP TO 50% OFF ON SELECTED SAREES ✦
+                    @if($highestDiscount)
+                        ✦ UP TO {{ rtrim(rtrim(number_format($highestDiscount, 2), '0'), '.') }}% OFF ✦
+                    @elseif($activeCoupons->isNotEmpty())
+                        ✦ EXCLUSIVE OFFERS AVAILABLE ✦
+                    @else
+                        ✦ NEW OFFERS COMING SOON ✦
+                    @endif
                 </div>
 
             </div>
-
         </section>
-
 
         <div class="offers-container">
 
@@ -659,70 +675,133 @@
 
             <div class="offer-cards">
 
-                <div class="offer-card">
+                @forelse($coupons as $coupon)
 
-                    <div class="offer-icon">
-                        %
+                        @php
+                            $isPercentage = in_array(
+                                strtolower($coupon->discount_type),
+                                ['percentage', 'percent', '%']
+                            );
+
+                            $discountLabel = $isPercentage
+                                ? rtrim(rtrim(number_format($coupon->discount_value, 2), '0'), '.') . '% OFF'
+                                : 'FLAT ₹' . number_format($coupon->discount_value, 0);
+                        @endphp
+
+                        {{-- Keep your OLD offer-card design here --}}
+                        <div class="offer-card">
+
+                            {{-- Keep your old icon/design --}}
+                            <div class="offer-icon">
+                                <i class="fas fa-tag"></i>
+                            </div>
+
+                            <h3>{{ $coupon->name }}</h3>
+
+                            <p>
+                                {{ $coupon->description ?: 'Enjoy exclusive savings on your purchase.' }}
+                            </p>
+
+                            {{-- <div class="offer-discount">
+                                {{ $discountLabel }}
+                            </div> --}}
+
+                            <div class="sudheera-coupon-wrapper">
+                                <div class="sudheera-coupon-code">
+                                    USE: <span class="sudheeraCouponCode">{{ $coupon->code }}</span>
+                                </div>
+
+                                <button type="button" class="sudheera-copy-coupon-btn">
+                                    COPY CODE
+                                </button>
+                            </div>
+                            <br><br>
+                            <style>
+                                .sudheera-coupon-wrapper {
+                                    display: inline-flex;
+                                    align-items: center;
+                                    gap: 10px;
+                                    flex-wrap: wrap;
+                                    margin-top: 8px;
+                                }
+
+                                .sudheera-coupon-code {
+                                    display: inline-block;
+                                    padding: 10px 14px;
+                                    background: #fff7f0;
+                                    border: 1px dashed #650019;
+                                    border-radius: 6px;
+                                    color: #650019;
+                                    font-size: 13px;
+                                    font-weight: 700;
+                                    letter-spacing: 0.5px;
+                                }
+
+                                .sudheera-copy-coupon-btn {
+                                    display: inline-flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    padding: 10px 17px;
+                                    background: #650019;
+                                    color: #fff;
+                                    border: 1px solid #650019;
+                                    border-radius: 6px;
+                                    font-size: 12px;
+                                    font-weight: 700;
+                                    letter-spacing: 0.5px;
+                                    cursor: pointer;
+                                    transition: all 0.25s ease;
+                                }
+
+                                .sudheera-copy-coupon-btn:hover {
+                                    background: #420014;
+                                    border-color: #420014;
+                                    transform: translateY(-1px);
+                                }
+
+                                .sudheera-copy-coupon-btn.copied {
+                                    background: #52743d;
+                                    border-color: #52743d;
+                                }
+
+                                @media (max-width: 480px) {
+                                    .sudheera-coupon-wrapper {
+                                        gap: 8px;
+                                    }
+
+                                    .sudheera-coupon-code {
+                                        padding: 9px 10px;
+                                        font-size: 11px;
+                                    }
+
+                                    .sudheera-copy-coupon-btn {
+                                        padding: 9px 12px;
+                                        font-size: 11px;
+                                    }
+                                }
+                            </style>
+
+                            <p class="offer-validity">
+                                Valid until
+                                {{ $coupon->expiry_date
+                    ? \Carbon\Carbon::parse($coupon->expiry_date)->format('d M Y')
+                    : 'Limited time' }}
+                            </p>
+
+                        </div>
+
+                @empty
+
+                    {{-- Keep the same old card styling for the empty state --}}
+                    <div class="offer-card">
+                        <div class="offer-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <h3>No Active Offers</h3>
+                        <p>New offers are coming soon. Please visit us again.</p>
                     </div>
 
-                    <h3>
-                        Flat 30% Off
-                    </h3>
-
-                    <p>
-                        Enjoy flat 30% savings on selected premium
-                        saree collections.
-                    </p>
-
-                    <span class="offer-code">
-                        USE: SUDHEERA30
-                    </span>
-
-                </div>
-
-
-                <div class="offer-card">
-
-                    <div class="offer-icon">
-                        ₹
-                    </div>
-
-                    <h3>
-                        Save ₹500
-                    </h3>
-
-                    <p>
-                        Get an instant ₹500 discount on your
-                        minimum purchase of ₹3,999.
-                    </p>
-
-                    <span class="offer-code">
-                        USE: SAVE500
-                    </span>
-
-                </div>
-
-
-                <div class="offer-card">
-
-                    <div class="offer-icon">
-                        ✦
-                    </div>
-
-                    <h3>
-                        Festive Sale
-                    </h3>
-
-                    <p>
-                        Celebrate in style with special prices
-                        across our festive saree collection.
-                    </p>
-
-                    <span class="offer-code">
-                        LIMITED OFFER
-                    </span>
-
-                </div>
+                @endforelse
 
             </div>
 
@@ -854,38 +933,106 @@
 
             <!-- ================= COUPON BANNER ================= -->
 
-            <div class="coupon-banner">
 
-                <div class="coupon-content">
+            {{-- Dynamic Coupon Banner --}}
 
-                    <small>
-                        Exclusive Online Offer
-                    </small>
+            @if($coupons->isNotEmpty())
 
-                    <h2>
-                        Get Extra Savings On Your First Order
-                    </h2>
+                @php
+                    $bannerCoupon = $coupons->first();
 
-                    <p>
-                        Use the coupon below during checkout
-                        and enjoy an additional discount.
-                    </p>
+                    $bannerIsPercentage = in_array(
+                        strtolower($bannerCoupon->discount_type),
+                        ['percentage', 'percent', '%']
+                    );
 
-                </div>
+                    $bannerDiscount = $bannerIsPercentage
+                        ? rtrim(rtrim(number_format($bannerCoupon->discount_value, 2), '0'), '.') . '% OFF'
+                        : '₹' . number_format($bannerCoupon->discount_value, 0) . ' OFF';
+                @endphp
 
-                <div class="coupon-code-box">
+                <div class="coupon-banner">
 
-                    <div class="coupon-code">
-                        WELCOME10
+                    <div class="coupon-content">
+
+                        <small>Exclusive Online Offer</small>
+
+                        <h2>{{ $bannerCoupon->name }}</h2>
+
+                        <p>
+                            {{ $bannerCoupon->description
+                ?: 'Use this coupon during checkout to enjoy exclusive savings.' }}
+                        </p>
+
+                        <p style="margin-top:10px;">
+                            {{-- <strong>{{ $bannerDiscount }}</strong> --}}
+
+                            @if($bannerCoupon->min_purchase_amount > 0)
+                                on orders above ₹{{ number_format($bannerCoupon->min_purchase_amount, 0) }}
+                            @endif
+                            Expires:
+                            {{ \Carbon\Carbon::parse($bannerCoupon->expiry_date)->format('d M Y') }}
+                        </p>
+
+                        {{-- <p style="font-size:12px;margin-top:8px;">
+                            Expires:
+                            {{ \Carbon\Carbon::parse($bannerCoupon->expiry_date)->format('d M Y') }}
+                        </p> --}}
+
                     </div>
 
-                    <button class="coupon-btn" onclick="navigator.clipboard.writeText('WELCOME10')">
-                        COPY CODE
-                    </button>
+                    <div class="coupon-code-box">
+
+                        <div class="coupon-code" id="activeCouponCode">
+                            {{ $bannerCoupon->code }}
+                        </div>
+
+                        <button type="button" class="coupon-btn" id="copyCouponBtn" data-code="{{ $bannerCoupon->code }}">
+                            COPY CODE
+                        </button>
+
+                    </div>
 
                 </div>
 
-            </div>
+            @else
+
+                <div class="coupon-banner">
+                    <div class="coupon-content">
+                        <small>Sudheera Sarees</small>
+                        <h2>Exclusive Offers Coming Soon</h2>
+                        <p>Keep shopping with us for upcoming discounts and special deals.</p>
+                    </div>
+                </div>
+
+            @endif
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const copyButton = document.getElementById('copyCouponBtn');
+
+                    if (!copyButton) return;
+
+                    copyButton.addEventListener('click', async function () {
+                        const code = this.dataset.code;
+                        const button = this;
+
+                        try {
+                            await navigator.clipboard.writeText(code);
+
+                            button.textContent = 'COPIED ✓';
+
+                            setTimeout(function () {
+                                button.textContent = 'COPY CODE';
+                            }, 1800);
+                        } catch (error) {
+                            // Fallback for browsers that block clipboard access.
+                            window.prompt('Copy your coupon code:', code);
+                        }
+                    });
+                });
+            </script>
+
 
         </div>
 
@@ -1048,6 +1195,60 @@
 
         });
     </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('.sudheera-copy-coupon-btn').forEach(function (button) {
+
+        button.addEventListener('click', async function () {
+
+            // Get the coupon code from this particular coupon card
+            const wrapper = this.closest('.sudheera-coupon-wrapper');
+            const codeElement = wrapper.querySelector('.sudheeraCouponCode');
+            const code = codeElement.textContent.trim();
+
+            try {
+                await navigator.clipboard.writeText(code);
+            } catch (error) {
+                // Fallback for browsers where clipboard API is unavailable
+                const textarea = document.createElement('textarea');
+                textarea.value = code;
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+
+                document.body.appendChild(textarea);
+                textarea.select();
+
+                const copied = document.execCommand('copy');
+                textarea.remove();
+
+                if (!copied) {
+                    alert('Please copy this coupon code manually: ' + code);
+                    return;
+                }
+            }
+
+            // Update only the clicked button
+            const originalText = 'COPY CODE';
+            this.textContent = 'COPIED!';
+            this.classList.add('copied');
+            this.disabled = true;
+
+            const currentButton = this;
+
+            setTimeout(function () {
+                currentButton.textContent = originalText;
+                currentButton.classList.remove('copied');
+                currentButton.disabled = false;
+            }, 2000);
+
+        });
+
+    });
+
+});
+</script>
 
 
 

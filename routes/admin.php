@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ManualOrderController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -60,6 +61,27 @@ Route::group(['middleware' => 'admin'], function () {
     Route::delete('product-media/{id}', 'ProductController@delete_media')->name('admin.product-media.destroy');
     Route::get('settings/company', 'SiteSettingController@site')->name('admin.settings.company');
     Route::post('setting/company/update', 'SiteSettingController@company_setting_update')->name('admin.settings.company.update');
+
+    //Testimonials
+    Route::get('/testimonials', [
+        TestimonialController::class,
+        'index'
+    ])->name('admin.testimonials.index');
+
+    Route::patch('/testimonials/{id}/approve', [
+        TestimonialController::class,
+        'approve'
+    ])->name('admin.testimonials.approve');
+
+    Route::patch('/testimonials/{id}/reject', [
+        TestimonialController::class,
+        'reject'
+    ])->name('admin.testimonials.reject');
+
+    Route::delete('/testimonials/{id}', [
+        TestimonialController::class,
+        'destroy'
+    ])->name('admin.testimonials.destroy');
 
     //preorders
     Route::get('preorders', [OrderController::class, 'preorders'])->name('admin.preorders');

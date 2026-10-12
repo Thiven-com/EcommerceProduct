@@ -4,8 +4,8 @@
 
     <style>
         /* =========================================================
-               SUDHEERA SAREES - STATIC ACCOUNT PAGE
-            ========================================================= */
+                   SUDHEERA SAREES - STATIC ACCOUNT PAGE
+                ========================================================= */
 
         .sudheera-account-page {
             background: #fbf8f3;
@@ -15,8 +15,8 @@
         }
 
         /* =========================================================
-               BREADCRUMB
-            ========================================================= */
+                   BREADCRUMB
+                ========================================================= */
 
         .sudheera-breadcrumb-section {
             padding-bottom: 10px;
@@ -48,16 +48,16 @@
         }
 
         /* =========================================================
-               ACCOUNT LAYOUT
-            ========================================================= */
+                   ACCOUNT LAYOUT
+                ========================================================= */
 
         .sudheera-account-wrapper {
             padding-top: 45px;
         }
 
         /* =========================================================
-               SIDEBAR
-            ========================================================= */
+                   SIDEBAR
+                ========================================================= */
 
         .sudheera-sidebar {
             background: #fff;
@@ -118,8 +118,8 @@
         }
 
         /* =========================================================
-               MAIN CONTENT
-            ========================================================= */
+                   MAIN CONTENT
+                ========================================================= */
 
         .sudheera-account-content {
             display: flex;
@@ -150,8 +150,8 @@
         }
 
         /* =========================================================
-               CARD HEADER
-            ========================================================= */
+                   CARD HEADER
+                ========================================================= */
 
         .sudheera-card-title {
             display: flex;
@@ -181,8 +181,8 @@
         }
 
         /* =========================================================
-               PERSONAL INFORMATION
-            ========================================================= */
+                   PERSONAL INFORMATION
+                ========================================================= */
 
         .sudheera-info-grid {
             display: grid;
@@ -213,8 +213,8 @@
         }
 
         /* =========================================================
-               ADDRESS
-            ========================================================= */
+                   ADDRESS
+                ========================================================= */
 
         .sudheera-address {
             display: flex;
@@ -254,8 +254,8 @@
         }
 
         /* =========================================================
-               TESTIMONIAL
-            ========================================================= */
+                   TESTIMONIAL
+                ========================================================= */
 
         .sudheera-testimonial-intro {
             margin-bottom: 22px;
@@ -322,8 +322,8 @@
         }
 
         /* =========================================================
-               BUTTON
-            ========================================================= */
+                   BUTTON
+                ========================================================= */
 
         .sudheera-submit-btn {
             display: inline-flex;
@@ -353,8 +353,8 @@
         }
 
         /* =========================================================
-               RESPONSIVE
-            ========================================================= */
+                   RESPONSIVE
+                ========================================================= */
 
         @media (max-width: 991px) {
 
@@ -450,8 +450,8 @@
         }
 
         /* =========================================================
-               SIDEBAR
-            ========================================================= */
+                   SIDEBAR
+                ========================================================= */
 
         .sudheera-sidebar {
             background: #fff;
@@ -529,13 +529,13 @@
     </style>
 
     <!-- =========================================================
-             ACCOUNT PAGE
-        ========================================================= -->
+                 ACCOUNT PAGE
+            ========================================================= -->
 
     <main class="sudheera-account-page">
         <!-- =====================================================
-             BREADCRUMB
-        ====================================================== -->
+                 BREADCRUMB
+            ====================================================== -->
 
         <section class="sudheera-breadcrumb-section">
 
@@ -567,8 +567,8 @@
 
 
         <!-- =====================================================
-             ACCOUNT
-        ====================================================== -->
+                 ACCOUNT
+            ====================================================== -->
 
         <section class="sudheera-account-wrapper">
 
@@ -578,8 +578,8 @@
 
 
                     <!-- =================================================
-                             SIDEBAR
-                        ================================================== -->
+                                 SIDEBAR
+                            ================================================== -->
 
                     <div class="col-lg-4 col-xl-3">
 
@@ -671,8 +671,8 @@
 
 
                     <!-- =================================================
-                         MAIN CONTENT
-                    ================================================== -->
+                             MAIN CONTENT
+                        ================================================== -->
 
                     <div class="col-lg-8 col-xl-9">
 
@@ -681,8 +681,8 @@
 
 
                             <!-- =================================================
-         PERSONAL INFORMATION
-    ================================================== -->
+             PERSONAL INFORMATION
+        ================================================== -->
 
                             <div class="sudheera-dashboard-card">
 
@@ -774,8 +774,8 @@
 
 
                             <!-- =================================================
-         DEFAULT ADDRESS
-    ================================================== -->
+             DEFAULT ADDRESS
+        ================================================== -->
 
                             <div class="sudheera-dashboard-card">
 
@@ -817,35 +817,35 @@
 
                                                     @if($address->address_type)
 
-                                                                        <span style="
-                                                            display:inline-block;
-                                                            margin-left:8px;
-                                                            padding:3px 8px;
-                                                            border-radius:20px;
-                                                            background:#fbf3e5;
-                                                            color:#8f3b16;
-                                                            font-size:10px;
-                                                            font-weight:700;
-                                                        ">
-                                                                            {{ $address->address_type }}
-                                                                        </span>
+                                                        <span style="
+                                                                        display:inline-block;
+                                                                        margin-left:8px;
+                                                                        padding:3px 8px;
+                                                                        border-radius:20px;
+                                                                        background:#fbf3e5;
+                                                                        color:#8f3b16;
+                                                                        font-size:10px;
+                                                                        font-weight:700;
+                                                                    ">
+                                                            {{ $address->address_type }}
+                                                        </span>
 
                                                     @endif
 
                                                     @if($address->is_default)
 
-                                                                        <span style="
-                                                            display:inline-block;
-                                                            margin-left:5px;
-                                                            padding:3px 8px;
-                                                            border-radius:20px;
-                                                            background:#420916;
-                                                            color:#fff;
-                                                            font-size:10px;
-                                                            font-weight:700;
-                                                        ">
-                                                                            Default
-                                                                        </span>
+                                                        <span style="
+                                                                        display:inline-block;
+                                                                        margin-left:5px;
+                                                                        padding:3px 8px;
+                                                                        border-radius:20px;
+                                                                        background:#420916;
+                                                                        color:#fff;
+                                                                        font-size:10px;
+                                                                        font-weight:700;
+                                                                    ">
+                                                            Default
+                                                        </span>
 
                                                     @endif
 
@@ -938,153 +938,183 @@
 
 
                             <!-- =================================================
-                                 SHARE YOUR EXPERIENCE
-                            ================================================== -->
-
-                            <div class="sudheera-dashboard-card">
-
-                                <div class="sudheera-card-title">
-
-                                    <div>
-
-                                        <h6>
-                                            Share Your Experience
-                                        </h6>
-
-                                        <p class="sudheera-card-subtitle">
-                                            Tell us what you think about Sudheera Sarees
-                                        </p>
-
-                                    </div>
-
-                                </div>
+                                     SHARE YOUR EXPERIENCE
+                                ================================================== -->
 
 
-                                <div class="sudheera-card-content">
+                            
+@if($hasSubmittedTestimonial)
+
+    <!-- Testimonial Already Submitted -->
+    <div class="sudheera-dashboard-card">
+
+        <div class="sudheera-card-title">
+            <div>
+                <h6>Share Your Experience</h6>
+                <p class="sudheera-card-subtitle">
+                    Tell us what you think about Sudheera Sarees
+                </p>
+            </div>
+        </div>
+
+        <div class="sudheera-card-content">
+
+            <div style="text-align:center; padding:30px 15px;">
+
+                <i class="fa fa-check-circle"
+                   style="font-size:48px; color:#5f880d; margin-bottom:15px;"></i>
+
+                <h5 style="color:#650019; margin-bottom:10px;">
+                    Testimonial Already Submitted!
+                </h5>
+
+                <p style="color:#666; margin-bottom:0;">
+                    Thank you for sharing your experience with Sudheera Sarees.
+                    You have already submitted your testimonial.
+                </p>
+
+            </div>
+
+        </div>
+    </div>
+
+@else
+
+    <!-- Share Your Experience Form -->
+    <div class="sudheera-dashboard-card">
+
+        <div class="sudheera-card-title">
+            <div>
+                <h6>Share Your Experience</h6>
+                <p class="sudheera-card-subtitle">
+                    Tell us what you think about Sudheera Sarees
+                </p>
+            </div>
+        </div>
+
+        <div class="sudheera-card-content">
+
+            <div class="sudheera-testimonial-intro">
+                <i class="fa fa-info-circle" style="margin-right:6px;"></i>
+                We value your feedback. Share your shopping experience with us.
+            </div>
+
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul style="margin-bottom:0;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('website.testimonials.store') }}"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                @csrf
+
+                <div class="sudheera-form-grid">
+
+                    <!-- NAME -->
+                    <div class="sudheera-form-group">
+                        <label class="sudheera-form-label">
+                            Full Name <span class="sudheera-required">*</span>
+                        </label>
+
+                        <input type="text"
+                               name="name"
+                               class="sudheera-form-control"
+                               value="{{ old('name', $address->name ?? $customer->name ?? '') }}"
+                               placeholder="Enter your full name"
+                               required>
+                    </div>
+
+                    <!-- CITY -->
+                    <div class="sudheera-form-group">
+                        <label class="sudheera-form-label">
+                            City <span class="sudheera-required">*</span>
+                        </label>
+
+                        <input type="text"
+                               name="city"
+                               class="sudheera-form-control"
+                               value="{{ old('city', $address->city ?? '') }}"
+                               placeholder="Enter your city"
+                               required>
+                    </div>
+
+                    <!-- RATING -->
+                    <div class="sudheera-form-group">
+                        <label class="sudheera-form-label">
+                            Rating <span class="sudheera-required">*</span>
+                        </label>
+
+                        <select name="rating"
+                                class="sudheera-form-control sudheera-rating-select"
+                                required>
+                            <option value="">Select Rating</option>
+                            <option value="5" {{ old('rating') == '5' ? 'selected' : '' }}>★★★★★ Excellent</option>
+                            <option value="4" {{ old('rating') == '4' ? 'selected' : '' }}>★★★★☆ Very Good</option>
+                            <option value="3" {{ old('rating') == '3' ? 'selected' : '' }}>★★★☆☆ Good</option>
+                            <option value="2" {{ old('rating') == '2' ? 'selected' : '' }}>★★☆☆☆ Fair</option>
+                            <option value="1" {{ old('rating') == '1' ? 'selected' : '' }}>★☆☆☆☆ Poor</option>
+                        </select>
+                    </div>
+
+                    <!-- IMAGE -->
+                    <div class="sudheera-form-group">
+                        <label class="sudheera-form-label">
+                            Profile Image
+                        </label>
+
+                        <input type="file"
+                               name="image"
+                               class="sudheera-form-control"
+                               accept="image/jpeg,image/png,image/webp">
+
+                        <small style="color:#777;">
+                            JPG, PNG or WEBP; maximum 2 MB.
+                        </small>
+                    </div>
+
+                    <!-- EXPERIENCE -->
+                    <div class="sudheera-form-group full">
+                        <label class="sudheera-form-label">
+                            Your Experience <span class="sudheera-required">*</span>
+                        </label>
+
+                        <textarea name="description"
+                                  class="sudheera-form-control"
+                                  rows="4"
+                                  placeholder="Tell us about your experience..."
+                                  required>{{ old('description', old('message')) }}</textarea>
+                    </div>
+
+                    <!-- SUBMIT -->
+                    <div class="sudheera-form-group full">
+                        <button type="submit" class="sudheera-submit-btn">
+                            <i class="fa fa-paper-plane"></i>
+                            Submit Testimonial
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+@endif
 
 
-                                    <div class="sudheera-testimonial-intro">
-
-                                        <i class="fa fa-info-circle" style="margin-right:6px;"></i>
-
-                                        We value your feedback.
-                                        Share your shopping experience with us.
-
-                                    </div>
-
-
-                                    <form action="#" method="POST" enctype="multipart/form-data">
-
-                                        <div class="sudheera-form-grid">
-
-
-                                            <!-- NAME -->
-
-                                            <div class="sudheera-form-group">
-
-                                                <label class="sudheera-form-label">
-
-                                                    Full Name
-
-                                                    <span class="sudheera-required">
-                                                        *
-                                                    </span>
-
-                                                </label>
-
-                                                <input type="text" name="name" class="sudheera-form-control"
-                                                    value="{{ old('name', $address->name ?? $customer->name ?? '') }}"
-                                                    placeholder="Enter your full name">
-
-                                            </div>
-
-
-                                            <!-- RATING -->
-
-                                            <div class="sudheera-form-group">
-
-                                                <label class="sudheera-form-label">
-
-                                                    Rating
-
-                                                    <span class="sudheera-required">
-                                                        *
-                                                    </span>
-
-                                                </label>
-
-                                                <select name="rating" class="sudheera-form-control sudheera-rating-select">
-
-                                                    <option value="">
-                                                        Select Rating
-                                                    </option>
-
-                                                    <option value="5">
-                                                        ★★★★★ Excellent
-                                                    </option>
-
-                                                    <option value="4">
-                                                        ★★★★☆ Very Good
-                                                    </option>
-
-                                                    <option value="3">
-                                                        ★★★☆☆ Good
-                                                    </option>
-
-                                                    <option value="2">
-                                                        ★★☆☆☆ Fair
-                                                    </option>
-
-                                                    <option value="1">
-                                                        ★☆☆☆☆ Poor
-                                                    </option>
-
-                                                </select>
-
-                                            </div>
-
-
-                                            <!-- EXPERIENCE -->
-
-                                            <div class="sudheera-form-group full">
-
-                                                <label class="sudheera-form-label">
-
-                                                    Your Experience
-
-                                                    <span class="sudheera-required">
-                                                        *
-                                                    </span>
-
-                                                </label>
-
-                                                <textarea name="message" class="sudheera-form-control"
-                                                    placeholder="Tell us about your experience..."></textarea>
-
-                                            </div>
-
-
-                                            <!-- SUBMIT -->
-
-                                            <div class="sudheera-form-group full">
-
-                                                <button type="submit" class="sudheera-submit-btn">
-
-                                                    <i class="fa fa-paper-plane"></i>
-
-                                                    Submit Testimonial
-
-                                                </button>
-
-                                            </div>
-
-                                        </div>
-
-                                    </form>
-
-                                </div>
-
-                            </div>
 
 
                         </div>

@@ -4,8 +4,8 @@
 
     <style>
         /* =========================================================
-                   PRODUCT DETAILS PAGE
-                ========================================================= */
+                           PRODUCT DETAILS PAGE
+                        ========================================================= */
 
         :root {
             --sudheera-maroon: #650019;
@@ -24,8 +24,8 @@
 
 
         /* =========================================================
-                   BREADCRUMB
-                ========================================================= */
+                           BREADCRUMB
+                        ========================================================= */
 
         .product-breadcrumb {
             padding: 35px 0 20px;
@@ -66,8 +66,8 @@
 
 
         /* =========================================================
-                   MAIN PRODUCT AREA
-                ========================================================= */
+                           MAIN PRODUCT AREA
+                        ========================================================= */
 
         .product-details-wrapper {
             display: grid;
@@ -78,8 +78,8 @@
 
 
         /* =========================================================
-                   PRODUCT GALLERY
-                ========================================================= */
+                           PRODUCT GALLERY
+                        ========================================================= */
 
         .product-gallery {
             position: sticky;
@@ -144,8 +144,8 @@
 
 
         /* =========================================================
-                   IMAGE BADGES
-                ========================================================= */
+                           IMAGE BADGES
+                        ========================================================= */
 
         .product-image-badge {
             position: absolute;
@@ -201,8 +201,8 @@
 
 
         /* =========================================================
-                   PRODUCT INFO
-                ========================================================= */
+                           PRODUCT INFO
+                        ========================================================= */
 
         .product-information {
             padding-top: 5px;
@@ -298,8 +298,8 @@
 
 
         /* =========================================================
-                   SHORT DESCRIPTION
-                ========================================================= */
+                           SHORT DESCRIPTION
+                        ========================================================= */
 
         .product-short-description {
             font-size: 14px;
@@ -313,8 +313,8 @@
 
 
         /* =========================================================
-                   PRODUCT OPTIONS
-                ========================================================= */
+                           PRODUCT OPTIONS
+                        ========================================================= */
 
         .product-option {
             padding: 20px 0;
@@ -383,8 +383,8 @@
 
 
         /* =========================================================
-                   QUANTITY + CART
-                ========================================================= */
+                           QUANTITY + CART
+                        ========================================================= */
 
         .purchase-area {
             padding-top: 24px;
@@ -477,8 +477,8 @@
 
 
         /* =========================================================
-                   DELIVERY
-                ========================================================= */
+                           DELIVERY
+                        ========================================================= */
 
         .delivery-box {
             margin-top: 25px;
@@ -549,8 +549,8 @@
 
 
         /* =========================================================
-                   SERVICE FEATURES
-                ========================================================= */
+                           SERVICE FEATURES
+                        ========================================================= */
 
         .product-features {
             display: grid;
@@ -587,8 +587,8 @@
 
 
         /* =========================================================
-                   PRODUCT INFORMATION TABS
-                ========================================================= */
+                           PRODUCT INFORMATION TABS
+                        ========================================================= */
 
         .product-extra-section {
             margin-top: 75px;
@@ -705,8 +705,8 @@
 
 
         /* =========================================================
-                   RESPONSIVE
-                ========================================================= */
+                           RESPONSIVE
+                        ========================================================= */
 
         @media (max-width: 991px) {
 
@@ -835,20 +835,20 @@
 
 
     <!-- =========================================================
-                 PRODUCT DETAILS PAGE
-            ========================================================= -->
+                         PRODUCT DETAILS PAGE
+                    ========================================================= -->
 
     <!-- =========================================================
-                 PRODUCT DETAILS PAGE
-            ========================================================= -->
+                         PRODUCT DETAILS PAGE
+                    ========================================================= -->
 
     <section class="product-details-page" style="margin-left: 20px; margin-right: 20px;">
 
         <div class="container">
 
             <!-- =====================================================
-                         BREADCRUMB
-                    ====================================================== -->
+                                 BREADCRUMB
+                            ====================================================== -->
 
             <div class="product-breadcrumb">
 
@@ -894,15 +894,15 @@
 
 
             <!-- =====================================================
-                         MAIN PRODUCT
-                    ====================================================== -->
+                                 MAIN PRODUCT
+                            ====================================================== -->
 
             <div class="product-details-wrapper">
 
 
                 <!-- =================================================
-                             LEFT - PRODUCT GALLERY
-                        ================================================= -->
+                                     LEFT - PRODUCT GALLERY
+                                ================================================= -->
 
                 <div class="product-gallery">
 
@@ -910,8 +910,8 @@
 
 
                         <!-- =================================================
-                                     THUMBNAILS
-                                ================================================= -->
+                                             THUMBNAILS
+                                        ================================================= -->
 
                         <div class="product-thumbnails">
 
@@ -919,9 +919,9 @@
                             @if($productImage)
 
                                 <div class="product-thumb active" onclick="changeProductImage(
-                                                            this,
-                                                            '{{ asset($productImage) }}'
-                                                        )">
+                                                                            this,
+                                                                            '{{ asset($productImage) }}'
+                                                                        )">
 
                                     <img src="{{ asset($productImage) }}" alt="{{ $product->title }}">
 
@@ -938,9 +938,9 @@
                                 )
 
                                 <div class="product-thumb" onclick="changeProductImage(
-                                                            this,
-                                                            '{{ asset($product->image) }}'
-                                                        )">
+                                                                            this,
+                                                                            '{{ asset($product->image) }}'
+                                                                        )">
 
                                     <img src="{{ asset($product->image) }}" alt="{{ $product->title }}">
 
@@ -960,9 +960,9 @@
                                     )
 
                                     <div class="product-thumb" onclick="changeProductImage(
-                                                                            this,
-                                                                            '{{ asset($productVariant->image) }}'
-                                                                        )">
+                                                                                                    this,
+                                                                                                    '{{ asset($productVariant->image) }}'
+                                                                                                )">
 
                                         <img src="{{ asset($productVariant->image) }}" alt="{{ $product->title }}">
 
@@ -988,8 +988,8 @@
 
 
                         <!-- =================================================
-                                     MAIN IMAGE
-                                ================================================= -->
+                                             MAIN IMAGE
+                                        ================================================= -->
 
                         <div class="product-main-image">
 
@@ -1005,7 +1005,7 @@
                             @endif
 
 
-                             <button
+                            <button
                                 class="product-image-wishlist {{ in_array($variant?->id, $wishlistVariantIds ?? []) ? 'active' : '' }}"
                                 title="Add to Wishlist" type="button" data-variant-id="{{ $variant?->id }}">
 
@@ -1034,8 +1034,8 @@
 
 
                 <!-- =================================================
-                             RIGHT - PRODUCT INFORMATION
-                        ================================================= -->
+                                     RIGHT - PRODUCT INFORMATION
+                                ================================================= -->
 
                 <div class="product-information">
 
@@ -1069,8 +1069,8 @@
 
 
                     <!-- =================================================
-                                 RATING / ORDERS
-                            ================================================= -->
+                                         RATING / ORDERS
+                                    ================================================= -->
 
                     <div class="product-rating-row">
 
@@ -1113,8 +1113,8 @@
 
 
                     <!-- =================================================
-                                 PRICE
-                            ================================================= -->
+                                         PRICE
+                                    ================================================= -->
 
                     <div class="product-price-row">
 
@@ -1166,8 +1166,8 @@
 
 
                     <!-- =================================================
-                                 SHORT DESCRIPTION
-                            ================================================= -->
+                                         SHORT DESCRIPTION
+                                    ================================================= -->
 
                     @if(!empty($product->short_description))
 
@@ -1189,8 +1189,8 @@
 
 
                     <!-- =================================================
-                                 VARIANTS
-                            ================================================= -->
+                                         VARIANTS
+                                    ================================================= -->
 
                     @if($product->variants->count() >= 1)
 
@@ -1259,8 +1259,8 @@
 
 
                     <!-- =================================================
-                                 PRODUCT INFORMATION FROM DATABASE
-                            ================================================= -->
+                                         PRODUCT INFORMATION FROM DATABASE
+                                    ================================================= -->
 
                     <div class="product-option">
 
@@ -1306,8 +1306,8 @@
 
 
                     <!-- =================================================
-                                 PURCHASE
-                            ================================================= -->
+                                         PURCHASE
+                                    ================================================= -->
 
                     <div class="purchase-area">
 
@@ -1354,17 +1354,17 @@
                         <button type="button" class="buy-now-button" data-product-id="{{ $product->id }}"
                             data-variant-id="{{ $variant?->id }}">
 
+                            <i class="fa-solid fa-bolt me-2"></i>
                             BUY IT NOW
-
                         </button>
-                        
+
 
                     </div>
 
 
                     <!-- =================================================
-                                 DELIVERY
-                            ================================================= -->
+                                         DELIVERY
+                                    ================================================= -->
 
                     <div class="delivery-box">
 
@@ -1393,17 +1393,17 @@
 
 
                         <div id="pincodeMessage" style="
-                                        margin-top:8px;
-                                        font-size:12px;
-                                        color:#777;
-                                    "></div>
+                                                margin-top:8px;
+                                                font-size:12px;
+                                                color:#777;
+                                            "></div>
 
                     </div>
 
 
                     <!-- =================================================
-                                 FEATURES
-                            ================================================= -->
+                                         FEATURES
+                                    ================================================= -->
 
                     <div class="product-features">
 
@@ -1447,11 +1447,11 @@
 
 
             <!-- =====================================================
-                         PRODUCT INFORMATION
-                    ===================================================== -->
+                                 PRODUCT INFORMATION
+                            ===================================================== -->
 
             <div class="product-extra-section">
-                
+
 
 
                 <!-- Tabs -->
@@ -1479,8 +1479,8 @@
 
 
                     <!-- =================================================
-                                 DESCRIPTION
-                            ================================================= -->
+                                         DESCRIPTION
+                                    ================================================= -->
 
                     <div id="descriptionTab" class="tab-panel active">
 
@@ -1511,8 +1511,8 @@
 
 
                     <!-- =================================================
-                                 PRODUCT DETAILS
-                            ================================================= -->
+                                         PRODUCT DETAILS
+                                    ================================================= -->
 
                     <div id="detailsTab" class="tab-panel">
 
@@ -1642,8 +1642,8 @@
 
 
                     <!-- =================================================
-                                 SHIPPING
-                            ================================================= -->
+                                         SHIPPING
+                                    ================================================= -->
 
                     <div id="shippingTab" class="tab-panel">
 
@@ -1745,69 +1745,69 @@
         }
 
 
-          /*
+        /*
     |--------------------------------------------------------------------------
     | Wishlist Data
     |--------------------------------------------------------------------------
     */
 
-    const wishlistVariantIds =
-        @json($wishlistVariantIds ?? []);
+        const wishlistVariantIds =
+            @json($wishlistVariantIds ?? []);
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Update Wishlist Icon
-    |--------------------------------------------------------------------------
-    */
+        /*
+        |--------------------------------------------------------------------------
+        | Update Wishlist Icon
+        |--------------------------------------------------------------------------
+        */
 
-    function updateWishlistIcon(variantId) {
+        function updateWishlistIcon(variantId) {
 
-        const wishlistButton =
-            document.querySelector('.product-image-wishlist');
+            const wishlistButton =
+                document.querySelector('.product-image-wishlist');
 
-        if (!wishlistButton) {
-            return;
+            if (!wishlistButton) {
+                return;
+            }
+
+            const icon =
+                wishlistButton.querySelector('i');
+
+            if (!icon) {
+                return;
+            }
+
+            const numericVariantId =
+                Number(variantId);
+
+            const isWishlisted =
+                wishlistVariantIds.includes(numericVariantId);
+
+            if (isWishlisted) {
+
+                wishlistButton.classList.add('active');
+
+                icon.classList.remove(
+                    'fa-regular'
+                );
+
+                icon.classList.add(
+                    'fa-solid'
+                );
+
+            } else {
+
+                wishlistButton.classList.remove('active');
+
+                icon.classList.remove(
+                    'fa-solid'
+                );
+
+                icon.classList.add(
+                    'fa-regular'
+                );
+            }
         }
-
-        const icon =
-            wishlistButton.querySelector('i');
-
-        if (!icon) {
-            return;
-        }
-
-        const numericVariantId =
-            Number(variantId);
-
-        const isWishlisted =
-            wishlistVariantIds.includes(numericVariantId);
-
-        if (isWishlisted) {
-
-            wishlistButton.classList.add('active');
-
-            icon.classList.remove(
-                'fa-regular'
-            );
-
-            icon.classList.add(
-                'fa-solid'
-            );
-
-        } else {
-
-            wishlistButton.classList.remove('active');
-
-            icon.classList.remove(
-                'fa-solid'
-            );
-
-            icon.classList.add(
-                'fa-regular'
-            );
-        }
-    }
 
         /*
         |--------------------------------------------------------------------------
@@ -1850,29 +1850,29 @@
                     const variantId =
                         this.getAttribute('data-variant-id');
 
-                         /*
-                |--------------------------------------------------------------------------
-                | Update Wishlist Variant ID
-                |--------------------------------------------------------------------------
-                */
+                    /*
+           |--------------------------------------------------------------------------
+           | Update Wishlist Variant ID
+           |--------------------------------------------------------------------------
+           */
 
-                const wishlistButton =
-                    document.querySelector('.product-image-wishlist');
+                    const wishlistButton =
+                        document.querySelector('.product-image-wishlist');
 
-                if (wishlistButton) {
+                    if (wishlistButton) {
 
-                    wishlistButton.setAttribute(
-                        'data-variant-id',
-                        variantId
-                    );
-                }
-                  /*
-                |--------------------------------------------------------------------------
-                | Update Wishlist Heart
-                |--------------------------------------------------------------------------
-                */
+                        wishlistButton.setAttribute(
+                            'data-variant-id',
+                            variantId
+                        );
+                    }
+                    /*
+                  |--------------------------------------------------------------------------
+                  | Update Wishlist Heart
+                  |--------------------------------------------------------------------------
+                  */
 
-                updateWishlistIcon(variantId);
+                    updateWishlistIcon(variantId);
 
 
                     const variantSku =
@@ -1919,15 +1919,15 @@
 
                     if (variantImage) {
 
-                    const mainImage =
-                        document.getElementById(
-                            'mainProductImage'
-                        );
+                        const mainImage =
+                            document.getElementById(
+                                'mainProductImage'
+                            );
 
-                    if (mainImage) {
-                        mainImage.src = variantImage;
+                        if (mainImage) {
+                            mainImage.src = variantImage;
+                        }
                     }
-                }
 
 
                     /*
@@ -1986,47 +1986,250 @@
     |--------------------------------------------------------------------------
     */
 
-    const wishlistButton =
-        document.querySelector('.product-image-wishlist');
+        const wishlistButton =
+            document.querySelector('.product-image-wishlist');
 
-    if (wishlistButton) {
+        if (wishlistButton) {
 
-        /*
-        |--------------------------------------------------------------------------
-        | Set Initial Wishlist State
-        |--------------------------------------------------------------------------
-        */
+            /*
+            |--------------------------------------------------------------------------
+            | Set Initial Wishlist State
+            |--------------------------------------------------------------------------
+            */
 
-        const initialVariantId =
-            wishlistButton.getAttribute(
-                'data-variant-id'
+            const initialVariantId =
+                wishlistButton.getAttribute(
+                    'data-variant-id'
+                );
+
+            if (initialVariantId) {
+                updateWishlistIcon(initialVariantId);
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Wishlist Click
+            |--------------------------------------------------------------------------
+            */
+
+            wishlistButton.addEventListener(
+                'click',
+                function (event) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    const button = this;
+
+                    const variantId =
+                        button.getAttribute(
+                            'data-variant-id'
+                        );
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Validate Variant
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (!variantId) {
+
+                        alert(
+                            'Product variant not found.'
+                        );
+
+                        return;
+                    }
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Send Wishlist Request
+                    |--------------------------------------------------------------------------
+                    */
+
+                    fetch(
+                        '{{ route('wishlist.add') }}',
+                        {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json',
+
+                                'X-CSRF-TOKEN':
+                                    '{{ csrf_token() }}',
+
+                                'Accept':
+                                    'application/json'
+                            },
+
+                            body: JSON.stringify({
+                                product_variant_id:
+                                    variantId
+                            })
+                        }
+                    )
+
+                        .then(
+                            async function (response) {
+
+                                const data =
+                                    await response.json();
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | Customer Not Logged In
+                                |--------------------------------------------------------------------------
+                                */
+
+                                if (
+                                    response.status === 401
+                                ) {
+
+                                    window.location.href =
+                                        '{{ route('login') }}';
+
+                                    return;
+                                }
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | Server Error
+                                |--------------------------------------------------------------------------
+                                */
+
+                                if (!response.ok) {
+
+                                    throw new Error(
+                                        data.message ||
+                                        'Something went wrong.'
+                                    );
+                                }
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | Success
+                                |--------------------------------------------------------------------------
+                                */
+
+                                if (data.status) {
+
+                                    const numericVariantId =
+                                        Number(variantId);
+
+
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Add Variant To Local Wishlist Array
+                                    |--------------------------------------------------------------------------
+                                    */
+
+                                    if (
+                                        !wishlistVariantIds.includes(
+                                            numericVariantId
+                                        )
+                                    ) {
+
+                                        wishlistVariantIds.push(
+                                            numericVariantId
+                                        );
+                                    }
+
+
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Update Heart
+                                    |--------------------------------------------------------------------------
+                                    */
+
+                                    updateWishlistIcon(
+                                        numericVariantId
+                                    );
+
+
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | Success Message
+                                    |--------------------------------------------------------------------------
+                                    */
+
+                                    alert(
+                                        data.message
+                                    );
+
+                                } else {
+
+                                    alert(
+                                        data.message ||
+                                        'Unable to add to wishlist.'
+                                    );
+                                }
+
+                            }
+                        )
+
+                        .catch(
+                            function (error) {
+
+                                console.error(
+                                    'Wishlist Error:',
+                                    error
+                                );
+
+                                alert(
+                                    error.message ||
+                                    'Something went wrong.'
+                                );
+
+                            }
+                        );
+
+                }
             );
 
-        if (initialVariantId) {
-            updateWishlistIcon(initialVariantId);
         }
 
 
+
         /*
         |--------------------------------------------------------------------------
-        | Wishlist Click
+        | Add To Cart - Database
         |--------------------------------------------------------------------------
         */
 
-        wishlistButton.addEventListener(
-            'click',
-            function (event) {
+        const addCartButton = document.querySelector('.add-cart-button');
 
-                event.preventDefault();
-                event.stopPropagation();
+        if (addCartButton) {
 
-                const button = this;
+            addCartButton.addEventListener('click', function () {
 
-                const variantId =
-                    button.getAttribute(
-                        'data-variant-id'
-                    );
+                const currentButton = this;
 
+                /*
+                |--------------------------------------------------------------------------
+                | Get Selected Variant
+                |--------------------------------------------------------------------------
+                */
+
+                let variantId = currentButton.getAttribute('data-variant-id');
+
+                /*
+                |--------------------------------------------------------------------------
+                | Get Quantity
+                |--------------------------------------------------------------------------
+                */
+
+                let selectedQuantity = quantity || 1;
+
+                if (selectedQuantity < 1) {
+                    selectedQuantity = 1;
+                }
 
                 /*
                 |--------------------------------------------------------------------------
@@ -2036,70 +2239,78 @@
 
                 if (!variantId) {
 
-                    alert(
-                        'Product variant not found.'
-                    );
+                    alert('Please select a product variant.');
 
                     return;
                 }
 
-
                 /*
                 |--------------------------------------------------------------------------
-                | Send Wishlist Request
+                | Button Loading
                 |--------------------------------------------------------------------------
                 */
 
-                fetch(
-                    '{{ route('wishlist.add') }}',
-                    {
-                        method: 'POST',
+                const originalText = currentButton.innerHTML;
 
-                        headers: {
-                            'Content-Type':
-                                'application/json',
+                currentButton.disabled = true;
 
-                            'X-CSRF-TOKEN':
-                                '{{ csrf_token() }}',
+                currentButton.innerHTML =
+                    '<i class="fa-solid fa-spinner fa-spin me-2"></i> ADDING...';
 
-                            'Accept':
-                                'application/json'
-                        },
 
-                        body: JSON.stringify({
-                            product_variant_id:
-                                variantId
-                        })
-                    }
-                )
+                /*
+                |--------------------------------------------------------------------------
+                | Send To Database
+                |--------------------------------------------------------------------------
+                */
 
-                .then(
-                    async function (response) {
+                fetch("{{ route('cart.add') }}", {
 
-                        const data =
-                            await response.json();
+                    method: 'POST',
 
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
+
+                    body: JSON.stringify({
+
+                        product_variant_id: variantId,
+
+                        quantity: selectedQuantity
+
+                    })
+
+                })
+
+                    .then(async function (response) {
+
+                        const data = await response.json();
 
                         /*
                         |--------------------------------------------------------------------------
-                        | Customer Not Logged In
+                        | Login Required
                         |--------------------------------------------------------------------------
                         */
 
-                        if (
-                            response.status === 401
-                        ) {
+                        if (response.status === 401) {
+
+                            alert(
+                                data.message ||
+                                'Please login first.'
+                            );
 
                             window.location.href =
-                                '{{ route('login') }}';
+                                "{{ route('login') }}";
 
-                            return;
+                            return null;
                         }
 
 
                         /*
                         |--------------------------------------------------------------------------
-                        | Server Error
+                        | Validation / Server Error
                         |--------------------------------------------------------------------------
                         */
 
@@ -2107,8 +2318,20 @@
 
                             throw new Error(
                                 data.message ||
-                                'Something went wrong.'
+                                'Unable to add product to cart.'
                             );
+
+                        }
+
+
+                        return data;
+
+                    })
+
+                    .then(function (data) {
+
+                        if (!data) {
+                            return;
                         }
 
 
@@ -2120,256 +2343,65 @@
 
                         if (data.status) {
 
-                            const numericVariantId =
-                                Number(variantId);
+                            currentButton.innerHTML =
+                                '<i class="fa-solid fa-check me-2"></i> ADDED TO CART';
 
 
                             /*
                             |--------------------------------------------------------------------------
-                            | Add Variant To Local Wishlist Array
+                            | Update Cart Count
                             |--------------------------------------------------------------------------
                             */
 
-                            if (
-                                !wishlistVariantIds.includes(
-                                    numericVariantId
-                                )
-                            ) {
+                            document
+                                .querySelectorAll('.cart-count')
+                                .forEach(function (element) {
 
-                                wishlistVariantIds.push(
-                                    numericVariantId
-                                );
-                            }
+                                    element.textContent =
+                                        data.cart_count;
+
+                                });
 
 
                             /*
                             |--------------------------------------------------------------------------
-                            | Update Heart
+                            | Restore Button
                             |--------------------------------------------------------------------------
                             */
 
-                            updateWishlistIcon(
-                                numericVariantId
-                            );
+                            setTimeout(function () {
 
+                                currentButton.innerHTML =
+                                    originalText;
 
-                            /*
-                            |--------------------------------------------------------------------------
-                            | Success Message
-                            |--------------------------------------------------------------------------
-                            */
+                                currentButton.disabled =
+                                    false;
 
-                            alert(
-                                data.message
-                            );
+                            }, 1500);
 
                         } else {
 
+                            currentButton.innerHTML =
+                                originalText;
+
+                            currentButton.disabled =
+                                false;
+
                             alert(
                                 data.message ||
-                                'Unable to add to wishlist.'
+                                'Unable to add product to cart.'
                             );
+
                         }
 
-                    }
-                )
+                    })
 
-                .catch(
-                    function (error) {
+                    .catch(function (error) {
 
                         console.error(
-                            'Wishlist Error:',
+                            'Add to cart error:',
                             error
                         );
-
-                        alert(
-                            error.message ||
-                            'Something went wrong.'
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-    }
-
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Add To Cart - Database
-    |--------------------------------------------------------------------------
-    */
-
-    const addCartButton = document.querySelector('.add-cart-button');
-
-    if (addCartButton) {
-
-        addCartButton.addEventListener('click', function () {
-
-            const currentButton = this;
-
-            /*
-            |--------------------------------------------------------------------------
-            | Get Selected Variant
-            |--------------------------------------------------------------------------
-            */
-
-            let variantId = currentButton.getAttribute('data-variant-id');
-
-            /*
-            |--------------------------------------------------------------------------
-            | Get Quantity
-            |--------------------------------------------------------------------------
-            */
-
-            let selectedQuantity = quantity || 1;
-
-            if (selectedQuantity < 1) {
-                selectedQuantity = 1;
-            }
-
-            /*
-            |--------------------------------------------------------------------------
-            | Validate Variant
-            |--------------------------------------------------------------------------
-            */
-
-            if (!variantId) {
-
-                alert('Please select a product variant.');
-
-                return;
-            }
-
-            /*
-            |--------------------------------------------------------------------------
-            | Button Loading
-            |--------------------------------------------------------------------------
-            */
-
-            const originalText = currentButton.innerHTML;
-
-            currentButton.disabled = true;
-
-            currentButton.innerHTML =
-                '<i class="fa-solid fa-spinner fa-spin me-2"></i> ADDING...';
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | Send To Database
-            |--------------------------------------------------------------------------
-            */
-
-            fetch("{{ route('cart.add') }}", {
-
-                method: 'POST',
-
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                },
-
-                body: JSON.stringify({
-
-                    product_variant_id: variantId,
-
-                    quantity: selectedQuantity
-
-                })
-
-            })
-
-            .then(async function (response) {
-
-                const data = await response.json();
-
-                /*
-                |--------------------------------------------------------------------------
-                | Login Required
-                |--------------------------------------------------------------------------
-                */
-
-                if (response.status === 401) {
-
-                    alert(
-                        data.message ||
-                        'Please login first.'
-                    );
-
-                    window.location.href =
-                        "{{ route('login') }}";
-
-                    return null;
-                }
-
-
-                /*
-                |--------------------------------------------------------------------------
-                | Validation / Server Error
-                |--------------------------------------------------------------------------
-                */
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        data.message ||
-                        'Unable to add product to cart.'
-                    );
-
-                }
-
-
-                return data;
-
-            })
-
-            .then(function (data) {
-
-                if (!data) {
-                    return;
-                }
-
-
-                /*
-                |--------------------------------------------------------------------------
-                | Success
-                |--------------------------------------------------------------------------
-                */
-
-                if (data.status) {
-
-                    currentButton.innerHTML =
-                        '<i class="fa-solid fa-check me-2"></i> ADDED TO CART';
-
-
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Update Cart Count
-                    |--------------------------------------------------------------------------
-                    */
-
-                    document
-                        .querySelectorAll('.cart-count')
-                        .forEach(function (element) {
-
-                            element.textContent =
-                                data.cart_count;
-
-                        });
-
-
-                    /*
-                    |--------------------------------------------------------------------------
-                    | Restore Button
-                    |--------------------------------------------------------------------------
-                    */
-
-                    setTimeout(function () {
 
                         currentButton.innerHTML =
                             originalText;
@@ -2377,96 +2409,101 @@
                         currentButton.disabled =
                             false;
 
-                    }, 1500);
+                        alert(
+                            error.message ||
+                            'Something went wrong. Please try again.'
+                        );
 
-                } else {
-
-                    currentButton.innerHTML =
-                        originalText;
-
-                    currentButton.disabled =
-                        false;
-
-                    alert(
-                        data.message ||
-                        'Unable to add product to cart.'
-                    );
-
-                }
-
-            })
-
-            .catch(function (error) {
-
-                console.error(
-                    'Add to cart error:',
-                    error
-                );
-
-                currentButton.innerHTML =
-                    originalText;
-
-                currentButton.disabled =
-                    false;
-
-                alert(
-                    error.message ||
-                    'Something went wrong. Please try again.'
-                );
+                    });
 
             });
 
-        });
+        }
 
-    }
 
 
         /*
         |--------------------------------------------------------------------------
-        | Buy Now - Visual State
+        | BUY NOW - Add To Cart And Redirect To Checkout
         |--------------------------------------------------------------------------
         */
 
-        const buyNowButton =
-            document.querySelector(
-                '.buy-now-button'
-            );
-
+        const buyNowButton = document.querySelector('.buy-now-button');
 
         if (buyNowButton) {
 
-            buyNowButton.addEventListener(
-                'click',
-                function () {
+            buyNowButton.addEventListener('click', async function () {
 
-                    const originalText =
-                        this.innerHTML;
+                const button = this;
+                const originalText = button.innerHTML;
 
+                // Get currently selected variant
+                const variantId = button.getAttribute('data-variant-id');
 
-                    this.innerHTML =
-                        'PROCESSING...';
+                // Get selected quantity
+                const selectedQuantity = Math.max(1, Number(quantity) || 1);
 
-
-                    this.disabled = true;
-
-
-                    const currentButton =
-                        this;
-
-
-                    setTimeout(function () {
-
-                        currentButton.innerHTML =
-                            originalText;
-
-                        currentButton.disabled =
-                            false;
-
-                    }, 1000);
-
+                // Validate variant
+                if (!variantId) {
+                    alert('Please select a product variant.');
+                    return;
                 }
-            );
 
+                button.disabled = true;
+                button.innerHTML =
+                    '<i class="fa-solid fa-spinner fa-spin me-2"></i> PROCESSING...';
+
+                try {
+
+                    const response = await fetch("{{ route('cart.add') }}", {
+                        method: 'POST',
+
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                        },
+
+                        body: JSON.stringify({
+                            product_variant_id: variantId,
+                            quantity: selectedQuantity
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    // Redirect to login if authentication is required
+                    if (response.status === 401) {
+                        window.location.href = "{{ route('login') }}";
+                        return;
+                    }
+
+                    if (!response.ok || !data.status) {
+                        throw new Error(
+                            data.message || 'Unable to process your order.'
+                        );
+                    }
+
+                    // Update cart count
+                    document.querySelectorAll('.cart-count').forEach(function (element) {
+                        if (data.cart_count !== undefined) {
+                            element.textContent = data.cart_count;
+                        }
+                    });
+
+                    // Redirect directly to checkout
+                    window.location.href = "{{ route('checkout') }}";
+
+                } catch (error) {
+
+                    console.error('Buy Now Error:', error);
+
+                    alert(error.message || 'Something went wrong. Please try again.');
+
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+                }
+            });
         }
 
 
