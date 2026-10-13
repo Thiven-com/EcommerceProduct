@@ -12,6 +12,7 @@ use App\Models\Blog;
 use App\Models\BlogCategory;
 use App\Models\CartItem;
 use App\Models\Coupon;
+use App\Models\Faq;
 use App\Models\FreightCharge;
 use App\Models\ShippingZone;
 use Illuminate\Support\Facades\Auth;
@@ -635,7 +636,12 @@ class PageControllers extends Controller
     }
     public function faq()
     {
-        return view('website.faq');
+        $faqs = Faq::where('is_active', true)
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->take(10)
+            ->get();
+        return view('website.faq', compact('faqs'));
     }
     public function track_order()
     {

@@ -188,7 +188,7 @@
                                                         </li>
                                                         <li class="{{ Request::is('admin/testimonials') ? 'active' : '' }}"><a
                                                                         href="{{route('admin.testimonials.index')}}"><i
-                                                                                class="ti ti-folder fs-16 me-2"></i><span>Testimonials</span></a>
+                                                                                class="ti ti-message-circle fs-16 me-2"></i><span>Testimonials</span></a>
                                                         </li>
                                                 </ul>
                                         </li>

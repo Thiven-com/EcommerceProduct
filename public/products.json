@@ -36,7 +36,7 @@
         "actual_price": "3000",
         "product_id": 4,
         "product_variant_id": 4,
-        "stock": "5",
+        "stock": "6",
         "sku": "ljkbvjvdb"
     },
     {
@@ -46,7 +46,7 @@
         "actual_price": "5499",
         "product_id": 5,
         "product_variant_id": 5,
-        "stock": "5",
+        "stock": "8",
         "sku": "sku005"
     },
     {
@@ -76,7 +76,7 @@
         "actual_price": "7999",
         "product_id": 8,
         "product_variant_id": 8,
-        "stock": "5",
+        "stock": "6",
         "sku": "sku008"
     },
     {
@@ -86,7 +86,7 @@
         "actual_price": "3999",
         "product_id": 9,
         "product_variant_id": 9,
-        "stock": "5",
+        "stock": "35",
         "sku": "sku009"
     },
     {
@@ -106,7 +106,7 @@
         "actual_price": "4499",
         "product_id": 11,
         "product_variant_id": 11,
-        "stock": "5",
+        "stock": "7",
         "sku": "sku001"
     },
     {
@@ -116,7 +116,7 @@
         "actual_price": "5499",
         "product_id": 12,
         "product_variant_id": 12,
-        "stock": "5",
+        "stock": "35",
         "sku": "sku002"
     }
 ]

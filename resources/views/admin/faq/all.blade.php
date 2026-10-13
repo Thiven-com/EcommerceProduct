@@ -34,8 +34,11 @@
                                 <tr>
                                     <th>S.no</th>
                                     <th>Question</th>
-                                    <th>Actions</th>
-                                    <th class="no-sort"></th>
+                                    <th style="display: flex;
+        align-items: center;
+        -webkit-box-align: center;
+        justify-content: center;">Actions</th>
+                                    {{-- <th class="no-sort"></th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,7 +50,7 @@
                                     <tr>
                                         <td>{{$i}}</td>
                                         <td>{{ $item->question ?? '_' }}</td>
-                                        <td class="action-table-data">
+                                        <td class="action-table-data" style="align-items: center;">
                                             <div class="edit-delete-action">
                                                 <a class="me-2 p-2 edit-faq" href="{{ route('admin.faqs.edit', $item->id) }}"
                                                     data-id="{{ $item->id }}">
@@ -79,7 +82,8 @@
         </div>
         <div class="footer d-sm-flex align-items-center justify-content-between border-top bg-white p-3">
             <p class="mb-0">2026 &copy; {{$site->site_name ?? ' '  }}. All Right Reserved</p>
-            <p>Designed &amp; Developed by <a href="javascript:void(0);" class="text-primary">{{$site->site_name ?? ' '  }}</a></p>
+            <p>Designed &amp; Developed by <a href="javascript:void(0);"
+                    class="text-primary">{{$site->site_name ?? ' '  }}</a></p>
         </div>
     </div>
 
@@ -152,7 +156,8 @@
                                     <div class="col-lg-12">
                                         <div class="mb-3">
                                             <label class="form-label">Question <span class="text-danger"> *</span></label>
-                                            <input type="text" name="question" id="edit_question" class="form-control" required>
+                                            <input type="text" name="question" id="edit_question" class="form-control"
+                                                required>
                                         </div>
                                     </div>
 
@@ -160,7 +165,8 @@
                                         <div class="mb-3">
                                             <label class="form-label">Answer <span class="text-danger">
                                                     *</span></label>
-                                            <textarea class="form-control" name="answer" id="edit_answer" required rows="4"></textarea>
+                                            <textarea class="form-control" name="answer" id="edit_answer" required
+                                                rows="4"></textarea>
                                         </div>
                                     </div>
                                 </div>

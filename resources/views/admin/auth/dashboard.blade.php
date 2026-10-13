@@ -1,370 +1,537 @@
 <?php $page = 'index'; ?>
 @extends('layout.mainlayout')
-
 @section('content')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <div class="page-wrapper">
+        <div class="content">
 
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-2">
+                <div class="mb-3">
+                    <h1 class="mb-1">Welcome, Admin</h1>
+                    <p class="fw-medium">You have <span
+                            class="text-primary fw-bold">{{ number_format($ordersCount) }}</span> Orders, Today</p>
+                </div>
+                <div class="input-icon-start position-relative mb-3">
+                    <span class="input-icon-addon fs-16 text-gray-9">
+                        <i class="ti ti-calendar"></i>
+                    </span>
+                    <input type="text" class="form-control date-range bookingrange" placeholder="Search Product">
+                </div>
+            </div>
 
-    <div style="background:linear-gradient(135deg,#76001f,#4f8dfd);padding:35px;border-radius:18px;display:flex;justify-content:space-between;align-items:center;color:#fff;box-shadow:0 10px 30px rgba(13,110,253,.25);margin-top: 100px;
-                            margin-left: 270px; margin-bottom:-150px; margin-right: 20px;">
+            @if($lowStockAlert)
+                <div class="alert bg-orange-transparent alert-dismissible fade show mb-4">
+                    <div>
+                        <span><i class="ti ti-info-circle fs-14 text-orange me-2"></i>Your Product </span>
+                        <span class="text-orange fw-semibold">{{ $lowStockAlert->title ?? 'Low stock item' }}</span>
+                        is running low, already below {{ $lowStockThreshold }} Pcs.,
+                        <a href="{{ route('admin.products.edit', $lowStockAlert->product_id) }}"
+                            class="link-orange text-decoration-underline fw-semibold">View / Add Stock</a>
+                    </div>
+                    <button type="button" class="btn-close text-gray-9 fs-14" data-bs-dismiss="alert" aria-label="Close"><i
+                            class="ti ti-x"></i></button>
+                </div>
+            @endif
 
-        <div>
-            <h2 style="margin:0;font-size:32px;font-weight:700;">
-                👋 Welcome, Admin
-            </h2>
-
-            <p style="margin:10px 0 0;font-size:16px;opacity:.9;">
-                Manage your dashboard, monitor enquiries, and keep everything organized in one place.
-            </p>
-        </div>
-
-        <div
-            style="width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:42px;">
-            <i class="fas fa-user"></i>
-        </div>
-
-    </div>
-
-
-    <div class="dashboard-wrapper">
-        <div class="row g-4 w-100" style="margin-left: 250px;     justify-content: start;">
-
-            <div class="col-lg-4 col-md-5 col-sm-6">
-                <div class="dashboard-card primary">
-                    <div class="card-content">
-                        <div>
-                            <span class="card-title">Contact Enquiries</span>
-                            <h2 class="card-count">#</h2>
+            <div class="row">
+                {{-- Cards: Total Sales, Returns, Purchase, Purchase Return --}}
+                <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                    <div class="card bg-primary sale-widget flex-fill">
+                        <div class="card-body d-flex align-items-center">
+                            <span class="sale-icon bg-white text-primary"><i class="ti ti-file-text fs-24"></i></span>
+                            <div class="ms-2">
+                                <p class="text-white mb-1">Total Sales</p>
+                                <div class="d-inline-flex align-items-center flex-wrap gap-2">
+                                    <h4 class="text-white">₹{{ number_format($totals['sales'] ?? 0, 2) }}</h4>
+                                    <span class="badge badge-soft-primary"><i
+                                            class="ti ti-arrow-up me-1"></i>{{ $totals['sales_change_percent'] ?? '0%' }}</span>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="card-icon">
-                            <i class="ti ti-address-book"></i>
+                <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                    <div class="card bg-secondary sale-widget flex-fill">
+                        <div class="card-body d-flex align-items-center">
+                            <span class="sale-icon bg-white text-secondary"><i class="ti ti-repeat fs-24"></i></span>
+                            <div class="ms-2">
+                                <p class="text-white mb-1">Total Sales Return</p>
+                                <div class="d-inline-flex align-items-center flex-wrap gap-2">
+                                    <h4 class="text-white">₹{{ number_format($totals['sales_return'] ?? 0, 2) }}</h4>
+                                    <span class="badge badge-soft-danger"><i
+                                            class="ti ti-arrow-down me-1"></i>{{ $totals['returns_change_percent'] ?? '0%' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                    <div class="card bg-teal sale-widget flex-fill">
+                        <div class="card-body d-flex align-items-center">
+                            <span class="sale-icon bg-white text-teal"><i class="ti ti-gift fs-24"></i></span>
+                            <div class="ms-2">
+                                <p class="text-white mb-1">Total Purchase</p>
+                                <div class="d-inline-flex align-items-center flex-wrap gap-2">
+                                    <h4 class="text-white">₹{{ number_format($totals['purchase'] ?? 0, 2) }}</h4>
+                                    {{-- <span class="badge badge-soft-success"><i class="ti ti-arrow-up me-1"></i>{{
+                                        $totals['purchase_change_percent'] ?? '0%' }}</span> --}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                    <div class="card bg-info sale-widget flex-fill">
+                        <div class="card-body d-flex align-items-center">
+                            <span class="sale-icon bg-white text-info"><i class="ti ti-brand-pocket fs-24"></i></span>
+                            <div class="ms-2">
+                                <p class="text-white mb-1">Total Purchase Return</p>
+                                <div class="d-inline-flex align-items-center flex-wrap gap-2">
+                                    <h4 class="text-white">₹{{ number_format($totals['purchase_return'] ?? 0, 2) }}</h4>
+                                    {{-- <span class="badge badge-soft-success"><i class="ti ti-arrow-up me-1"></i>{{
+                                        $totals['purchase_return_change_percent'] ?? '0%' }}</span> --}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 col-12 d-flex">
+                    <div class="card bg-info sale-widget flex-fill">
+                        <div class="card-body d-flex align-items-center">
+                            <span class="sale-icon bg-white text-info"><i class="ti ti-brand-pocket fs-24"></i></span>
+                            <div class="ms-2">
+                                <p class="text-white mb-1">Pending Parcel Creations</p>
+                                <div class="d-inline-flex align-items-center flex-wrap gap-2">
+                                    <h4 class="text-white">{{ $pendingJobs ?? 0}}</h4>
+                                    {{-- <span class="badge badge-soft-success"><i class="ti ti-arrow-up me-1"></i>{{
+                                        $totals['purchase_return_change_percent'] ?? '0%' }}</span> --}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <div class="row mt-4">
 
+                <div class="col-xxl-4 col-md-6 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-inline-flex align-items-center">
+                                <span class="title-icon bg-soft-pink fs-16 me-2"><i class="ti ti-box"></i></span>
+                                <h5 class="card-title mb-0">Top Selling Products</h5>
+                            </div>
+                        </div>
+                        <div class="card-body sell-product">
+                            @foreach($topSelling as $p)
+                                <div class="d-flex align-items-center justify-content-between border-bottom mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-2">
+                                            <h6 class="fw-bold mb-1">{{ $p->product_title }}</h6>
+                                            <div class="d-flex align-items-center item-list">
+                                                <p>₹{{ number_format($p->unit_price, 2) }}</p>
+                                                <p>{{ $p->total_quantity }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Low Stock Products --}}
+                <div class="col-xxl-4 col-md-6 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-inline-flex align-items-center">
+                                <span class="title-icon bg-soft-danger fs-16 me-2"><i
+                                        class="ti ti-alert-triangle"></i></span>
+                                <h5 class="card-title mb-0">Low Stock Products</h5>
+                            </div>
+                            <a href="{{ route('admin.products.index') }}"
+                                class="fs-13 fw-medium text-decoration-underline">View All</a>
+                        </div>
+                        <div class="card-body">
+                            @foreach($lowStockProducts as $ls)
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <a href="{{ route('admin.products.edit', $ls->product_id) }}" class="avatar avatar-lg">
+                                            <img src="{{ $ls->image ? asset($ls->image) : asset('build/img/products/product-06.jpg') }}"
+                                                alt="img">
+                                        </a>
+                                        <div class="ms-2">
+                                            <h6 class="fw-bold mb-1"><a
+                                                    href="{{ route('admin.products.edit', $ls->product_id) }}">{{ $ls->title }}</a>
+                                            </h6>
+                                            <p class="fs-13">ID : #{{ $ls->sku ?? $ls->id }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <p class="fs-13 mb-1">Instock</p>
+                                        <h6 class="text-orange fw-medium">{{ $ls->stock }}</h6>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Recent Sales --}}
+                <div class="col-xxl-4 col-md-12 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-inline-flex align-items-center">
+                                <span class="title-icon bg-soft-pink fs-16 me-2"><i class="ti ti-box"></i></span>
+                                <h5 class="card-title mb-0">Recent Sales</h5>
+                            </div>
+                            <a href="{{ route('admin.orders.index', ['payment_status' => 'paid']) }}"
+                                class="fs-13 fw-medium text-decoration-underline">View
+                                All</a>
+                        </div>
+                        <div class="card-body">
+                            @foreach($recentSales as $sale)
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="d-flex align-items-center">
+                                        {{-- <a href="{{ url('orders/'.$sale->id) }}" class="avatar avatar-lg">
+                                            <img src="{{ $sale->customer_avatar ? asset($sale->customer_avatar) : asset('build/img/customer/customer16.jpg') }}"
+                                                alt="product">
+                                        </a> --}}
+                                        <div class="ms-2">
+                                            <h6 class="fw-bold mb-1"><a
+                                                    href="{{ route('admin.orders.show', $sale->id) }}">{{ $sale->customer_name }}</a>
+                                            </h6>
+                                            <div class="d-flex align-items-center item-list">
+                                                <p class="text-gray-9">₹{{ number_format($sale->grand_total, 2) }}</p>
+                                                <p class="text-muted ms-2">{{ $sale->created_at->format('d M Y') }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <span
+                                            class="badge {{ $sale->status == 'completed' ? 'badge-success' : 'badge-cyan' }} badge-xs">{{ ucfirst($sale->status) }}</span>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card flex-fill">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="d-inline-flex align-items-center">
+                        <span class="title-icon bg-soft-warning fs-16 me-2">
+                            <i class="ti ti-shopping-bag"></i>
+                        </span>
+                        <h5 class="card-title mb-0">Today's Orders</h5>
+                    </div>
+
+                    <div>
+                        <a href="{{ route('admin.reports.orders.today') }}" class="btn btn-sm btn-warning me-2">
+                            Export Excel
+                        </a>
+                        {{-- <a href="{{ route('admin.orders.index') }}" class="fs-13 fw-medium text-decoration-underline">
+                            View All
+                        </a> --}}
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    @forelse($todayOrders as $order)
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="ms-2">
+                                    <h6 class="fw-bold mb-1">
+                                        <a href="{{ route('admin.orders.show', $order->id) }}">
+                                            Order #{{ $order->invoice_id }}
+                                        </a>
+                                    </h6>
+
+                                    <div class="d-flex align-items-center item-list">
+                                        <p class="text-gray-9">
+                                            ₹{{ number_format($order->grand_total, 2) }}
+                                        </p>
+                                        <p class="text-muted ms-2">
+                                            {{ $order->created_at->format('d M Y') }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-end">
+                                <span
+                                    class="badge 
+                                                                        {{ $order->status == 'completed' ? 'badge-success' : 'badge-warning' }} badge-xs">
+                                    {{ ucfirst($order->status) }}
+                                </span>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-muted text-center">No orders today</p>
+                    @endforelse
+                </div>
+            </div>
+
+            <div class="card flex-fill">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="d-inline-flex align-items-center">
+                        <span class="title-icon bg-soft-primary fs-16 me-2">
+                            <i class="ti ti-cash"></i>
+                        </span>
+                        <h5 class="card-title mb-0">Today's Transactions</h5>
+                    </div>
+
+                    <div>
+                        <a href="{{ route('admin.reports.transactions.today') }}" class="btn btn-sm btn-primary me-2">
+                            Export Excel
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    @forelse($todayTransactions as $txn)
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="ms-2">
+                                    <h6 class="fw-bold mb-1">
+                                        Order # {{ $txn->reference_no }}
+                                    </h6>
+
+                                    <div class="d-flex align-items-center item-list">
+                                        <p class="text-gray-9">
+                                            ₹{{ number_format($txn->amount, 2) }}
+                                        </p>
+                                        <p class="text-muted ms-2">
+                                            {{ $txn->created_at->format('d M Y') }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-end">
+                                <span
+                                    class="badge 
+                                                                {{ $txn->status == 'paid' ? 'badge-success' : 'badge-danger' }} badge-xs">
+                                    {{ ucfirst($txn->status) }}
+                                </span>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-muted text-center">No transactions today</p>
+                    @endforelse
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-lg premium-card">
+
+                        <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="fw-bold mb-0">Business Overview</h5>
+                                <small class="text-muted">Daily revenue insights (Smart Analytics)</small>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-gradient-primary px-3 py-2">
+                                    {{ now()->format('F Y') }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+
+                            {{-- TOP MINI STATS --}}
+                            <div class="row mb-4 text-center">
+
+                                <div class="col-md-3">
+                                    <div class="mini-stat">
+                                        <div class="mini-icon bg-success-soft">
+                                            <i class="ti ti-trending-up"></i>
+                                        </div>
+                                        <h6 class="mb-0 mt-2">₹ {{ $data['month_total'] }}</h6>
+                                        <small class="text-muted">Total</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="mini-stat">
+                                        <div class="mini-icon bg-primary-soft">
+                                            <i class="ti ti-calendar"></i>
+                                        </div>
+                                        <h6 class="mb-0 mt-2">₹ {{ $data['today_total'] }}</h6>
+                                        <small class="text-muted">Today</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="mini-stat">
+                                        <div class="mini-icon bg-warning-soft">
+                                            <i class="ti ti-bolt"></i>
+                                        </div>
+                                        <h6 class="mb-0 mt-2">₹ {{ $data['peak_day'] }}</h6>
+                                        <small class="text-muted">Peak Day</small>
+                                    </div>
+                                </div>
+
+                                {{-- <div class="col-md-3">
+                                    <div class="mini-stat">
+                                        <div class="mini-icon bg-danger-soft">
+                                            <i class="ti ti-chart-bar"></i>
+                                        </div>
+                                        <h6 class="mb-0 mt-2">₹ {{ $data['average'] }}</h6>
+                                        <small class="text-muted">Average</small>
+                                    </div>
+                                </div> --}}
+
+                            </div>
+
+                            {{-- CHART --}}
+                            <div class="chart-wrapper" style="height: 260px;">
+                                <canvas id="monthlyBusinessChart"></canvas>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+
+                    const ctx = document.getElementById('monthlyBusinessChart').getContext('2d');
+
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                    gradient.addColorStop(0, "rgba(78,115,223,0.4)");
+                    gradient.addColorStop(1, "rgba(78,115,223,0)");
+
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: [
+                                @foreach($data['month_dates'] as $date)
+                                    "{{ $date }}",
+                                @endforeach
+                    ],
+                            datasets: [{
+                                label: 'Revenue',
+                                data: [
+                                    @foreach($data['month_values'] as $val)
+                                        {{ $val }},
+                                    @endforeach
+                        ],
+                                borderColor: "#4e73df",
+                                backgroundColor: gradient,
+                                fill: true,
+                                tension: 0.45,
+                                pointRadius: 0,
+                                pointHoverRadius: 6,
+                                borderWidth: 3
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: {
+                                intersect: false,
+                                mode: 'index'
+                            },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: "#111",
+                                    padding: 10,
+                                    callbacks: {
+                                        label: function (context) {
+                                            return "₹ " + new Intl.NumberFormat().format(context.raw);
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false }
+                                },
+                                y: {
+                                    grid: {
+                                        color: "rgba(0,0,0,0.05)"
+                                    },
+                                    ticks: {
+                                        callback: val => "₹" + val
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                });
+            </script>
+
+            {{-- final rows (charts, categories etc.) --}}
+            <div class="row mt-4">
+                <div class="col-xxl-12 col-md-12 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-inline-flex align-items-center">
+                                <span class="title-icon bg-soft-orange fs-16 me-2"><i class="ti ti-users"></i></span>
+                                <h5 class="card-title mb-0">Top Categories</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                @foreach($topCategories as $cat)
+                                    <div>
+                                        <p class="fs-13 mb-1">{{ $cat->title }}</p>
+                                        <h2 class="d-flex align-items-center">{{ $cat->products_count }}<span
+                                                class="fs-13 fw-normal text-default ms-1">Products</span></h2>
+                                    </div>
+                                    <div>
+                                        <canvas id="cat-{{ $cat->id }}" height="80" width="80"></canvas>
+                                    </div>
+                                @endforeach
+                            </div>
+
+
+                            <div class="border br-8 p-2">
+                                <div class="d-flex align-items-center justify-content-between border-bottom p-2">
+                                    <p class="mb-0">Total Number Of Categories</p>
+                                    <h5>{{ $counts['categories'] ?? 0 }}</h5>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between p-2">
+                                    <p class="mb-0">Total Number Of Products</p>
+                                    <h5>{{ $counts['products'] ?? 0 }}</h5>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                {{-- <div class="col-xxl-8 col-md-6 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="d-inline-flex align-items-center">
+                                <span class="title-icon bg-soft-indigo fs-16 me-2"><i class="ti ti-package"></i></span>
+                                <h5 class="card-title mb-0">Order Statistics</h5>
+                            </div>
+                        </div>
+                        <div class="card-body pb-0">
+                            <div id="heat_chart"></div>
+                        </div>
+                    </div>
+                </div> --}}
+
+            </div>
 
         </div>
+
+        <div class="copyright-footer d-flex align-items-center justify-content-between border-top bg-white gap-3 flex-wrap">
+            <p class="fs-13 text-gray-9 mb-0">2026 &copy; {{ $site->site_name ?? config('app.name') }}. All Right Reserved
+            </p>
+            <p>Designed & Developed By <a href="javascript:void(0);" class="link-primary">ThiVen</a></p>
+        </div>
     </div>
-
-
-    <style>
-        /* Wrapper */
-        .dashboard-wrapper {
-            min-height: 80vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-        }
-
-        /* Card */
-        .dashboard-card {
-            background: #fff;
-            border-radius: 18px;
-            padding: 28px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: .3s ease;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, .12);
-        }
-
-        /* Left Border */
-        .dashboard-card.primary {
-            border-left: 6px solid #76001f;
-        }
-
-        .dashboard-card.success {
-            border-left: 6px solid #198754;
-        }
-
-        /* Content */
-        .card-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* Title */
-        .card-title {
-            display: block;
-            font-size: 15px;
-            font-weight: 600;
-            color: #6c757d;
-            margin-bottom: 8px;
-        }
-
-        /* Count */
-        .card-count {
-            font-size: 38px;
-            font-weight: 700;
-            color: #212529;
-            margin: 0;
-        }
-
-        /* Icon */
-        .card-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 30px;
-            color: #fff;
-        }
-
-        .primary .card-icon {
-            background: #76001f;
-        }
-
-        .success .card-icon {
-            background: #198754;
-        }
-
-        /* =========================================
-               RESPONSIVE ONLY
-            ========================================= */
-
-        @media (max-width: 768px) {
-
-            .dashboard-wrapper {
-                min-height: auto;
-                width: 100%;
-                padding: 30px 15px;
-                box-sizing: border-box;
-                overflow-x: hidden;
-            }
-
-            .dashboard-wrapper .row {
-                width: 100% !important;
-                margin-left: 0 !important;
-                margin-right: 0 !important;
-            }
-
-            .dashboard-wrapper .col-lg-4,
-            .dashboard-wrapper .col-md-5,
-            .dashboard-wrapper .col-sm-6 {
-                width: 100%;
-                max-width: 100%;
-            }
-
-            .dashboard-card {
-                width: 100%;
-                box-sizing: border-box;
-            }
-
-            .card-content {
-                width: 100%;
-                gap: 15px;
-            }
-
-            .card-count {
-                font-size: 30px;
-            }
-
-            .card-icon {
-                width: 60px;
-                height: 60px;
-                min-width: 60px;
-                font-size: 26px;
-            }
-        }
-
-
-        /* =========================================
-               SMALL MOBILE
-            ========================================= */
-
-        @media (max-width: 480px) {
-
-            .dashboard-wrapper {
-                padding: 20px 10px;
-            }
-
-            .dashboard-wrapper .row {
-                margin-left: 0 !important;
-                margin-right: 0 !important;
-            }
-
-            .dashboard-card {
-                padding: 20px;
-                border-radius: 14px;
-            }
-
-            .card-content {
-                gap: 10px;
-            }
-
-            .card-title {
-                font-size: 13px;
-            }
-
-            .card-count {
-                font-size: 28px;
-            }
-
-            .card-icon {
-                width: 52px;
-                height: 52px;
-                min-width: 52px;
-                font-size: 23px;
-            }
-        }
-
-
-        /* =========================================
-               VERY SMALL MOBILE
-            ========================================= */
-
-        @media (max-width: 360px) {
-
-            .dashboard-wrapper {
-                padding: 15px 8px;
-            }
-
-            .dashboard-card {
-                padding: 16px;
-            }
-
-            .card-title {
-                font-size: 12px;
-            }
-
-            .card-count {
-                font-size: 25px;
-            }
-
-            .card-icon {
-                width: 48px;
-                height: 48px;
-                min-width: 48px;
-                font-size: 21px;
-            }
-        }
-    </style>
-
-    <style>
-        /* =========================================
-           WELCOME BANNER RESPONSIVE
-        ========================================= */
-
-        /* =========================================
-       MOBILE
-    ========================================= */
-
-        @media (max-width: 768px) {
-
-            /* Target the welcome banner */
-
-            [style*="margin-left: 270px"] {
-                margin-top: 80px !important;
-                margin-left: 15px !important;
-                margin-right: 15px !important;
-                margin-bottom: 20px !important;
-
-                padding: 25px !important;
-
-                box-sizing: border-box;
-
-                width: auto !important;
-
-                gap: 20px;
-            }
-
-            [style*="margin-left: 270px"] h2 {
-                font-size: 24px !important;
-                line-height: 1.3;
-            }
-
-            [style*="margin-left: 270px"] p {
-                font-size: 13px !important;
-                line-height: 1.5;
-            }
-
-            [style*="margin-left: 270px"]>div:last-child {
-                width: 65px !important;
-                height: 65px !important;
-                min-width: 65px !important;
-                font-size: 30px !important;
-            }
-        }
-
-
-        /* =========================================
-       SMALL MOBILE
-    ========================================= */
-
-        @media (max-width: 480px) {
-
-            [style*="margin-left: 270px"] {
-                margin-top: 80px !important;
-                margin-left: 8px !important;
-                margin-right: 8px !important;
-                margin-bottom: 15px !important;
-
-                padding: 18px !important;
-
-                border-radius: 14px !important;
-
-                gap: 12px;
-            }
-
-            [style*="margin-left: 270px"] h2 {
-                font-size: 20px !important;
-            }
-
-            [style*="margin-left: 270px"] p {
-                font-size: 11px !important;
-                line-height: 1.45;
-                margin-top: 7px !important;
-            }
-
-            [style*="margin-left: 270px"]>div:last-child {
-                width: 52px !important;
-                height: 52px !important;
-                min-width: 52px !important;
-                font-size: 23px !important;
-            }
-        }
-
-
-        /* =========================================
-       VERY SMALL MOBILE
-    ========================================= */
-
-        @media (max-width: 360px) {
-
-            [style*="margin-left: 270px"] {
-                margin-top: 80px !important;
-                margin-left: 6px !important;
-                margin-right: 6px !important;
-                margin-bottom: 12px !important;
-
-                padding: 15px !important;
-            }
-
-            [style*="margin-left: 270px"] h2 {
-                font-size: 18px !important;
-            }
-
-            [style*="margin-left: 270px"] p {
-                font-size: 10px !important;
-            }
-
-            [style*="margin-left: 270px"]>div:last-child {
-                width: 45px !important;
-                height: 45px !important;
-                min-width: 45px !important;
-                font-size: 20px !important;
-            }
-        }
-    </style>
 @endsection
